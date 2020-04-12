@@ -15,6 +15,8 @@ RUN mkdir -p /root/.ssh \
     # ensure dotfiles will be checked out with the correct *nix settings
     && git config --global core.autocrlf input
 
+ENV TZ=Europe/Berlin 
+
 # ** [Optional] Uncomment this section to install additional packages. **
 #
 # ENV DEBIAN_FRONTEND=noninteractive
