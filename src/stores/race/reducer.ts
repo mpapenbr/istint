@@ -29,6 +29,7 @@ const computeProposal = (param :TimeBasedStintParam) : Stint[] => {
     let ret = [];
     ret.push(stint);
     
+    
     while (remainingTime > 0) {
        const next =  computeTimebased({...param, racetime:remainingTime})
        // console.log(next)

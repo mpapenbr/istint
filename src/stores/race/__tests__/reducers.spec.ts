@@ -16,7 +16,7 @@ describe("race reducer", () => {
         })
     })
     
-    it("should set compute a proposal (1 stint)", () => {
+    it("should compute a proposal (1 stint)", () => {
         expect(
             raceReducer(raceInitialState, computeRaceProposal({racetime:100, avgLaptime:10, fuelConsumption:3, tank:40}))            
         ).toEqual({
@@ -25,7 +25,7 @@ describe("race reducer", () => {
         })
     })
 
-    it("should set compute a proposal (2 stints)", () => {
+    it("should compute a proposal (2 stints)", () => {
         expect(
             raceReducer(raceInitialState, computeRaceProposal({racetime:100, avgLaptime:10, fuelConsumption:5, tank:40}))            
         ).toEqual({
@@ -38,7 +38,7 @@ describe("race reducer", () => {
         })
     })
 
-    it("should set compute a proposal (racetime 1sec over calc)", () => {
+    it("should compute a proposal (racetime 1sec over calc)", () => {
         expect(
             raceReducer(raceInitialState, computeRaceProposal({racetime:81, avgLaptime:10, fuelConsumption:5, tank:40}))            
         ).toEqual({
