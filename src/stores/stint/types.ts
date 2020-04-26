@@ -1,9 +1,22 @@
+import { Driver } from "../driver/types";
+
+export interface TimeRange {
+    start: number
+    end: number    
+}
 
 export interface Stint {
-    numLaps: number
-    duration: number
-    fuel: number
+    numLaps: number 
+    duration: number // in msec
+    fuel: number // fuel needed for this stint based on StintParam    
+    driver: Driver
+    realTime: TimeRange
+    simTime: TimeRange
+    
+
 }
+
+
 
 export interface StintParam {
     avgLaptime: number,

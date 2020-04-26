@@ -1,6 +1,7 @@
 import { Reducer } from 'redux'
 import { RaceState, RaceActionTypes } from './types'
 import { StintParam, Stint, TimeBasedStintParam } from '../stint/types'
+import { stintInitialState } from '../stint/reducer'
 
 const initialState: RaceState = {
     data: {name: 'Unnamed race', duration: 0, stints:[]}
@@ -46,7 +47,7 @@ const computeTimebased = (param : TimeBasedStintParam) : Stint => {
     const numLaps = Math.min(numLapsByTank, numLapsByTime)
     const duration = numLaps * param.avgLaptime
     const fuel = numLaps * param.fuelConsumption
-    return {numLaps:numLaps,duration:duration, fuel:fuel}
+    return {...stintInitialState.stint, numLaps:numLaps,duration:duration, fuel:fuel}
 }
 
 export {reducer as raceReducer, initialState as raceInitialState}

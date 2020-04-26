@@ -6,6 +6,8 @@ import { Store } from 'redux';
 import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import HelperContainer from './container/devhelper';
+import RaceContainer from './container/raceContainer';
 
 interface AppProps {
   store: Store<ApplicationState>,
@@ -18,20 +20,8 @@ const App: React.FC<AppProps> = ({store, history}) => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
             <div className="App">
-              <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                  Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >
-                  Learn React
-                </a>
-              </header>
+              <HelperContainer />
+              <RaceContainer />
             </div>
           </ConnectedRouter>
     </Provider>
