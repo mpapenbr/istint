@@ -1,21 +1,23 @@
 import {Stint} from '../stint/types'
 
-export interface TimedRace extends Race {
+export interface ITimedRace extends IRace {
     duration: number //unit: minutes
     stints: Stint[]
 }
 
-export interface Race {
+export interface IRace {
     name: string
 }
 
 export enum RaceActionTypes {
     SET_DURATION = '@@race/SET_DURATION',
+    SET_NAME = '@@race/SET_NAME',
     COMPUTE_PROPOSAL = '@@race/COMPUTE_PROPOSAL',
     SET_STINTS = '@@race/SET_STINTS',
-    
+    SAGA_TEST = '@@race/SAGA_TEST',
+    SAGA_TEST_DOUBLE = '@@race/SAGA_TEST_DOUBLE',
 }
 
-export interface RaceState {
-    readonly data : TimedRace
+export interface IRaceState {
+    readonly data : ITimedRace
 }

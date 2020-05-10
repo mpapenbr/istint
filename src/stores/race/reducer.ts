@@ -1,16 +1,23 @@
 import { Reducer } from 'redux'
-import { RaceState, RaceActionTypes } from './types'
+import { IRaceState, RaceActionTypes } from './types'
 import { StintParam, Stint, TimeBasedStintParam } from '../stint/types'
 import { stintInitialState } from '../stint/reducer'
 
-const initialState: RaceState = {
+const initialState: IRaceState = {
     data: {name: 'Unnamed race', duration: 0, stints:[]}
 }
 
-const reducer: Reducer<RaceState> = (state = initialState, action) => {
+const reducer: Reducer<IRaceState> = (state = initialState, action) => {
     switch(action.type) {
         case RaceActionTypes.SET_DURATION: {
+            console.log("dings" + action)
+            console.log("Even more logs:", {action})
             return {...state, data:{...state.data, duration: action.payload}}
+        }
+
+        case RaceActionTypes.SET_NAME: {
+            
+            return {...state, data:{...state.data, name: action.payload}}
         }
         case RaceActionTypes.COMPUTE_PROPOSAL: {
             return {...state, data:{...state.data, stints:computeProposal(action.payload)}}

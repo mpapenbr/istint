@@ -1,14 +1,18 @@
-import {all} from 'redux-saga/effects'
-import { RaceState } from './race/types'
+import {all, fork} from 'redux-saga/effects'
+import { IRaceState } from './race/types'
 import { History } from 'history'
 import { combineReducers } from 'redux'
 import { RouterState, connectRouter } from 'connected-react-router'
 import { raceReducer } from './race/reducer'
+import { TypeConstant,  PayloadMetaAction } from 'typesafe-actions'
+import raceSaga from './race/sagas'
 
 export interface ApplicationState {
-    race: RaceState,
+    race: IRaceState,
     router: RouterState
 }
+
+// export interface IMetaActions extends PayloadMetaAction<TypeConstant,IMeta> {}
 
 export const createRootReducer = (history: History) => 
     combineReducers({
@@ -17,5 +21,5 @@ export const createRootReducer = (history: History) =>
     })
 
 export function* rootSaga() {
-    yield all([])
+    yield all([fork(raceSaga)])
 }

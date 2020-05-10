@@ -6,7 +6,7 @@ import { Store } from 'redux';
 import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import HelperContainer from './container/devhelper';
+import DevContainer from './container/devContainer';
 import RaceContainer from './container/raceContainer';
 
 interface AppProps {
@@ -20,7 +20,7 @@ const App: React.FC<AppProps> = ({store, history}) => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
             <div className="App">
-              <HelperContainer />
+              <DevContainer />
               <RaceContainer />
             </div>
           </ConnectedRouter>
