@@ -1,18 +1,18 @@
 
-export interface Driver {
+export interface IDriver {
     name: string,
-    baseLaptime: number
+    baseLaptime: number  // in seconds ()
     fuelPerLap: number
 }
 
 
 export enum DriverActionTypes {
-    COMPUTE_TIMEBASED = '@@driver/COMPUTE_TIMEBASED',
-    COMPUTE_RACE_PROPOSAL = '@@driver/COMPUTE_RACE_PROPOSAL',
+    UPDATE_DEFAULT_DRIVER = '@@driver/UPDATE_DEFAULT_DRIVER',
+    
     
 }
 
 export interface DriverState {
-    readonly driver: Driver
+    readonly data: IDriver
 }
 

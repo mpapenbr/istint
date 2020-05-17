@@ -15,6 +15,7 @@ const RaceStints: React.FC<ITimedRace> = (race:ITimedRace) => {
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
         {title:'Laps', dataIndex: 'numLaps'},
+        {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t) => secAsString(t/1000)},
         {title:'Duration', dataIndex: 'duration', render: (t) => secAsString(t/1000)},
         {title:'Fuel', dataIndex: 'fuel'},
     ]

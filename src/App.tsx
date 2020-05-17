@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import DevContainer from './container/devContainer';
 import RaceContainer from './container/raceContainer';
+import DriverContainer from './container/driverContainer';
 
 interface AppProps {
   store: Store<ApplicationState>,
@@ -22,6 +23,7 @@ const App: React.FC<AppProps> = ({store, history}) => {
       <ConnectedRouter history={history}>
             <div className="App">
               <DevContainer />
+              <DriverContainer />
               <RaceContainer />
             </div>
           </ConnectedRouter>

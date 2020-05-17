@@ -6,9 +6,12 @@ import { RouterState, connectRouter } from 'connected-react-router'
 import { raceReducer } from './race/reducer'
 import { TypeConstant,  PayloadMetaAction } from 'typesafe-actions'
 import raceSaga from './race/sagas'
+import { IDriver, DriverState } from './driver/types'
+import { driverReducer } from './driver/reducer'
 
 export interface ApplicationState {
     race: IRaceState,
+    driver: DriverState,
     router: RouterState
 }
 
@@ -17,6 +20,8 @@ export interface ApplicationState {
 export const createRootReducer = (history: History) => 
     combineReducers({
         race: raceReducer,
+        driver: driverReducer,
+
         router: connectRouter(history)
     })
 

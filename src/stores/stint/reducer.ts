@@ -4,7 +4,7 @@ import {driverInitialState} from '../driver/reducer'
 
 const initialState: StintState = {
     stint: {numLaps: 0, duration: 0, fuel: 0, 
-        driver: driverInitialState.driver, 
+        driver: driverInitialState.data, 
         realTime: {start:0, end:0}, 
         simTime: {start:0,end:0}}
 }

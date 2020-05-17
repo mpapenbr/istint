@@ -1,4 +1,4 @@
-import { Driver } from "../driver/types";
+import { IDriver } from "../driver/types";
 
 export interface TimeRange {
     start: number
@@ -6,10 +6,10 @@ export interface TimeRange {
 }
 
 export interface Stint {
-    numLaps: number 
+    numLaps: number  
     duration: number // in msec
     fuel: number // fuel needed for this stint based on StintParam    
-    driver: Driver
+    driver: IDriver
     realTime: TimeRange
     simTime: TimeRange
     
