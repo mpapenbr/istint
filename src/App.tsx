@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css';
 import { ApplicationState } from './stores';
 import { Store } from 'redux';
 import { History } from 'history';

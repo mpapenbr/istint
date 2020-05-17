@@ -25,7 +25,7 @@ export interface StintParam {
 }
 
 export interface TimeBasedStintParam extends StintParam {
-    racetime: number
+    racetime: number // in msec!
 }
 
 export enum StintActionTypes {

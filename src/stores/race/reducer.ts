@@ -49,7 +49,7 @@ const computeProposal = (param :TimeBasedStintParam) : Stint[] => {
 }
 
 const computeTimebased = (param : TimeBasedStintParam) : Stint => {
-    const numLapsByTime = Math.max(1,Math.floor(param.racetime / param.avgLaptime))
+    const numLapsByTime = Math.max(1,Math.ceil(param.racetime / param.avgLaptime))
     const numLapsByTank = Math.floor(param.tank / param.fuelConsumption)
     const numLaps = Math.min(numLapsByTank, numLapsByTime)
     const duration = numLaps * param.avgLaptime
