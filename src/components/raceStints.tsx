@@ -5,6 +5,7 @@ import { IRace, ITimedRace } from "../stores/race/types";
 import { ColumnProps } from "antd/es/table";
 import { Stint } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
+import { sprintf } from "sprintf-js";
 
 interface IDisplayStint extends  Stint {
     no : number;
@@ -15,9 +16,9 @@ const RaceStints: React.FC<ITimedRace> = (race:ITimedRace) => {
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
         {title:'Laps', dataIndex: 'numLaps'},
-        {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t) => secAsString(t/1000)},
-        {title:'Duration', dataIndex: 'duration', render: (t) => secAsString(t/1000)},
-        {title:'Fuel', dataIndex: 'fuel'},
+        {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t) => secAsString(t)},
+        {title:'Duration', dataIndex: 'duration', render: (t) => secAsString(t)},
+        {title:'Fuel', dataIndex: 'fuel', render: (f) => sprintf("%0.2f", f)},
     ]
     const myRowKey = (item : IDisplayStint) => item.no;
     const enhancedStints : IDisplayStint[]= race.stints.map((v,i) => ({...v, no: i+1}));

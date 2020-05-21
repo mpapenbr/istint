@@ -16,7 +16,7 @@ function* handleComputeProposal(action:IBaseAction) : Generator {
     try {        
         const param : TimeBasedStintParam = action.payload; 
         console.log(param);
-        yield put({type: RaceActionTypes.COMPUTE_PROPOSAL, payload:param})
+        yield put({type: RaceActionTypes.COMPUTE_PROPOSAL_TRY, payload:param})
     } catch (e) {
         console.log(e)
     }

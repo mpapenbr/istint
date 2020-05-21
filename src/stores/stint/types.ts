@@ -1,4 +1,5 @@
 import { IDriver } from "../driver/types";
+import { ICar } from "../car/types";
 
 export interface TimeRange {
     start: number
@@ -26,6 +27,11 @@ export interface StintParam {
 
 export interface TimeBasedStintParam extends StintParam {
     racetime: number // in msec!
+}
+export interface TimeDriverBasedStintParam  {
+    driver: IDriver,
+    car: ICar,
+    racetime: number // in msec
 }
 
 export enum StintActionTypes {

@@ -7,6 +7,7 @@ import { Stint } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
 import { IBaseAction } from "../commons";
 import { IDispatchToProps } from "./devhelper";
+import { IDriver } from "../stores/driver/types";
 
 
 interface IDispatchProps  {
@@ -15,6 +16,7 @@ interface IDispatchProps  {
     computeProposal: () => any;
 }
 interface IStateProps  {
+    
     fuelPerLap: number,
     baseLaptime: number
 }
@@ -23,8 +25,8 @@ const DriverFuel: React.FC<MyProps> = (props:MyProps) => {
     // race.stints[].
    return (
        <>
-            <InputNumber  min={0} max={20} step={0.1} value={props.fuelPerLap} onChange={props.setFuelPerLap}/>       
-            <InputNumber  min={0} max={720} step={0.1} value={props.baseLaptime} onChange={props.setBaseLaptime}/>
+            <InputNumber prefix="Fuel"  min={0} max={20} step={0.1} value={props.fuelPerLap} onChange={props.setFuelPerLap}/>       
+            <InputNumber prefix="Time"  min={0} max={720} step={0.1} value={props.baseLaptime} onChange={props.setBaseLaptime}/>
             <Button onClick={props.computeProposal}>Compute</Button>
        </>
    );

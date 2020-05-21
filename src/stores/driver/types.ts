@@ -5,6 +5,9 @@ export interface IDriver {
     fuelPerLap: number
 }
 
+export const defaultDriver : IDriver = {
+    name: "NoName", baseLaptime: 60.0, fuelPerLap: 3.0
+}
 
 export enum DriverActionTypes {
     UPDATE_DEFAULT_DRIVER = '@@driver/UPDATE_DEFAULT_DRIVER',

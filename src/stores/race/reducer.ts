@@ -1,6 +1,6 @@
 import { Reducer } from 'redux'
 import { IRaceState, RaceActionTypes } from './types'
-import { StintParam, Stint, TimeBasedStintParam } from '../stint/types'
+import { StintParam, Stint, TimeBasedStintParam, TimeDriverBasedStintParam } from '../stint/types'
 import { stintInitialState } from '../stint/reducer'
 
 const initialState: IRaceState = {
@@ -9,9 +9,7 @@ const initialState: IRaceState = {
 
 const reducer: Reducer<IRaceState> = (state = initialState, action) => {
     switch(action.type) {
-        case RaceActionTypes.SET_DURATION: {
-            console.log("dings" + action)
-            console.log("Even more logs:", {action})
+        case RaceActionTypes.SET_DURATION: {            
             return {...state, data:{...state.data, duration: action.payload}}
         }
 
@@ -19,8 +17,11 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
             
             return {...state, data:{...state.data, name: action.payload}}
         }
-        case RaceActionTypes.COMPUTE_PROPOSAL: {
+        case RaceActionTypes.COMPUTE_PROPOSAL: {            
             return {...state, data:{...state.data, stints:computeProposal(action.payload)}}
+        }
+        case RaceActionTypes.COMPUTE_PROPOSAL_TRY: {            
+            return {...state, data:{...state.data, stints:computeProposalTry(action.payload)}}
         }
         case RaceActionTypes.SET_STINTS: {
             return {...state, data:{...state.data, stints:action.payload}}
@@ -30,8 +31,10 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
     }
 }
 
-const computeProposal = (param :TimeBasedStintParam) : Stint[] => {
+const computeProposal = (param :TimeDriverBasedStintParam) : Stint[] => {
+
     const stint = computeTimebased(param) // now we know how much is possible per tank
+    console.log("computeProposal with ",{...param}, " results in ",{...stint})
     const stintBreak = 5
     let remainingTime = param.racetime - stint.duration
     let ret = [];
@@ -48,7 +51,42 @@ const computeProposal = (param :TimeBasedStintParam) : Stint[] => {
     return ret;
 }
 
-const computeTimebased = (param : TimeBasedStintParam) : Stint => {
+
+
+/**
+ * This method is just for development. Implementation may vary ;)
+ * @param param "simple" parameter. Just used for some evaluation
+ */
+const computeProposalTry = (param :TimeBasedStintParam) : Stint[] => {
+    const stint = computeTimebasedSimple(param) // now we know how much is possible per tank
+    //console.log("computeProposal with ",{...param}, " results in ",{...stint})
+    const stintBreak = 5
+    let remainingTime = param.racetime - stint.duration
+    let ret = [];
+    ret.push(stint);
+    
+    
+    while (remainingTime > 0) {
+       const next =  computeTimebasedSimple({...param, racetime:remainingTime})
+       // console.log(next)
+       ret.push(next)
+       remainingTime -= next.duration + stintBreak;
+       // console.log("remainingTime:", remainingTime)
+    }
+    return ret;
+}
+
+const computeTimebased = (param : TimeDriverBasedStintParam) : Stint => {
+    const numLapsByTime = Math.max(1,Math.ceil(param.racetime / param.driver.baseLaptime))
+    const numLapsByTank = Math.floor(param.car.tank / param.driver.fuelPerLap)
+    const numLaps = Math.min(numLapsByTank, numLapsByTime)
+    const duration = numLaps * param.driver.baseLaptime
+    const fuel = numLaps * param.driver.fuelPerLap
+    return {...stintInitialState.stint, driver: param.driver, numLaps:numLaps,duration:duration, fuel:fuel}
+}
+
+
+const computeTimebasedSimple = (param : TimeBasedStintParam) : Stint => {
     const numLapsByTime = Math.max(1,Math.ceil(param.racetime / param.avgLaptime))
     const numLapsByTank = Math.floor(param.tank / param.fuelConsumption)
     const numLaps = Math.min(numLapsByTank, numLapsByTime)
