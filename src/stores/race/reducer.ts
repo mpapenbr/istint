@@ -1,10 +1,10 @@
 import { Reducer } from 'redux'
-import { IRaceState, RaceActionTypes } from './types'
+import { IRaceState, RaceActionTypes, defaultTimedRace } from './types'
 import { StintParam, Stint, TimeBasedStintParam, TimeDriverBasedStintParam } from '../stint/types'
 import { stintInitialState } from '../stint/reducer'
 
 const initialState: IRaceState = {
-    data: {name: 'Unnamed race', duration: 0, stints:[]}
+    data: defaultTimedRace
 }
 
 const reducer: Reducer<IRaceState> = (state = initialState, action) => {
@@ -32,8 +32,9 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
 }
 
 const computeProposal = (param :TimeDriverBasedStintParam) : Stint[] => {
-
+    let stintNo = 1;
     const stint = computeTimebased(param) // now we know how much is possible per tank
+    stint.no = stintNo;
     console.log("computeProposal with ",{...param}, " results in ",{...stint})
     const stintBreak = 5
     let remainingTime = param.racetime - stint.duration
@@ -41,8 +42,9 @@ const computeProposal = (param :TimeDriverBasedStintParam) : Stint[] => {
     ret.push(stint);
     
     
-    while (remainingTime > 0) {
+    while (remainingTime > 0) {        
        const next =  computeTimebased({...param, racetime:remainingTime})
+       next.no = ++stintNo;
        // console.log(next)
        ret.push(next)
        remainingTime -= next.duration + stintBreak;

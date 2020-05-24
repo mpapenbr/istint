@@ -2,32 +2,34 @@ import { IDriver } from "../driver/types";
 import { ICar } from "../car/types";
 
 export interface TimeRange {
-    start: number
-    end: number    
+    start: Date
+    end: Date    
 }
 
 export interface Stint {
+    no: number;
     numLaps: number  
     duration: number // in msec
     fuel: number // fuel needed for this stint based on StintParam    
     driver: IDriver
-    realTime: TimeRange
+    realTime: TimeRange 
     simTime: TimeRange
     
 
 }
 
 
-
+//@deprecated  (nur noch für devhelper)
 export interface StintParam {
     avgLaptime: number,
     fuelConsumption: number,
     tank: number
 }
-
+//@deprecated (nur noch für devhelper)
 export interface TimeBasedStintParam extends StintParam {
     racetime: number // in msec!
 }
+
 export interface TimeDriverBasedStintParam  {
     driver: IDriver,
     car: ICar,

@@ -3,18 +3,20 @@ import { StintState, StintActionTypes, TimeBasedStintParam, Stint } from './type
 import {driverInitialState} from '../driver/reducer'
 import { defaultDriver } from '../driver/types'
 
+const defaultDate = new Date("2020-05-12");
+
 const defaultStint: Stint = {
-    numLaps: 0, duration: 0, fuel: 0, 
-        driver: defaultDriver, 
-        realTime: {start:0, end:0}, 
-        simTime: {start:0,end:0}
+    no: 0,
+    numLaps: 0, 
+    duration: 0, 
+    fuel: 0, 
+    driver: defaultDriver, 
+    realTime: {start:defaultDate, end:defaultDate}, 
+    simTime: {start:defaultDate,end:defaultDate}
 }
 
 const initialState: StintState = {
-    stint: {numLaps: 0, duration: 0, fuel: 0, 
-        driver: driverInitialState.data, 
-        realTime: {start:0, end:0}, 
-        simTime: {start:0,end:0}}
+    stint:defaultStint
 }
 
 const reducer: Reducer<StintState> = (state = initialState, action) => {

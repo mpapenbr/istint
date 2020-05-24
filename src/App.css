@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* für inputs */
+.editable-row:hover .editable-cell-value-wrap {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 4px 11px;
+}
