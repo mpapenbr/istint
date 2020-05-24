@@ -2,6 +2,7 @@ import { Reducer } from 'redux'
 import { IRaceState, RaceActionTypes, defaultTimedRace } from './types'
 import { StintParam, Stint, TimeBasedStintParam, TimeDriverBasedStintParam } from '../stint/types'
 import { stintInitialState } from '../stint/reducer'
+import _ from 'lodash'
 
 const initialState: IRaceState = {
     data: defaultTimedRace
@@ -84,7 +85,7 @@ const computeTimebased = (param : TimeDriverBasedStintParam) : Stint => {
     const numLaps = Math.min(numLapsByTank, numLapsByTime)
     const duration = numLaps * param.driver.baseLaptime
     const fuel = numLaps * param.driver.fuelPerLap
-    return {...stintInitialState.stint, driver: param.driver, numLaps:numLaps,duration:duration, fuel:fuel}
+    return {...stintInitialState.stint, driver: _.clone(param.driver), numLaps:numLaps,duration:duration, fuel:fuel}
 }
 
 

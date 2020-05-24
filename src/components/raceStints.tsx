@@ -89,21 +89,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         const x = _.pick(record, dataIndex instanceof Array ? _.join(dataIndex, '.') : dataIndex)
         console.log(dataIndex, {x})
         form.setFieldsValue(x)
-        if (x === 0) {
-
-            if (dataIndex instanceof Array) {
-                const v = _.get(record, dataIndex);
-                console.log("from struct: ", v)
-                form.setFieldsValue({driver: {baseLaptime:v}})
-                // dataIndex.forEach(v => value )
-                
-            } else {
-                console.log(dataIndex)
-                console.log((record as IIndexable)[dataIndex])
-                // form.setFieldsValue({[dataIndex]: record[dataIndex]});
-                form.setFieldsValue({[dataIndex]:(record as IIndexable)[dataIndex]})
-            }
-        }
+     
     }
     const save = async (e:any)  => {
         const values = await form.validateFields();
@@ -114,12 +100,24 @@ const EditableCell: React.FC<EditableCellProps> = ({
         handleSave(x);
     } 
 
+    const saveNoToggle = async (e:any)  => {
+        try {
+
+            const values = await form.validateFields();        
+            const x = _.merge(record, values);        
+            handleSave(x);
+        } catch (e) {
+            console.log("Error")
+            console.log(e);
+        }
+    } 
+
     let childNode = children; 
     if (editable) {
         
        
         const inp = <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-        const inpt = inputElementProvider ? inputElementProvider({ref:inputRef}): inp;
+        const inpt = inputElementProvider ? inputElementProvider({ref:inputRef, onPressEnter:save, onBlur:toggleEdit, onChange: saveNoToggle} ): inp;
         childNode = editing ? (
             <Form.Item
                 style={{ margin:0}}
@@ -150,9 +148,9 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     const columns  = [
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
-        {title:'Laps', dataIndex: 'numLaps', editable: true},
-        {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t:number) => secAsString(t), editable:true},
-        {title:'l/Lap', dataIndex: ['driver', 'fuelPerLap'], render: (f:number) => sprintf("%0.2f", f), editable:true},
+        {title:'Laps', dataIndex: 'numLaps', editable: true, inputElementProvider: (props:any) => <InputNumber {...props} min={0}/>},
+        {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t:number) => secAsString(t), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
+        {title:'l/Lap', dataIndex: ['driver', 'fuelPerLap'], render: (f:number) => sprintf("%0.2f", f), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
         {title:'Start', dataIndex: ['simTime', 'start'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Duration', dataIndex: 'duration', render: (t:number) => secAsString(t)},
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
@@ -169,6 +167,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
+                inputElementProvider: col.inputElementProvider,
                 handleSave: (record: IDisplayStint) => {
                     console.log("inner save", {record});
                     const param = {no: record.no, driver: record.driver, numLaps: record.numLaps}

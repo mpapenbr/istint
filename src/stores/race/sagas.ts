@@ -1,4 +1,4 @@
-import { all, call, fork, put, takeEvery, takeLatest, select } from "redux-saga/effects";
+import { all, call, fork, put,  takeEvery, takeLatest, select } from "redux-saga/effects";
 import { IBaseAction } from "../../commons";
 import { RaceActionTypes, ITimedRace, IModifyStintParam } from "./types";
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from "../stint/types";
@@ -36,7 +36,9 @@ function* handleComputeProposal(action:IBaseAction) : Generator {
             driver: driver,
             racetime: raceData.duration*60,
         }
+        // const x = yield all[call({type: RaceActionTypes.COMPUTE_PROPOSAL, payload:param})]
         yield put({type: RaceActionTypes.COMPUTE_PROPOSAL, payload:param})
+
     } catch (e) {
         console.log(e)
     }
@@ -67,9 +69,9 @@ function* handleChangeSingleStint(action:IBaseAction) : Generator {
                 start: startTime,
                 end: new Date(startTime.getTime() + (s.duration * 1000))
             }
-            console.log(s)
+            // console.log(s)
         })
-        console.log(newStints)
+        // console.log(newStints)
 
         yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
     } catch (e) { 
