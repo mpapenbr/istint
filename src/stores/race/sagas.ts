@@ -44,6 +44,30 @@ function* handleComputeProposal(action:IBaseAction) : Generator {
     }
 }
 
+function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
+    const newStints = Array.from(stints);
+    newStints.forEach((s,i) => {
+        s.duration = s.numLaps * s.driver.baseLaptime;
+        s.fuel = s.numLaps * s.driver.fuelPerLap;
+
+        const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
+        s.pitTime = {
+            pitDelta: 0, // TODO: get it from race 
+            changeTires: 27, // TODO: get from stint-param
+            refill: i < stints.length-1 ? (( newStints[i+1].numLaps * s.driver.fuelPerLap) / race.car.refillRate ) : 0,
+            driverChange: i < stints.length-1 ? (newStints[i+1].driver.name === s.driver.name ? 0 : 30) : 0,
+            total: 0
+        }
+        s.pitTime.total = s.pitTime.pitDelta+ s.pitTime.changeTires + s.pitTime.refill + s.pitTime.driverChange;
+        s.simTime = {
+            start: startTime,
+            end: new Date(startTime.getTime() + (s.duration * 1000))
+        }
+        // console.log(s)
+    })
+    return newStints;
+}
+
 /**
  * 
  * @param action 
@@ -53,25 +77,15 @@ function* handleChangeSingleStint(action:IBaseAction) : Generator {
         const raceDataTmp : unknown = yield select(getRace);
         const raceData: ITimedRace = raceDataTmp as ITimedRace;
         const param : IModifyStintParam = action.payload; 
-        const newStints = _.clone(raceData.stints);
+        let newStints = _.clone(raceData.stints);
         const idx = _.findIndex(newStints, {no:param.no})
         newStints.splice(idx, 1, {...defaultStint, driver:param.driver, numLaps:param.numLaps, no:param.no})
         console.log(newStints);
         // Actions
         const pitTime = 0
         
+        newStints = computeRace(raceData, newStints);
         
-        newStints.forEach((s,i) => {
-            s.duration = s.numLaps * s.driver.baseLaptime;
-            s.fuel = s.numLaps * s.driver.fuelPerLap;
-            const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + pitTime);
-            s.simTime = {
-                start: startTime,
-                end: new Date(startTime.getTime() + (s.duration * 1000))
-            }
-            // console.log(s)
-        })
-        // console.log(newStints)
 
         yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
     } catch (e) { 

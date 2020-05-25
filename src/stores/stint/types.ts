@@ -14,6 +14,16 @@ export interface Stint {
     driver: IDriver
     realTime: TimeRange 
     simTime: TimeRange
+    /**
+     * values given in seconds     
+     */
+    pitTime: { 
+        pitDelta: number, // time lost in pits when just stopping at pit (similar to a stop&go penalty, no actions done in pit box)
+        changeTires: number,
+        refill: number,
+        driverChange: number,
+        total: number
+    }
     
 
 }

@@ -12,7 +12,14 @@ const defaultStint: Stint = {
     fuel: 0, 
     driver: defaultDriver, 
     realTime: {start:defaultDate, end:defaultDate}, 
-    simTime: {start:defaultDate,end:defaultDate}
+    simTime: {start:defaultDate,end:defaultDate},
+    pitTime: {
+        pitDelta: 0,
+        refill: 0,
+        driverChange: 0,
+        changeTires: 0,
+        total: 0
+    },
 }
 
 const initialState: StintState = {
