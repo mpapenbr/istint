@@ -1,5 +1,5 @@
 
-enum TireChangeMode {
+export enum TireChangeMode {
     DURING_REFILL,
     AFTER_REFILL
 }

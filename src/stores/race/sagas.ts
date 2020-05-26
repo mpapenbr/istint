@@ -1,7 +1,8 @@
-import { all, call, fork, put,  takeEvery, takeLatest, select } from "redux-saga/effects";
+import { all, call, fork, put,  takeEvery, takeLatest, select, StrictEffect } from "redux-saga/effects";
 import { IBaseAction } from "../../commons";
 import { RaceActionTypes, ITimedRace, IModifyStintParam } from "./types";
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from "../stint/types";
+import { TireChangeMode } from '../car/types';
 import { IDriver } from "../driver/types";
 import { ApplicationState } from "..";
 import _ from 'lodash';
@@ -19,7 +20,10 @@ function* handleSagaTest(action:IBaseAction) : Generator {
 
 const getRace = (state:ApplicationState)  : ITimedRace => state.race.data;
 
-function* handleComputeProposal(action:IBaseAction) : Generator {
+function* handleComputeProposal(action:IBaseAction) 
+//: Generator<StrictEffect,void, Stint[]> 
+: Generator
+{
     try {        
         const driver : IDriver = action.payload; 
         // oh my! Typescript malus :( 
@@ -36,29 +40,38 @@ function* handleComputeProposal(action:IBaseAction) : Generator {
             driver: driver,
             racetime: raceData.duration*60,
         }
-        // const x = yield all[call({type: RaceActionTypes.COMPUTE_PROPOSAL, payload:param})]
-        yield put({type: RaceActionTypes.COMPUTE_PROPOSAL, payload:param})
-
+        const proposal = computeProposal(param);
+        const stints = computeRace(raceData, proposal);
+        yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
     } catch (e) {
         console.log(e)
     }
 }
 
 function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
+    console.log("computeRace", {race}, "stints:", {stints})
     const newStints = Array.from(stints);
     newStints.forEach((s,i) => {
         s.duration = s.numLaps * s.driver.baseLaptime;
         s.fuel = s.numLaps * s.driver.fuelPerLap;
 
         const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
-        s.pitTime = {
+        const work = {
             pitDelta: 0, // TODO: get it from race 
             changeTires: 27, // TODO: get from stint-param
             refill: i < stints.length-1 ? (( newStints[i+1].numLaps * s.driver.fuelPerLap) / race.car.refillRate ) : 0,
             driverChange: i < stints.length-1 ? (newStints[i+1].driver.name === s.driver.name ? 0 : 30) : 0,
             total: 0
         }
-        s.pitTime.total = s.pitTime.pitDelta+ s.pitTime.changeTires + s.pitTime.refill + s.pitTime.driverChange;
+        const pitWorkTime = () => {switch(race.car.tireChangeMode) {
+            case TireChangeMode.DURING_REFILL:
+                return Math.max(work.driverChange, Math.min(work.changeTires, work.refill));
+            case TireChangeMode.AFTER_REFILL:
+                return Math.max(work.driverChange, work.changeTires + work.refill);
+        }};
+        work.total = work.pitDelta + pitWorkTime();
+        s.pitTime = work;
+        
         s.simTime = {
             start: startTime,
             end: new Date(startTime.getTime() + (s.duration * 1000))
@@ -67,6 +80,38 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
     })
     return newStints;
 }
+
+const computeProposal = (param :TimeDriverBasedStintParam) : Stint[] => {
+    let stintNo = 1;
+    const stint = computeTimebased(param) // now we know how much is possible per tank
+    stint.no = stintNo;
+    console.log("computeProposal with ",{...param}, " results in ",{...stint})
+    const stintBreak = 5
+    let remainingTime = param.racetime - stint.duration
+    let ret = [];
+    ret.push(stint);
+    
+    
+    while (remainingTime > 0) {        
+       const next =  computeTimebased({...param, racetime:remainingTime})
+       next.no = ++stintNo;
+       // console.log(next)
+       ret.push(next)
+       remainingTime -= next.duration + stintBreak;
+       // console.log("remainingTime:", remainingTime)
+    }
+    return ret;
+}
+
+const computeTimebased = (param : TimeDriverBasedStintParam) : Stint => {
+    const numLapsByTime = Math.max(1,Math.ceil(param.racetime / param.driver.baseLaptime))
+    const numLapsByTank = Math.floor(param.car.tank / param.driver.fuelPerLap)
+    const numLaps = Math.min(numLapsByTank, numLapsByTime)
+    const duration = numLaps * param.driver.baseLaptime
+    const fuel = numLaps * param.driver.fuelPerLap
+    return {...defaultStint, driver: _.clone(param.driver), numLaps:numLaps,duration:duration, fuel:fuel}
+}
+
 
 /**
  * 
