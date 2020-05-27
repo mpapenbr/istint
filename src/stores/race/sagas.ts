@@ -1,9 +1,9 @@
 import { all, call, fork, put,  takeEvery, takeLatest, select, StrictEffect } from "redux-saga/effects";
 import { IBaseAction } from "../../commons";
-import { RaceActionTypes, ITimedRace, IModifyStintParam } from "./types";
+import { RaceActionTypes, ITimedRace, IModifyStintParam, ISimpleRaceProposalParam } from "./types";
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from "../stint/types";
 import { TireChangeMode } from '../car/types';
-import { IDriver } from "../driver/types";
+import { IDriver, DriverActionTypes } from "../driver/types";
 import { ApplicationState } from "..";
 import _ from 'lodash';
 import { defaultStint } from "../stint/reducer";
@@ -48,6 +48,40 @@ function* handleComputeProposal(action:IBaseAction)
     }
 }
 
+function* handleQuickComputeProposal(action:IBaseAction) 
+//: Generator<StrictEffect,void, Stint[]> 
+: Generator
+{
+    try {        
+        const myParam : ISimpleRaceProposalParam = action.payload;
+        yield put({type: RaceActionTypes.SET_NAME, payload:myParam.name})
+        yield put({type: RaceActionTypes.SET_DURATION, payload:myParam.duration})
+        yield put({type: DriverActionTypes.UPDATE_DEFAULT_DRIVER, payload:myParam.driver})
+        
+        
+        // oh my! Typescript malus :( 
+        // didn't yet find a way to get this assigned by using one statement 
+        // see: https://github.com/redux-saga/redux-saga/issues/1976
+        const raceDataTmp : unknown = yield select(getRace);
+        const raceData: ITimedRace = raceDataTmp as ITimedRace;
+        
+
+        // console.log(driver);
+        // console.log(raceData);
+        const param : TimeDriverBasedStintParam = {
+            car: raceData.car,
+            driver: myParam.driver,
+            racetime: myParam.duration*60,
+        }
+        const proposal = computeProposal(param);
+        const stints = computeRace(raceData, proposal);
+        yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
 function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
     console.log("computeRace", {race}, "stints:", {stints})
     const newStints = Array.from(stints);
@@ -56,14 +90,23 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
         s.fuel = s.numLaps * s.driver.fuelPerLap;
 
         const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
-        const work = {
+        
+        const work = i < (stints.length-1) ? {
             pitDelta: 0, // TODO: get it from race 
-            changeTires: 27, // TODO: get from stint-param
-            refill: i < stints.length-1 ? (( newStints[i+1].numLaps * s.driver.fuelPerLap) / race.car.refillRate ) : 0,
-            driverChange: i < stints.length-1 ? (newStints[i+1].driver.name === s.driver.name ? 0 : 30) : 0,
-            total: 0
+            changeTires: s.wantNewTires ? 27 : 0, 
+            refill: (( newStints[i+1].numLaps * s.driver.fuelPerLap) / race.car.refillRate ),
+            driverChange: (newStints[i+1].driver.name === s.driver.name ? 0 : 30),
+            total: 0,
+        } : {
+            pitDelta : 0,
+            changeTires: 0,
+            refill: 0,
+            driverChange: 0,
+            total: 0,
+
         }
-        const pitWorkTime = () => {switch(race.car.tireChangeMode) {
+        const pitWorkTime = () => {
+            switch(race.car.tireChangeMode) {
             case TireChangeMode.DURING_REFILL:
                 return Math.max(work.driverChange, Math.min(work.changeTires, work.refill));
             case TireChangeMode.AFTER_REFILL:
@@ -163,6 +206,7 @@ export default function* raceSaga() {
         yield takeLatest(RaceActionTypes.SAGA_COMPUTE_PROPOSAL, handleComputeProposal),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
         yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
+        yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
         
     ]);
 }

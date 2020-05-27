@@ -39,6 +39,7 @@ const DriverContainer : React.FC = () => {
         computeProposal: useCallback(() => {            
             dispatch(sagaComputeRaceProposal({...currentDriver.driver}))},        
             [dispatch, currentDriver]),
+        
     }
    
     return (

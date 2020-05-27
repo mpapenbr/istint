@@ -1,6 +1,6 @@
 import {action} from 'typesafe-actions'
 
-import {RaceActionTypes, IRace, IModifyStintParam} from './types'
+import {RaceActionTypes, IRace, IModifyStintParam, ISimpleRaceProposalParam} from './types'
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from '../stint/types'
 import { IBaseAction } from '../../commons';
 import { IDriver } from '../driver/types';
@@ -18,4 +18,4 @@ export const setStints = (stints:Stint[]) => action(RaceActionTypes.SET_STINTS, 
 export const computeRaceProposalTry = ( param:TimeBasedStintParam) => action(RaceActionTypes.COMPUTE_PROPOSAL_TRY, param)
 export const computeRaceProposal = ( param:TimeDriverBasedStintParam) => action(RaceActionTypes.COMPUTE_PROPOSAL, param)
 
-
+export const setDings = (param: ISimpleRaceProposalParam) : IBaseAction => action(RaceActionTypes.SAGA_QUICK_PROPOSAL, param )

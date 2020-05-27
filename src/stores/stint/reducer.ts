@@ -11,6 +11,7 @@ const defaultStint: Stint = {
     duration: 0, 
     fuel: 0, 
     driver: defaultDriver, 
+    wantNewTires: false,
     realTime: {start:defaultDate, end:defaultDate}, 
     simTime: {start:defaultDate,end:defaultDate},
     pitTime: {

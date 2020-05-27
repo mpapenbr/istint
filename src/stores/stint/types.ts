@@ -12,8 +12,10 @@ export interface Stint {
     duration: number // in msec
     fuel: number // fuel needed for this stint based on StintParam    
     driver: IDriver
+    wantNewTires: boolean,
     realTime: TimeRange 
     simTime: TimeRange
+
     /**
      * values given in seconds     
      */

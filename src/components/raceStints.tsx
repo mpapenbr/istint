@@ -155,6 +155,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         {title:'Duration', dataIndex: 'duration', render: (t:number) => secAsString(t)},
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Fuel', dataIndex: 'fuel', render: (f:number) => sprintf("%0.2f", f)},
+        {title:'Pit', dataIndex: ['pitTime', 'total'], render: (t:number) => secAsString(t)},
     ]
     const cellColumns = columns.map(col => {
         if (!col.editable) {

@@ -29,6 +29,15 @@ export interface IModifyStintParam {
     numLaps: number,
 }
 
+/**
+ * use this if a "simple" computation is needed
+ */
+export interface ISimpleRaceProposalParam {
+    name: string,
+    duration: number,
+    driver: IDriver
+}
+
 export enum RaceActionTypes {
     SET_DURATION = '@@race/SET_DURATION',
     SET_NAME = '@@race/SET_NAME',
@@ -41,6 +50,7 @@ export enum RaceActionTypes {
     SAGA_TEST_DOUBLE = '@@race/SAGA_TEST_DOUBLE',
     SAGA_COMPUTE_PROPOSAL = '@@race/SAGA_COMPUTE_PROPOSAL',
     SAGA_CHANGE_SINGLE_STINT = '@@race/SAGA_CHANGE_SINGLE_STINT',
+    SAGA_QUICK_PROPOSAL = '@@race/SAGA_QUICK_PROPOSAL',
 }
 
 export interface IRaceState {
