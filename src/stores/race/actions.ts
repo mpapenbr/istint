@@ -15,7 +15,5 @@ export const sagaChangeSingleStint = ( param:IModifyStintParam) => action(RaceAc
 export const setDuration = (duration:number) : IBaseAction => action(RaceActionTypes.SET_DURATION, duration)
 export const setName = (name:string) : IBaseAction => action(RaceActionTypes.SET_NAME, name)
 export const setStints = (stints:Stint[]) => action(RaceActionTypes.SET_STINTS, stints)
-export const computeRaceProposalTry = ( param:TimeBasedStintParam) => action(RaceActionTypes.COMPUTE_PROPOSAL_TRY, param)
-export const computeRaceProposal = ( param:TimeDriverBasedStintParam) => action(RaceActionTypes.COMPUTE_PROPOSAL, param)
 
 export const setDings = (param: ISimpleRaceProposalParam) : IBaseAction => action(RaceActionTypes.SAGA_QUICK_PROPOSAL, param )

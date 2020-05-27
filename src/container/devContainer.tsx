@@ -2,7 +2,7 @@ import React, { useCallback } from "react"
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplicationState} from '../stores/index'
-import { setDuration, sagaTest, sagaTestDouble, computeRaceProposalTry, setDings } from "../stores/race/actions";
+import { setDuration, sagaTest, sagaTestDouble,  setDings } from "../stores/race/actions";
 import DevHelper, {IDispatchToProps} from "../components/devhelper";
 import { TimeBasedStintParam } from "../stores/stint/types";
 import { ISimpleRaceProposalParam } from "../stores/race/types";
@@ -17,8 +17,7 @@ const DevContainer : React.FC = () => {
         })
     );
     const dispatchToProps = {
-        setDuration: useCallback((d:number) => dispatch(setDuration(d)), [dispatch]),
-        computeProposal: useCallback((param : TimeBasedStintParam) => dispatch(computeRaceProposalTry(param)), [dispatch]),
+        setDuration: useCallback((d:number) => dispatch(setDuration(d)), [dispatch]),        
         sagaTestDouble: useCallback((d: number) => dispatch(sagaTestDouble(d)), [dispatch]),
         quickProposal: useCallback((param:ISimpleRaceProposalParam) => dispatch(setDings(param)), [dispatch]),
 	};

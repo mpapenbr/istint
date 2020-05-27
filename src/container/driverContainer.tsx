@@ -5,7 +5,7 @@ import { ApplicationState} from '../stores/index'
 import DriverFuel from "../components/driverFuel";
 import { updateDefaultDriver } from "../stores/driver/actions";
 import { IDriver } from "../stores/driver/types";
-import { sagaComputeRaceProposal, computeRaceProposal } from "../stores/race/actions";
+import { sagaComputeRaceProposal } from "../stores/race/actions";
 import { TimeDriverBasedStintParam } from "../stores/stint/types";
 import { defaultCar } from "../stores/car/types"
 
@@ -33,9 +33,7 @@ const DriverContainer : React.FC = () => {
     const dispatchToProps = {
         setFuelPerLap: useCallback((d:number) => dispatch(updateDefaultDriver({...currentDriver.driver, fuelPerLap:d})), [dispatch,currentDriver.driver]),
         setBaseLaptime: useCallback((d:number) => dispatch(updateDefaultDriver({...currentDriver.driver, baseLaptime:d})), [dispatch,currentDriver.driver]),
-        computeProposalX: useCallback(() => {            
-            dispatch(computeRaceProposal(param))},        
-            [dispatch, param]),
+        
         computeProposal: useCallback(() => {            
             dispatch(sagaComputeRaceProposal({...currentDriver.driver}))},        
             [dispatch, currentDriver]),
