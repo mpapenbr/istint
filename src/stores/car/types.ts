@@ -5,17 +5,22 @@ export enum TireChangeMode {
 }
 
 export interface ICar  {
+    id: number,
     name: string,
     tank: number, // in liter
     refillRate: number, // liters per second
-    tireChangeMode: TireChangeMode
+    tireChangeMode: TireChangeMode,
+    tireChangeTime: number, // in seconds (for all 4 tires)
+
 }
 
 export const defaultCar : ICar = {
+    id: 0,
     name: "DefaultCar",
     tank: 100,
     refillRate: 2.7,
     tireChangeMode: TireChangeMode.AFTER_REFILL,
+    tireChangeTime: 27,
 }
 
 export enum CarActionTypes {
