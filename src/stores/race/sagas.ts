@@ -2,8 +2,8 @@ import { all, call, fork, put,  takeEvery, takeLatest, select, StrictEffect } fr
 import { IBaseAction } from "../../commons";
 import { RaceActionTypes, ITimedRace, IModifyStintParam, ISimpleRaceProposalParam } from "./types";
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from "../stint/types";
-import { TireChangeMode } from '../car/types';
-import { IDriver, DriverActionTypes } from "../driver/types";
+import { TireChangeMode, CarState, ICar } from '../car/types';
+import { IDriver, DriverActionTypes, defaultDriver, DriverState } from "../driver/types";
 import { ApplicationState } from "..";
 import _ from 'lodash';
 import { defaultStint } from "../stint/reducer";
@@ -43,6 +43,38 @@ function* handleComputeProposal(action:IBaseAction)
         const proposal = computeProposal(param);
         const stints = computeRace(raceData, proposal);
         yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+function* handleChangeCar(action:IBaseAction) 
+//: Generator<StrictEffect,void, Stint[]> 
+: Generator
+{
+    try {        
+        const carId : number = action.payload; 
+        // oh my! Typescript malus :( 
+        // didn't yet find a way to get this assigned by using one statement 
+        // see: https://github.com/redux-saga/redux-saga/issues/1976
+        const raceDataTmp : unknown = yield select(getRace);
+        const raceData: ITimedRace = raceDataTmp as ITimedRace;
+        const carState = (yield select((state : ApplicationState) => state.cars)) as CarState;
+        const driverState = (yield select((state : ApplicationState) => state.driver)) as DriverState;
+        const newCar  = carState.allCars.find(v => v.id === carId);
+        if (newCar !== undefined) {
+            yield put({type: RaceActionTypes.SET_CAR, payload:newCar})
+            const param : TimeDriverBasedStintParam = {
+                car: newCar,
+                driver: driverState.data,
+                racetime: raceData.duration*60,
+            }
+            const proposal = computeProposal(param);
+            const stints = computeRace({...raceData, car: newCar}, proposal);
+            yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
+        }
+
+    
     } catch (e) {
         console.log(e)
     }
@@ -91,9 +123,9 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
 
         const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
         
-        const work = i < (stints.length-1) ? {
-            pitDelta: 0, // TODO: get it from race 
-            changeTires: s.wantNewTires ? 27 : 0, 
+        let work = i < (stints.length-1) ? {
+            pitDelta: race.track.pitDelta,
+            changeTires: s.wantNewTires ? race.car.tireChangeTime : 0, 
             refill: (( newStints[i+1].numLaps * s.driver.fuelPerLap) / race.car.refillRate ),
             driverChange: (newStints[i+1].driver.name === s.driver.name ? 0 : 30),
             total: 0,
@@ -112,6 +144,7 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
             case TireChangeMode.AFTER_REFILL:
                 return Math.max(work.driverChange, work.changeTires + work.refill);
         }};
+        console.log("pitWorkTime: " + pitWorkTime());
         work.total = work.pitDelta + pitWorkTime();
         s.pitTime = work;
         
@@ -207,6 +240,7 @@ export default function* raceSaga() {
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
         yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
         yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
+        yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
         
     ]);
 }

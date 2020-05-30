@@ -8,10 +8,13 @@ import { TypeConstant,  PayloadMetaAction } from 'typesafe-actions'
 import raceSaga from './race/sagas'
 import { IDriver, DriverState } from './driver/types'
 import { driverReducer } from './driver/reducer'
+import { carReducer } from './car/reducer'
+import { CarState } from './car/types'
 
 export interface ApplicationState {
     race: IRaceState,
     driver: DriverState,
+    cars: CarState,
     router: RouterState
 }
 
@@ -21,7 +24,7 @@ export const createRootReducer = (history: History) =>
     combineReducers({
         race: raceReducer,
         driver: driverReducer,
-
+        cars: carReducer,
         router: connectRouter(history)
     })
 

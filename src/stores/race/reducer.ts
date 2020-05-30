@@ -15,9 +15,16 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
         }
 
         case RaceActionTypes.SET_NAME: {
-            
             return {...state, data:{...state.data, name: action.payload}}
         }
+
+        case RaceActionTypes.SET_CAR: {
+            return {...state, data:{...state.data, car:action.payload}}
+        }
+        case RaceActionTypes.SET_TRACK: {
+            return {...state, data:{...state.data, track:action.payload}}
+        }
+
         case RaceActionTypes.SET_STINTS: {
             return {...state, data:{...state.data, stints:action.payload}}
         }

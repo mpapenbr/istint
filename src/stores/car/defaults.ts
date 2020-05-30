@@ -39,7 +39,9 @@ export const defaults : ICar[] = [
         name: "Corvette DP7",
         tank: 76,
         refillRate: 3.1,
-        tireChangeTime: 16
+        tireChangeTime: 16,
+        tireChangeMode: TireChangeMode.DURING_REFILL
+
         
     }
 ];

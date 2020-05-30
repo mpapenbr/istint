@@ -1,16 +1,16 @@
 import { Reducer } from 'redux'
-import { CarState, CarActionTypes, defaultCar } from './types'
-import { defaults as sampleCars } from './defaults'
+import { TrackState, TrackActionTypes, defaultTrack } from './types'
+import { defaults as sampleTracks } from './defaults'
 
-const initialState: CarState = {
-    currentCar: defaultCar,
-    allCars: sampleCars
+const initialState: TrackState = {
+    currentTrack: defaultTrack,
+    allTracks: sampleTracks
 }
 
-const reducer: Reducer<CarState> = (state = initialState, action) => {
+const reducer: Reducer<TrackState> = (state = initialState, action) => {
     switch(action.type) {
         // als Idee: hier könnte ein Saga zum Einsatz kommen: Parameter von Driver ändern sich und dann muss das Race neu berechnet werden.
-        case CarActionTypes.UPDATE_DEFAULT_CAR:
+        case TrackActionTypes.UPDATE_DEFAULT_TRACK:
             const ret =  {...state, data: action.payload}
             //console.log({...ret})
             return ret

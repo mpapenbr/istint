@@ -24,12 +24,13 @@ export const defaultCar : ICar = {
 }
 
 export enum CarActionTypes {
-    UPDATE_DEFAULT_CAR = '@@car/UPDATE_DEFAULT_CAR',
+    UPDATE_DEFAULT_CAR = '@@car/UPDATE_DEFAULT_CAR', // just for testing, will be removed
     
     
 }
 
 export interface CarState {
-    readonly data: ICar
+    readonly currentCar: ICar,
+    readonly allCars: ICar[],
 }
 
