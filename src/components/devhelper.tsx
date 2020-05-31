@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Action, PayloadAction } from "typesafe-actions";
 import { setDuration } from "../stores/race/actions";
-import { TimeBasedStintParam } from "../stores/stint/types";
+import { TimeBasedStintParam, RaceStrategyMode } from "../stores/stint/types";
 import { ITimedRace, ISimpleRaceProposalParam } from "../stores/race/types";
 
 
@@ -36,7 +36,8 @@ const DevHelper : React.FC<MyProps> = (props:MyProps) => {
                 baseLaptime: 230,
                 fuelPerLap: 6.7,
                 name: "SampleDriver"
-            }
+            },
+            strategy: RaceStrategyMode.DOUBLE_STINT_TIRES,
             })}}>6h/LeMans</Button>
         <Button onClick={() => {props.sagaTestDouble(90)}}>SagaTestDouble</Button>
     </div>);

@@ -6,7 +6,10 @@ import { TireChangeMode, CarState, ICar } from '../car/types';
 import { IDriver, DriverActionTypes, defaultDriver, DriverState } from "../driver/types";
 import { ApplicationState } from "..";
 import _ from 'lodash';
-import { defaultStint } from "../stint/reducer";
+import { useSelector } from "react-redux";
+import { computeTimebased } from "./common";
+import { computeFreshRace } from "./proposals";
+import { TrackState } from "../track/types";
 
 function* handleSagaTest(action:IBaseAction) : Generator {
     try {        
@@ -20,33 +23,6 @@ function* handleSagaTest(action:IBaseAction) : Generator {
 
 const getRace = (state:ApplicationState)  : ITimedRace => state.race.data;
 
-function* handleComputeProposal(action:IBaseAction) 
-//: Generator<StrictEffect,void, Stint[]> 
-: Generator
-{
-    try {        
-        const driver : IDriver = action.payload; 
-        // oh my! Typescript malus :( 
-        // didn't yet find a way to get this assigned by using one statement 
-        // see: https://github.com/redux-saga/redux-saga/issues/1976
-        const raceDataTmp : unknown = yield select(getRace);
-        const raceData: ITimedRace = raceDataTmp as ITimedRace;
-        
-
-        // console.log(driver);
-        // console.log(raceData);
-        const param : TimeDriverBasedStintParam = {
-            car: raceData.car,
-            driver: driver,
-            racetime: raceData.duration*60,
-        }
-        const proposal = computeProposal(param);
-        const stints = computeRace(raceData, proposal);
-        yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
-    } catch (e) {
-        console.log(e)
-    }
-}
 
 function* handleChangeCar(action:IBaseAction) 
 //: Generator<StrictEffect,void, Stint[]> 
@@ -64,13 +40,31 @@ function* handleChangeCar(action:IBaseAction)
         const newCar  = carState.allCars.find(v => v.id === carId);
         if (newCar !== undefined) {
             yield put({type: RaceActionTypes.SET_CAR, payload:newCar})
-            const param : TimeDriverBasedStintParam = {
-                car: newCar,
-                driver: driverState.data,
-                racetime: raceData.duration*60,
-            }
-            const proposal = computeProposal(param);
-            const stints = computeRace({...raceData, car: newCar}, proposal);
+            
+            const stints = computeFreshRace({...raceData, car: newCar}, driverState.currentDriver);
+            yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
+        }
+
+    
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+function* handleChangeTrack(action:IBaseAction) 
+//: Generator<StrictEffect,void, Stint[]> 
+: Generator
+{
+    try {        
+        const trackId : number = action.payload; 
+        const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+        const trackState = (yield select((state : ApplicationState) => state.tracks)) as TrackState;
+        const driverState = (yield select((state : ApplicationState) => state.driver)) as DriverState;
+        const newTrack  = trackState.allTracks.find(v => v.id === trackId);
+        if (newTrack !== undefined) {
+            yield put({type: RaceActionTypes.SET_TRACK, payload:newTrack})
+            
+            const stints = computeFreshRace({...raceData, track: newTrack}, driverState.currentDriver);
             yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
         }
 
@@ -99,14 +93,9 @@ function* handleQuickComputeProposal(action:IBaseAction)
         
 
         // console.log(driver);
-        // console.log(raceData);
-        const param : TimeDriverBasedStintParam = {
-            car: raceData.car,
-            driver: myParam.driver,
-            racetime: myParam.duration*60,
-        }
-        const proposal = computeProposal(param);
-        const stints = computeRace(raceData, proposal);
+        console.log(raceData);
+        
+        const stints = computeFreshRace({...raceData, duration:myParam.duration}, myParam.driver, myParam.strategy)
         yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
     } catch (e) {
         console.log(e)
@@ -144,7 +133,7 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
             case TireChangeMode.AFTER_REFILL:
                 return Math.max(work.driverChange, work.changeTires + work.refill);
         }};
-        console.log("pitWorkTime: " + pitWorkTime());
+        
         work.total = work.pitDelta + pitWorkTime();
         s.pitTime = work;
         
@@ -155,37 +144,6 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
         // console.log(s)
     })
     return newStints;
-}
-
-const computeProposal = (param :TimeDriverBasedStintParam) : Stint[] => {
-    let stintNo = 1;
-    const stint = computeTimebased(param) // now we know how much is possible per tank
-    stint.no = stintNo;
-    console.log("computeProposal with ",{...param}, " results in ",{...stint})
-    const stintBreak = 5
-    let remainingTime = param.racetime - stint.duration
-    let ret = [];
-    ret.push(stint);
-    
-    
-    while (remainingTime > 0) {        
-       const next =  computeTimebased({...param, racetime:remainingTime})
-       next.no = ++stintNo;
-       // console.log(next)
-       ret.push(next)
-       remainingTime -= next.duration + stintBreak;
-       // console.log("remainingTime:", remainingTime)
-    }
-    return ret;
-}
-
-const computeTimebased = (param : TimeDriverBasedStintParam) : Stint => {
-    const numLapsByTime = Math.max(1,Math.ceil(param.racetime / param.driver.baseLaptime))
-    const numLapsByTank = Math.floor(param.car.tank / param.driver.fuelPerLap)
-    const numLaps = Math.min(numLapsByTank, numLapsByTime)
-    const duration = numLaps * param.driver.baseLaptime
-    const fuel = numLaps * param.driver.fuelPerLap
-    return {...defaultStint, driver: _.clone(param.driver), numLaps:numLaps,duration:duration, fuel:fuel}
 }
 
 
@@ -200,7 +158,7 @@ function* handleChangeSingleStint(action:IBaseAction) : Generator {
         const param : IModifyStintParam = action.payload; 
         let newStints = _.clone(raceData.stints);
         const idx = _.findIndex(newStints, {no:param.no})
-        newStints.splice(idx, 1, {...defaultStint, driver:param.driver, numLaps:param.numLaps, no:param.no})
+        newStints.splice(idx, 1, {...newStints[idx], driver:param.driver, numLaps:param.numLaps, no:param.no})
         console.log(newStints);
         // Actions
         const pitTime = 0
@@ -236,11 +194,12 @@ export default function* raceSaga() {
     
     yield all([
         fork(watchSagaTestRequest), 
-        yield takeLatest(RaceActionTypes.SAGA_COMPUTE_PROPOSAL, handleComputeProposal),
+ 
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
         yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
         yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
+        yield takeLatest(RaceActionTypes.SAGA_CHANGE_TRACK, handleChangeTrack),
         
     ]);
 }

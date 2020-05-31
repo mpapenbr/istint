@@ -1,4 +1,4 @@
-import {Stint} from '../stint/types'
+import {Stint, RaceStrategyMode} from '../stint/types'
 import { ICar, defaultCar } from '../car/types';
 import { IDriver } from '../driver/types';
 import { defaultTrack, ITrack } from '../track/types';
@@ -38,7 +38,8 @@ export interface IModifyStintParam {
 export interface ISimpleRaceProposalParam {
     name: string,
     duration: number,
-    driver: IDriver
+    driver: IDriver,
+    strategy : RaceStrategyMode,
 }
 
 export enum RaceActionTypes {
@@ -56,6 +57,7 @@ export enum RaceActionTypes {
     SAGA_CHANGE_SINGLE_STINT = '@@race/SAGA_CHANGE_SINGLE_STINT',
     SAGA_QUICK_PROPOSAL = '@@race/SAGA_QUICK_PROPOSAL',
     SAGA_CHANGE_CAR = '@@race/SAGA_CHANGE_CAR',
+    SAGA_CHANGE_TRACK = '@@race/SAGA_CHANGE_TRACK',
 }
 
 export interface IRaceState {

@@ -16,6 +16,7 @@ export enum DriverActionTypes {
 }
 
 export interface DriverState {
-    readonly data: IDriver
+    readonly currentDriver: IDriver
+    readonly allDrivers: IDriver[]
 }
 

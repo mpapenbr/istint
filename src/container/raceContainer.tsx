@@ -7,31 +7,35 @@ import RaceStints from "../components/raceStints";
 import { IDriver } from "../stores/driver/types";
 import { updateDefaultDriver } from "../stores/driver/actions";
 import { IModifyStintParam } from "../stores/race/types";
-import {sagaChangeSingleStint, sagaChangeCar} from '../stores/race/actions';
+import {sagaChangeSingleStint, sagaChangeCar, sagaChangeTrack} from '../stores/race/actions';
 import { ICar } from "../stores/car/types";
-import CarSelect from "../components/carSelect";
+import TrackSelect from "../components/carSelect";
+import { updateAutoRepair, updateStrategy } from "../stores/settings/actions";
 
 const RaceContainer : React.FC = () => {
     const dispatch = useDispatch();
     const stateToProps = useSelector(
-        ({race,cars}: ApplicationState) => ({
+        ({race,cars,tracks,settings}: ApplicationState) => ({
             raceData: race.data,
-            cars: cars.allCars,
-            current: race.data.car,
+            carData: cars,
+            trackData: tracks,
+            settings: settings.data,
         })
     );
     const dispatchToProps = {
         updateStint: useCallback((param:IModifyStintParam) => dispatch(sagaChangeSingleStint(param)), [dispatch]),
-        selectCar: useCallback((carId:number) => {
+        setCar: useCallback((carId:number) => {
             //dispatch(sagaChangeSingleStint(param))
             console.log(carId);
             dispatch(sagaChangeCar(carId));
         }, [dispatch]),
+        setTrack: useCallback((trackId:number) => dispatch(sagaChangeTrack(trackId)), [dispatch]),
+        setAutoRepair: useCallback((b:boolean) => dispatch(updateAutoRepair(b)), [dispatch]),
+        setStrategy: useCallback((id:number) => dispatch(updateStrategy(id)), [dispatch]),
     }
     return (
     <div>
-       <RaceSettings {...stateToProps.raceData} />
-       <CarSelect {...stateToProps} {...dispatchToProps}/>
+       <RaceSettings {...stateToProps} {...dispatchToProps} />       
        <RaceStints {...stateToProps} {...dispatchToProps}/>
     </div>);
 }

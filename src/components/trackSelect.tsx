@@ -1,30 +1,31 @@
 import React from "react"
 import { Button, Descriptions, Table, InputNumber, Form, Dropdown, Menu } from "antd"
 import { DownOutlined } from '@ant-design/icons';
-import { ICar, CarState } from "../stores/car/types";
+
 import { MenuProps, ClickParam } from "antd/lib/menu";
+import { ITrack } from "../stores/track/types";
 
 
 interface IDispatchProps  {    
-    selectCar: (carId:number) => any;
+    selectTrack: (trackId:number) => any;
 }
 interface IStateProps  {    
-    cars: ICar[],
-    current: ICar,
+    tracks: ITrack[],
+    current: ITrack
 }
 type MyProps = IDispatchProps & IStateProps;
-const CarSelect: React.FC<MyProps> = (props:MyProps) => {
+const TrackSelect: React.FC<MyProps> = (props:MyProps) => {
     
-    const handleMenuClick = (param:ClickParam) => {props.selectCar(parseInt(param.key))}
+    const handleMenuClick = (param:ClickParam) => {props.selectTrack(parseInt(param.key))}
 
-    const menu = (cars : ICar[]) => (
+    const menu = (tracks : ITrack[]) => (
         <Menu onClick={handleMenuClick}>
-            {cars.map(c => (<Menu.Item key={c.id} >{c.name}</Menu.Item>))}        
+            {tracks.map(t => (<Menu.Item key={t.id} >{t.name}</Menu.Item>))}        
         </Menu>
     );
    return (
        <>
-        <Dropdown overlay={menu(props.cars)}>
+        <Dropdown overlay={menu(props.tracks)}>
             <Button>
             {props.current.name}<DownOutlined />
             </Button>
@@ -33,5 +34,5 @@ const CarSelect: React.FC<MyProps> = (props:MyProps) => {
    );
 }
 
-export default CarSelect
+export default TrackSelect
 

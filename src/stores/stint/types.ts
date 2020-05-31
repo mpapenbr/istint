@@ -30,6 +30,12 @@ export interface Stint {
 
 }
 
+export enum RaceStrategyMode {    
+    ALWAYS_NEW_TIRES,
+    DOUBLE_STINT,
+    DOUBLE_STINT_TIRES,    
+}
+
 
 //@deprecated  (nur noch für devhelper)
 export interface StintParam {

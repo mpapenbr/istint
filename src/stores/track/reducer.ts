@@ -19,4 +19,4 @@ const reducer: Reducer<TrackState> = (state = initialState, action) => {
     }
 }
 
-export {reducer as carReducer, initialState as carInitialState}
+export {reducer as trackReducer, initialState as carInitialState}
