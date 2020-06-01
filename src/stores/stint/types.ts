@@ -5,6 +5,21 @@ export interface TimeRange {
     start: Date
     end: Date    
 }
+export interface IPitTime {
+    pitDelta: number, // time lost in pits when just stopping at pit (similar to a stop&go penalty, no actions done in pit box)
+    changeTires: number,
+    refill: number,
+    driverChange: number,
+    total: number,
+}
+
+export const defaultPitTime : IPitTime = {
+    pitDelta: 0,
+    changeTires: 0,
+    refill: 0,
+    driverChange: 0,
+    total: 0,
+}
 
 export interface Stint {
     no: number;
@@ -19,13 +34,7 @@ export interface Stint {
     /**
      * values given in seconds     
      */
-    pitTime: { 
-        pitDelta: number, // time lost in pits when just stopping at pit (similar to a stop&go penalty, no actions done in pit box)
-        changeTires: number,
-        refill: number,
-        driverChange: number,
-        total: number
-    }
+    pitTime: IPitTime,
     
 
 }

@@ -1,6 +1,6 @@
 import {action} from 'typesafe-actions'
 
-import {RaceActionTypes, IRace, IModifyStintParam, ISimpleRaceProposalParam} from './types'
+import {RaceActionTypes, IRace, IModifyStintParam, ISimpleRaceProposalParam, IChangeSingleStintParam} from './types'
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from '../stint/types'
 import { IBaseAction } from '../../commons';
 import { IDriver } from '../driver/types';
@@ -13,6 +13,8 @@ export const sagaTest = (duration:number) : IBaseAction => action(RaceActionType
 export const sagaTestDouble = (duration:number) : IBaseAction => action(RaceActionTypes.SAGA_TEST_DOUBLE, duration)
 
 export const sagaChangeSingleStint = ( param:IModifyStintParam) => action(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, param)
+export const sagaChangeSingleStintAttributeNumLaps = ( param: IChangeSingleStintParam) => action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, param)
+export const sagaChangeSingleStintAttributeFuelPerLap = ( param: IChangeSingleStintParam) => action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP, param)
 export const sagaChangeCar = ( carId: number) => action(RaceActionTypes.SAGA_CHANGE_CAR, carId)
 export const sagaChangeTrack = ( trackId: number) => action(RaceActionTypes.SAGA_CHANGE_TRACK, trackId)
 

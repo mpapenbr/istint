@@ -41,6 +41,13 @@ export interface ISimpleRaceProposalParam {
     driver: IDriver,
     strategy : RaceStrategyMode,
 }
+/**
+ * This container is used, when a single stint attribute is changed (for example by user-modification in the table)
+ */
+export interface IChangeSingleStintParam {
+    no: number,
+    value: number|boolean,
+}
 
 export enum RaceActionTypes {
     SET_DURATION = '@@race/SET_DURATION',
@@ -58,6 +65,8 @@ export enum RaceActionTypes {
     SAGA_QUICK_PROPOSAL = '@@race/SAGA_QUICK_PROPOSAL',
     SAGA_CHANGE_CAR = '@@race/SAGA_CHANGE_CAR',
     SAGA_CHANGE_TRACK = '@@race/SAGA_CHANGE_TRACK',
+    SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS = '@@race/SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS',
+    SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP = '@@race/SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP',
 }
 
 export interface IRaceState {

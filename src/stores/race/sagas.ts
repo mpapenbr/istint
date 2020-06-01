@@ -1,6 +1,6 @@
 import { all, call, fork, put,  takeEvery, takeLatest, select, StrictEffect } from "redux-saga/effects";
 import { IBaseAction } from "../../commons";
-import { RaceActionTypes, ITimedRace, IModifyStintParam, ISimpleRaceProposalParam } from "./types";
+import { RaceActionTypes, ITimedRace, IModifyStintParam, ISimpleRaceProposalParam, IChangeSingleStintParam } from "./types";
 import { TimeBasedStintParam, Stint, TimeDriverBasedStintParam } from "../stint/types";
 import { TireChangeMode, CarState, ICar } from '../car/types';
 import { IDriver, DriverActionTypes, defaultDriver, DriverState } from "../driver/types";
@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { computeTimebased } from "./common";
 import { computeFreshRace } from "./proposals";
 import { TrackState } from "../track/types";
+import { ISettings } from "../settings/types";
+import { recomputeRaceStints } from "./compute";
 
 function* handleSagaTest(action:IBaseAction) : Generator {
     try {        
@@ -22,6 +24,7 @@ function* handleSagaTest(action:IBaseAction) : Generator {
 
 
 const getRace = (state:ApplicationState)  : ITimedRace => state.race.data;
+const getSettings = (state:ApplicationState)  : ISettings => state.settings.data;
 
 
 function* handleChangeCar(action:IBaseAction) 
@@ -96,7 +99,8 @@ function* handleQuickComputeProposal(action:IBaseAction)
         console.log(raceData);
         
         const stints = computeFreshRace({...raceData, duration:myParam.duration}, myParam.driver, myParam.strategy)
-        yield put({type: RaceActionTypes.SET_STINTS, payload:stints})
+        const workRace = {...raceData, stints: stints}
+        yield put({type: RaceActionTypes.SET_STINTS, payload:recomputeRaceStints(workRace)})
     } catch (e) {
         console.log(e)
     }
@@ -153,8 +157,7 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
  */
 function* handleChangeSingleStint(action:IBaseAction) : Generator {
     try {        
-        const raceDataTmp : unknown = yield select(getRace);
-        const raceData: ITimedRace = raceDataTmp as ITimedRace;
+        const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
         const param : IModifyStintParam = action.payload; 
         let newStints = _.clone(raceData.stints);
         const idx = _.findIndex(newStints, {no:param.no})
@@ -167,6 +170,39 @@ function* handleChangeSingleStint(action:IBaseAction) : Generator {
         
 
         yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
+    } catch (e) { 
+        console.log(e)
+    }
+}
+
+/**
+ * 
+ * @param action 
+ */
+function* handleChangeSingleStintAttributeNumLaps(action:IBaseAction) : Generator {
+    try {        
+        
+        const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+        const settings: ISettings = (yield select(getSettings)) as ISettings;
+
+        const param : IChangeSingleStintParam = action.payload; 
+        let newStints = _.clone(raceData.stints);
+        const idx = _.findIndex(newStints, {no:param.no})
+        const oldStintData = raceData.stints[idx];
+        newStints.splice(idx, 1, {...newStints[idx], numLaps:param.value as number})
+        
+
+        // ohne AutoRepair wird einfach neu durchgerechnet und fertig.
+        // Stints werden mit Problemen markiert, falls welche auftreten.
+        if (settings.autoRepair) {
+            console.log("TODO: process ", {param})
+            // TODO
+            yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
+            
+        } else {
+            yield put({type: RaceActionTypes.SET_STINTS, payload:computeRace(raceData, newStints)});
+        }
+
     } catch (e) { 
         console.log(e)
     }
@@ -196,6 +232,7 @@ export default function* raceSaga() {
         fork(watchSagaTestRequest), 
  
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
+        yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, handleChangeSingleStintAttributeNumLaps),
         yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
         yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),

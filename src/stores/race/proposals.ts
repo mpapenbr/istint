@@ -1,5 +1,5 @@
 import { ITimedRace } from "./types";
-import { Stint, RaceStrategyMode, TimeRange } from "../stint/types";
+import { Stint, RaceStrategyMode, TimeRange, defaultPitTime } from "../stint/types";
 import { TireChangeMode } from '../car/types';
 import { IDriver } from "../driver/types";
 import { computeTimebased } from "./common";
@@ -35,6 +35,7 @@ export function computeFreshRace(race: ITimedRace, driver: IDriver, mode: RaceSt
                 currentStint.wantNewTires = (stintNo % 2 === 0) ? true : false;
                 break;
         }
+        const preComputationRemainingTime = remainingTime; // we may need this later
         const next = computeTimebased({ car: race.car, driver: nextDriver, racetime: (remainingTime - race.track.pitDelta) });
         next.no = ++stintNo;
         // now we know how long the next stint will be, lets compute the "real" data for this stint
@@ -62,8 +63,10 @@ export function computeFreshRace(race: ITimedRace, driver: IDriver, mode: RaceSt
         remainingTime -= next.duration + work.total;
         console.log("remainingTime:", remainingTime);
         if (remainingTime <= 0) {
-            currentStint.simTime = computeTimeFrame(currentStint.simTime.start, currentStint.duration);
-            ret.push(currentStint);
+            const recalc = computeTimebased({ car: race.car, driver: nextDriver, racetime: (preComputationRemainingTime - work.total) });
+            recalc.pitTime = defaultPitTime; // clear the times
+            recalc.simTime = computeTimeFrame(next.simTime.start, recalc.duration);
+            ret.push(recalc);
         }
     }
     return ret;

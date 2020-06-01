@@ -14,6 +14,7 @@ import { IDriver } from "../stores/driver/types";
 export interface IDispatchToProps {
 	
 	updateStint: (param:IModifyStintParam) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
+	updateNumLaps: (stintNo:number,value:number) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
 }
 interface IStateToProps {
     raceData: ITimedRace    
@@ -48,6 +49,8 @@ const EditableRow: React.FC<EditableRowProps> = ({index, ...props}) => {
     );
 }
 
+
+
 interface EditableCellProps {
     title: React.ReactNode;
     editable: boolean;
@@ -56,6 +59,8 @@ interface EditableCellProps {
     record: IDisplayStint;
     inputElementProvider : (props:any) => React.ReactNode;
     handleSave: (record: IDisplayStint) => void;
+    handleSaveSingle: (stintNo:number, value : number) => void;
+
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -65,6 +70,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     dataIndex,
     record,
     handleSave,
+    handleSaveSingle,
     inputElementProvider,
     ...restProps
 }) => {
@@ -79,21 +85,21 @@ const EditableCell: React.FC<EditableCellProps> = ({
             if (inputRef && inputRef.current) {
                 inputRef.current.focus()
             }
-            // console.log("Jetzt focus aufrufen auf ", {inputRef})
+            
         } 
     }, [editing])
     const toggleEdit = () => {
         setEditing(!editing);
         // console.log("blödes problem lösen")
-        console.log("the join:", dataIndex instanceof Array ? _.join(dataIndex, '.') : dataIndex)
+        //console.log("the join:", dataIndex instanceof Array ? _.join(dataIndex, '.') : dataIndex)
         const x = _.pick(record, dataIndex instanceof Array ? _.join(dataIndex, '.') : dataIndex)
-        console.log(dataIndex, {x})
+        // console.log(dataIndex, {x})
         form.setFieldsValue(x)
      
     }
     const save = async (e:any)  => {
         const values = await form.validateFields();
-        console.log({values})
+        console.log({e}, {values})
         toggleEdit();
         const x = _.merge(record, values);
         console.log({x})
@@ -102,10 +108,16 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
     const saveNoToggle = async (e:any)  => {
         try {
-
+            console.log({e})
             const values = await form.validateFields();        
             const x = _.merge(record, values);        
-            handleSave(x);
+            if (handleSaveSingle !== undefined) {
+                console.log("handleSaveSingle called")
+                handleSaveSingle(record.no, e);
+            } else {
+                console.log("Standard handleSave called")
+                handleSave(x);
+            }
         } catch (e) {
             console.log("Error")
             console.log(e);
@@ -148,7 +160,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     const columns  = [
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
-        {title:'Laps', dataIndex: 'numLaps', editable: true, inputElementProvider: (props:any) => <InputNumber {...props} min={0}/>},
+        {title:'Laps', dataIndex: 'numLaps', editable: true, columHandleSave: props.updateNumLaps, inputElementProvider: (props:any) => <InputNumber {...props} min={0}/>},
         {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t:number) => secAsString(t), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
         {title:'l/Lap', dataIndex: ['driver', 'fuelPerLap'], render: (f:number) => sprintf("%0.2f", f), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
         {title:'Start', dataIndex: ['simTime', 'start'], render: (d:Date) => d.toLocaleTimeString()},
@@ -169,6 +181,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
                 dataIndex: col.dataIndex,
                 title: col.title,
                 inputElementProvider: col.inputElementProvider,
+                handleSaveSingle: col.columHandleSave,
                 handleSave: (record: IDisplayStint) => {
                     console.log("inner save", {record});
                     const param = {no: record.no, driver: record.driver, numLaps: record.numLaps}
@@ -181,7 +194,12 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     const enhancedStints : IDisplayStint[]= props.raceData.stints.map((v,i) => ({...v, no: i+1}));
     return (        
         <>        
-        <Table components={components} columns={cellColumns} dataSource={enhancedStints} rowKey={myRowKey}/>
+        <Table 
+            components={components}
+            columns={cellColumns}
+            dataSource={enhancedStints} 
+            rowClassName={() => 'editable-row'}
+            rowKey={myRowKey}/>
         </>
     );
 }
