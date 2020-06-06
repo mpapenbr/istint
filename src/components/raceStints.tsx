@@ -1,9 +1,10 @@
 import React, {useState,useContext,useRef,useEffect} from "react"
-import { Button, Descriptions, Table, Form,Input, InputNumber } from "antd"
+import { Button, Descriptions, Table, Form,Input, InputNumber, Tooltip } from "antd"
+import { CheckCircleOutlined, WarningOutlined}  from '@ant-design/icons';
 import { useSelector } from "react-redux";
 import { IRace, ITimedRace, IModifyStintParam } from "../stores/race/types";
 import { ColumnProps } from "antd/es/table";
-import { Stint } from "../stores/stint/types";
+import { Stint, IStintProblem } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
 import { sprintf } from "sprintf-js";
 import _ from 'lodash';
@@ -157,6 +158,15 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
             cell: EditableCell
         }
     }
+
+    const renderStintProblems = (probs : IStintProblem[]) => {
+        if (probs.length === 0) {
+            return <CheckCircleOutlined />
+        } else {
+            return <Tooltip title={probs[0].msg}><WarningOutlined /></Tooltip>
+        }
+    }
+
     const columns  = [
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
@@ -168,6 +178,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Fuel', dataIndex: 'fuel', render: (f:number) => sprintf("%0.2f", f)},
         {title:'Pit', dataIndex: ['pitTime', 'total'], render: (t:number) => secAsString(t)},
+        {title:'Info', dataIndex: ['problems'], render: (p:IStintProblem[]) => renderStintProblems(p)},
     ]
     const cellColumns = columns.map(col => {
         if (!col.editable) {
