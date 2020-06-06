@@ -15,6 +15,7 @@ export const sagaTestDouble = (duration:number) : IBaseAction => action(RaceActi
 export const sagaChangeSingleStint = ( param:IModifyStintParam) => action(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, param)
 export const sagaChangeSingleStintAttributeNumLaps = ( param: IChangeSingleStintParam) => action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, param)
 export const sagaChangeSingleStintAttributeFuelPerLap = ( param: IChangeSingleStintParam) => action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP, param)
+export const sagaChangeSingleStintAttributeLaptime = ( param: IChangeSingleStintParam) => action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, param)
 export const sagaChangeCar = ( carId: number) => action(RaceActionTypes.SAGA_CHANGE_CAR, carId)
 export const sagaChangeTrack = ( trackId: number) => action(RaceActionTypes.SAGA_CHANGE_TRACK, trackId)
 

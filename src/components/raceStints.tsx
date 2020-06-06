@@ -14,8 +14,9 @@ import { IDriver } from "../stores/driver/types";
 
 export interface IDispatchToProps {
 	
-	updateStint: (param:IModifyStintParam) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
-	updateNumLaps: (stintNo:number,value:number) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
+	updateStint: (param:IModifyStintParam) => void; 
+	updateNumLaps: (stintNo:number,value:number) => void; 
+	updateLaptime: (stintNo:number,value:number) => void; 
 }
 interface IStateToProps {
     raceData: ITimedRace    
@@ -172,7 +173,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         {title:'Driver', dataIndex: ['driver', 'name']},
         {title:'Laps', dataIndex: 'numLaps', editable: true, columHandleSave: props.updateNumLaps, inputElementProvider: (props:any) => <InputNumber {...props} min={0}/>},
         {title:'Avg', dataIndex: ['driver', 'baseLaptime'], render: (t:number) => secAsString(t), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
-        {title:'l/Lap', dataIndex: ['driver', 'fuelPerLap'], render: (f:number) => sprintf("%0.2f", f), editable:true, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
+        {title:'l/Lap', dataIndex: ['driver', 'fuelPerLap'], render: (f:number) => sprintf("%0.2f", f), editable:true, columHandleSave: props.updateLaptime, inputElementProvider: (props:any) => <InputNumber {...props}  step={0.1} min={0}/>},
         {title:'Start', dataIndex: ['simTime', 'start'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Duration', dataIndex: 'duration', render: (t:number) => secAsString(t)},
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
