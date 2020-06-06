@@ -2,6 +2,7 @@ import { ITimedRace } from "./types";
 import { Stint, IPitTime, defaultPitTime } from "../stint/types";
 import { TireChangeMode } from "../car/types";
 import { defaultSettings } from "../settings/types";
+import { sprintf } from "sprintf-js";
 
 function pitWorkTime(race: ITimedRace, currentStint:Stint, nextStint:Stint|undefined) : IPitTime  {
     
@@ -45,18 +46,22 @@ export function recomputeRaceStints(race : ITimedRace) : Stint[] {
     newStints.forEach((s,i) => {
         s.duration = s.numLaps * s.driver.baseLaptime;
         s.fuel = s.numLaps * s.driver.fuelPerLap;
-
+        s.problems = []
+        if (s.fuel > race.car.tank) {            
+            s.problems = Object.assign(s.problems, [{type: "error", msg: sprintf("Required fuel %.2f exceeds tank volume of %.2f", s.fuel, race.car.tank)}]);
+            // console.log(s.problems)
+        }
         const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
         
         const tmp = pitWorkTime(race,s, (i < (newStints.length-1)) ? newStints[i+1] : undefined);
-        console.log(tmp)
+        // console.log(tmp)
         s.pitTime = tmp;
         
         s.simTime = {
             start: startTime,
             end: new Date(startTime.getTime() + (s.duration * 1000))
         }
-         console.log(s)
+        // console.log(s)
     })
     return newStints;
 }
