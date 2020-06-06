@@ -64,6 +64,7 @@ export function computeFreshRace(race: ITimedRace, driver: IDriver, mode: RaceSt
         console.log("remainingTime:", remainingTime);
         if (remainingTime <= 0) {
             const recalc = computeTimebased({ car: race.car, driver: nextDriver, racetime: (preComputationRemainingTime - work.total) });
+            recalc.no = stintNo;  // this can be used
             recalc.pitTime = defaultPitTime; // clear the times
             recalc.simTime = computeTimeFrame(next.simTime.start, recalc.duration);
             ret.push(recalc);
