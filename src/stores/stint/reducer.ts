@@ -21,6 +21,7 @@ const defaultStint: Stint = {
         changeTires: 0,
         total: 0
     },
+    problems: []
 }
 
 const initialState: StintState = {

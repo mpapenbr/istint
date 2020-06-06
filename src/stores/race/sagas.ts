@@ -113,6 +113,7 @@ function computeRace(race : ITimedRace, stints : Stint[]) : Stint[] {
     newStints.forEach((s,i) => {
         s.duration = s.numLaps * s.driver.baseLaptime;
         s.fuel = s.numLaps * s.driver.fuelPerLap;
+        
 
         const startTime = i === 0 ? new Date("2015-03-25T12:00:00Z") : new Date(newStints[i-1].simTime.end.getTime() + (newStints[i-1].pitTime.total*1000));
         
@@ -200,7 +201,9 @@ function* handleChangeSingleStintAttributeNumLaps(action:IBaseAction) : Generato
             yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
             
         } else {
-            yield put({type: RaceActionTypes.SET_STINTS, payload:computeRace(raceData, newStints)});
+            
+            const workRace = {...raceData, stints: newStints}
+            yield put({type: RaceActionTypes.SET_STINTS, payload:recomputeRaceStints(workRace)})
         }
 
     } catch (e) { 

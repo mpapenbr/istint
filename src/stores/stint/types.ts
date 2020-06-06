@@ -21,6 +21,11 @@ export const defaultPitTime : IPitTime = {
     total: 0,
 }
 
+export interface IStintProblem {
+    type: string,
+    msg: string,
+}
+
 export interface Stint {
     no: number;
     numLaps: number  
@@ -35,7 +40,10 @@ export interface Stint {
      * values given in seconds     
      */
     pitTime: IPitTime,
-    
+    /**
+     * if there are any problems during computation they are stored here.
+     */
+    problems: IStintProblem[],
 
 }
 
