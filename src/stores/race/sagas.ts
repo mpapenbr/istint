@@ -245,6 +245,40 @@ function* handleChangeSingleStintAttributeLaptime(action:IBaseAction) : Generato
         console.log(e)
     }
 }
+/**
+ * 
+ * @param action 
+ */
+function* handleChangeSingleStintAttributeFuelPerLap(action:IBaseAction) : Generator {
+    try {        
+        
+        const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+        const settings: ISettings = (yield select(getSettings)) as ISettings;
+
+        const param : IChangeSingleStintParam = action.payload; 
+        let newStints = _.clone(raceData.stints);
+        const idx = _.findIndex(newStints, {no:param.no})
+        const oldStintData = raceData.stints[idx];
+        newStints.splice(idx, 1, {...newStints[idx], driver: {...newStints[idx].driver, fuelPerLap:param.value as number}})
+        
+
+        // ohne AutoRepair wird einfach neu durchgerechnet und fertig.
+        // Stints werden mit Problemen markiert, falls welche auftreten.
+        if (settings.autoRepair) {
+            console.log("TODO: process ", {param})
+            // TODO
+            yield put({type: RaceActionTypes.SET_STINTS, payload:newStints})
+            
+        } else {
+            
+            const workRace = {...raceData, stints: newStints}
+            yield put({type: RaceActionTypes.SET_STINTS, payload:recomputeRaceStints(workRace)})
+        }
+
+    } catch (e) { 
+        console.log(e)
+    }
+}
 
 function* handleSagaTestDouble(action:IBaseAction) : Generator {
     try {        
@@ -272,6 +306,7 @@ export default function* raceSaga() {
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, handleChangeSingleStintAttributeNumLaps),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, handleChangeSingleStintAttributeLaptime),
+        yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP, handleChangeSingleStintAttributeFuelPerLap),
         yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
         yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
         yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
