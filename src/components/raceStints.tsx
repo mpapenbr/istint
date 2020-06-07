@@ -4,7 +4,7 @@ import { CheckCircleOutlined, WarningOutlined}  from '@ant-design/icons';
 import { useSelector } from "react-redux";
 import { IRace, ITimedRace, IModifyStintParam } from "../stores/race/types";
 import { ColumnProps } from "antd/es/table";
-import { Stint, IStintProblem } from "../stores/stint/types";
+import { Stint, IStintProblem, IPitTime } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
 import { sprintf } from "sprintf-js";
 import _ from 'lodash';
@@ -172,6 +172,25 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         }
     }
 
+    const renderPitTime = (data : IPitTime) => {
+        const DetailTable : React.FC<IPitTime> = (localProps:IPitTime) => (            
+            <>
+            <span>Pit stop details</span>
+            <table>
+                <tr><td align="left">Pit delta</td><td >{sprintf("%.1f", localProps.pitDelta)}</td></tr>   
+                <tr><td>Refill</td><td>{sprintf("%.1f", localProps.refill)}</td></tr>   
+                <tr><td>Driver</td><td>{sprintf("%.1f", localProps.driverChange)}</td></tr>   
+                <tr><td>Tires</td><td>{sprintf("%.1f", localProps.changeTires)}</td></tr>   
+                <tr><td>Total</td><td>{sprintf("%.1f", localProps.total)}</td></tr>                   
+            </table>
+            </>
+        )
+        return <Tooltip title={DetailTable(data)}><span>{secAsString(data.total)}</span></Tooltip>
+        
+    }
+
+
+
     const TireChangeBox : React.FC<IDisplayStint> = (data:IDisplayStint) => {
         const handleChange = (e:CheckboxChangeEvent) => {
            props.updateTireRequest(data.no, e.target.checked);
@@ -189,7 +208,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Fuel', dataIndex: 'fuel', render: (f:number) => sprintf("%0.2f", f)},
         {title:'Tires', dataIndex: 'wantNewTires',  render: (b:boolean,record:IDisplayStint) => (<TireChangeBox {...record} />)},
-        {title:'Pit', dataIndex: ['pitTime', 'total'], render: (t:number) => secAsString(t)},
+        {title:'Pit', dataIndex: ['pitTime'], render: (d:IPitTime) => renderPitTime(d)},
         {title:'Info', dataIndex: ['problems'], render: (p:IStintProblem[]) => renderStintProblems(p)},
     ]
     const cellColumns = columns.map(col => {
