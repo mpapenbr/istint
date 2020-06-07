@@ -1,5 +1,5 @@
 import React, {useState,useContext,useRef,useEffect} from "react"
-import { Button, Descriptions, Table, Form,Input, InputNumber, Tooltip } from "antd"
+import { Button, Descriptions, Table, Form,Input, InputNumber, Tooltip, Checkbox } from "antd"
 import { CheckCircleOutlined, WarningOutlined}  from '@ant-design/icons';
 import { useSelector } from "react-redux";
 import { IRace, ITimedRace, IModifyStintParam } from "../stores/race/types";
@@ -9,6 +9,8 @@ import { secAsString } from "../utils/output";
 import { sprintf } from "sprintf-js";
 import _ from 'lodash';
 import { IDriver } from "../stores/driver/types";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { T } from "antd/lib/upload/utils";
 
 
 
@@ -18,6 +20,7 @@ export interface IDispatchToProps {
 	updateNumLaps: (stintNo:number,value:number) => void; 
 	updateFuelPerLap: (stintNo:number,value:number) => void; 
 	updateLaptime: (stintNo:number,value:number) => void; 
+	updateTireRequest: (stintNo:number,value:boolean) => void; 
 }
 interface IStateToProps {
     raceData: ITimedRace    
@@ -169,6 +172,12 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         }
     }
 
+    const TireChangeBox : React.FC<IDisplayStint> = (data:IDisplayStint) => {
+        const handleChange = (e:CheckboxChangeEvent) => {
+           props.updateTireRequest(data.no, e.target.checked);
+        }
+        return <Checkbox checked={data.wantNewTires} onChange={handleChange} />
+    }
     const columns  = [
         {title:'#', dataIndex: 'no'},
         {title:'Driver', dataIndex: ['driver', 'name']},
@@ -179,6 +188,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         {title:'Duration', dataIndex: 'duration', render: (t:number) => secAsString(t)},
         {title:'End', dataIndex: ['simTime', 'end'], render: (d:Date) => d.toLocaleTimeString()},
         {title:'Fuel', dataIndex: 'fuel', render: (f:number) => sprintf("%0.2f", f)},
+        {title:'Tires', dataIndex: 'wantNewTires',  render: (b:boolean,record:IDisplayStint) => (<TireChangeBox {...record} />)},
         {title:'Pit', dataIndex: ['pitTime', 'total'], render: (t:number) => secAsString(t)},
         {title:'Info', dataIndex: ['problems'], render: (p:IStintProblem[]) => renderStintProblems(p)},
     ]
