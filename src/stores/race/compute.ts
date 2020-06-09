@@ -3,6 +3,8 @@ import { Stint, IPitTime, defaultPitTime } from "../stint/types";
 import { TireChangeMode } from "../car/types";
 import { defaultSettings } from "../settings/types";
 import { sprintf } from "sprintf-js";
+import _ from "lodash";
+import { secAsString } from "../../utils/output";
 
 function pitWorkTime(race: ITimedRace, currentStint:Stint, nextStint:Stint|undefined) : IPitTime  {
     
@@ -63,5 +65,17 @@ export function recomputeRaceStints(race : ITimedRace) : Stint[] {
         }
         // console.log(s)
     })
+    const lastStint = newStints[newStints.length-1];
+    const delta = (lastStint.simTime.end.getTime() - newStints[0].simTime.start.getTime()) - (race.duration * 60 * 1000);
+    // console.log("End: ", lastStint.simTime.end.getTime(), " Start: ", newStints[0].simTime.start.getTime());
+    // console.log(lastStint.simTime, " - ",  delta)
+    if ( delta < 0 ) {
+       // console.log(delta)
+        lastStint.problems = Object.assign(lastStint.problems, [{type: "error", msg: sprintf("Stint ends before end of race by %s", secAsString(Math.abs(delta)/1000))}]);
+    }
+    if ( delta > (lastStint.driver.baseLaptime * 1000)) {
+        lastStint.problems = Object.assign(lastStint.problems, [{type: "error", 
+        msg: sprintf("Stint exceeds race time by %s. Reduce laps by %d", secAsString(Math.abs(delta)/1000), (Math.abs(delta) / 1000)/lastStint.driver.baseLaptime) }]);
+    }
     return newStints;
 }
