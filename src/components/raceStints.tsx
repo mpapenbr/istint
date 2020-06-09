@@ -186,26 +186,28 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       <>
         <span>Pit stop details</span>
         <table>
-          <tr>
-            <td align="left">Pit delta</td>
-            <td>{sprintf("%.1f", localProps.pitDelta)}</td>
-          </tr>
-          <tr>
-            <td>Refill</td>
-            <td>{sprintf("%.1f", localProps.refill)}</td>
-          </tr>
-          <tr>
-            <td>Driver</td>
-            <td>{sprintf("%.1f", localProps.driverChange)}</td>
-          </tr>
-          <tr>
-            <td>Tires</td>
-            <td>{sprintf("%.1f", localProps.changeTires)}</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>{sprintf("%.1f", localProps.total)}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td align="left">Pit delta</td>
+              <td>{sprintf("%.1f", localProps.pitDelta)}</td>
+            </tr>
+            <tr>
+              <td>Refill</td>
+              <td>{sprintf("%.1f", localProps.refill)}</td>
+            </tr>
+            <tr>
+              <td>Driver</td>
+              <td>{sprintf("%.1f", localProps.driverChange)}</td>
+            </tr>
+            <tr>
+              <td>Tires</td>
+              <td>{sprintf("%.1f", localProps.changeTires)}</td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td>{sprintf("%.1f", localProps.total)}</td>
+            </tr>
+          </tbody>
         </table>
       </>
     );
