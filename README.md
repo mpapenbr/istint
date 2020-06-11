@@ -1,3 +1,6 @@
+![Node.JS CI](https://github.com/mpapenbr/istint/workflows/Node.JS%20CI/badge.svg)
+![CI](https://github.com/mpapenbr/istint/workflows/CI/badge.svg)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
