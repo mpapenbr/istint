@@ -13,8 +13,9 @@ import { TrackState } from "../track/types";
 import { ISettings } from "../settings/types";
 import { recomputeRaceStints } from "./compute";
 
-function* handleSagaTest(action:IBaseAction) : Generator {
-    try {        
+export function* handleSagaTest(action:IBaseAction) : Generator {
+    try {
+        // console.log("i am here with payload ", action.payload)        
         const duration = action.payload; 
         yield put({type: RaceActionTypes.SET_DURATION, payload:duration})
     } catch (e) {
@@ -77,7 +78,7 @@ function* handleChangeTrack(action:IBaseAction)
     }
 }
 
-function* handleQuickComputeProposal(action:IBaseAction) 
+export function* handleQuickComputeProposal(action:IBaseAction) 
 //: Generator<StrictEffect,void, Stint[]> 
 : Generator
 {
