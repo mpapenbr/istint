@@ -1,4 +1,3 @@
-import { combineReducers } from "redux";
 import { expectSaga } from "redux-saga-test-plan";
 import { sagaTest } from "../actions";
 import { raceReducer } from "../reducer";
@@ -12,10 +11,6 @@ import { RaceActionTypes } from "../types";
  *
  */
 describe("race saga testplan sample", () => {
-  const combReducers = combineReducers({
-    race: raceReducer,
-  });
-
   beforeEach(() => {
     // console.log("before")
   });
