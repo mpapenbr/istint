@@ -1,0 +1,18 @@
+{
+  "name": "Test race",
+  "car": {
+    "id": 0,
+    "name": "DefaultCar",
+    "tank": 100,
+    "refillRate": 2.7,
+    "tireChangeMode": 1,
+    "tireChangeTime": 27
+  },
+  "track": {
+    "id": 0,
+    "name": "DefaultTrack",
+    "pitDelta": 25
+  },
+  "duration": 38893,
+  "stints": []
+}

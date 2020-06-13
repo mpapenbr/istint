@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DevHelper from "../components/devhelper";
 import { ApplicationState } from '../stores/index';
-import { sagaTestDouble, setDings, setDuration } from "../stores/race/actions";
+import { computeQuickProposal, sagaTestDouble, setDuration } from "../stores/race/actions";
 import { ISimpleRaceProposalParam } from "../stores/race/types";
 
 const DevContainer: React.FC = () => {
@@ -17,7 +17,7 @@ const DevContainer: React.FC = () => {
     const dispatchToProps = {
         setDuration: useCallback((d: number) => dispatch(setDuration(d)), [dispatch]),
         sagaTestDouble: useCallback((d: number) => dispatch(sagaTestDouble(d)), [dispatch]),
-        quickProposal: useCallback((param: ISimpleRaceProposalParam) => dispatch(setDings(param)), [dispatch]),
+        quickProposal: useCallback((param: ISimpleRaceProposalParam) => dispatch(computeQuickProposal(param)), [dispatch]),
     };
     return (
         <DevHelper {...stateToProps} {...dispatchToProps} />);
