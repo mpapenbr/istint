@@ -1,0 +1,28 @@
+{
+  "currentCar": {
+    "id": 0,
+    "name": "DefaultCar",
+    "tank": 100,
+    "refillRate": 2.7,
+    "tireChangeMode": 1,
+    "tireChangeTime": 27
+  },
+  "allCars": [
+    {
+      "id": 1,
+      "name": "Car1",
+      "tank": 100,
+      "refillRate": 2.7,
+      "tireChangeMode": 1,
+      "tireChangeTime": 27
+    },
+    {
+      "id": 2,
+      "name": "Car2",
+      "tank": 76,
+      "refillRate": 1.7,
+      "tireChangeMode": 2,
+      "tireChangeTime": 27
+    }
+  ]
+}
