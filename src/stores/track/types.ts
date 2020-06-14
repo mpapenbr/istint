@@ -1,26 +1,21 @@
-
-
-export interface ITrack  {
-    id: number,
-    name: string,
-    pitDelta: number,
-
+export interface ITrack {
+  id: number;
+  name: string;
+  pitDelta: number;
 }
 
-export const defaultTrack : ITrack = {
-    id: 0,
-    name: "DefaultTrack",
-    pitDelta: 25
-}
+export const defaultTrack: ITrack = {
+  id: 0,
+  name: "DefaultTrack",
+  pitDelta: 25,
+};
 
 export enum TrackActionTypes {
-    UPDATE_DEFAULT_TRACK = '@@car/UPDATE_DEFAULT_TRACK', // just for testing, will be removed
-    
-    
+  UPDATE_DEFAULT_TRACK = "@@track/UPDATE_DEFAULT_TRACK", // just for testing, will be removed
+  REPLACE = "@@track/REPLACE", // replaces the trackState in store
 }
 
 export interface TrackState {
-    readonly currentTrack: ITrack,
-    readonly allTracks: ITrack[],
+  readonly currentTrack: ITrack;
+  readonly allTracks: ITrack[];
 }
-

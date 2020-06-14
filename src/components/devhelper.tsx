@@ -3,6 +3,7 @@ import React from "react";
 import { ISimpleRaceProposalParam } from "../stores/race/types";
 import { RaceStrategyMode } from "../stores/stint/types";
 import ExportButton from "./exportButton";
+import ImportButton from "./importButton";
 
 
 
@@ -41,6 +42,7 @@ const DevHelper: React.FC<MyProps> = (props: MyProps) => {
             }}>6h/LeMans</Button>
             <Button onClick={() => { props.sagaTestDouble(90) }}>SagaTestDouble</Button>
             <ExportButton />
+            <ImportButton />
         </div>);
 }
 

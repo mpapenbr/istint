@@ -29,6 +29,9 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
     case RaceActionTypes.RESET: {
       return initialState;
     }
+    case RaceActionTypes.REPLACE: {
+      return { ...state, data: { ...action.payload } };
+    }
 
     default:
       return state;

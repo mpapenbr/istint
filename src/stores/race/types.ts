@@ -57,6 +57,7 @@ export enum RaceActionTypes {
   SET_STINTS = "@@race/SET_STINTS",
   SET_PARAM = "@@race/SET_PARAM",
   RESET = "@@race/RESET",
+  REPLACE = "@@race/REPLACE",
 
   SAGA_TEST = "@@race/SAGA_TEST",
   SAGA_TEST_DOUBLE = "@@race/SAGA_TEST_DOUBLE",
