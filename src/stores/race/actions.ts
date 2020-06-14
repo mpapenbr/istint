@@ -7,6 +7,7 @@ import {
   IChangeSingleStintParam,
   IModifyStintParam,
   ISimpleRaceProposalParam,
+  ITimedRace,
   RaceActionTypes,
 } from "./types";
 
@@ -46,6 +47,9 @@ export const setCar = (car: ICar): IBaseAction =>
 export const setStints = (stints: Stint[]) =>
   action(RaceActionTypes.SET_STINTS, stints);
 export const resetRace = () => action(RaceActionTypes.RESET, {});
+
+export const replaceRace = (newData: ITimedRace) =>
+  action(RaceActionTypes.REPLACE, newData);
 
 export const computeQuickProposal = (
   param: ISimpleRaceProposalParam
