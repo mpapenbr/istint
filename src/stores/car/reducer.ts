@@ -11,11 +11,14 @@ const reducer: Reducer<CarState> = (state = initialState, action) => {
   switch (action.type) {
     // als Idee: hier könnte ein Saga zum Einsatz kommen: Parameter von Driver ändern sich und dann muss das Race neu berechnet werden.
     case CarActionTypes.UPDATE_DEFAULT_CAR:
+      // Note: this is not valid at the moment.
       const ret = { ...state, data: action.payload };
       //console.log({...ret})
       return ret;
     case CarActionTypes.REPLACE: {
-      return { ...state, data: { ...action.payload } };
+      const ret = Object.assign({}, action.payload);
+      // console.log(ret);
+      return ret;
     }
     default:
       return state;

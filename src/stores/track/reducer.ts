@@ -15,11 +15,11 @@ const reducer: Reducer<TrackState> = (state = initialState, action) => {
       //console.log({...ret})
       return ret;
     case TrackActionTypes.REPLACE: {
-      return { ...state, data: { ...action.payload } };
+      return Object.assign({}, action.payload);
     }
     default:
       return state;
   }
 };
 
-export { reducer as trackReducer, initialState as carInitialState };
+export { reducer as trackReducer, initialState as trackInitialState };
