@@ -14,7 +14,7 @@ const reducer: Reducer<DriverState> = (state = initialState, action) => {
       //console.log({...ret})
       return ret;
     case DriverActionTypes.REPLACE: {
-      return { ...state, data: { ...action.payload } };
+      return Object.assign({}, action.payload);
     }
     default:
       return state;
