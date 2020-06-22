@@ -7,6 +7,7 @@
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",
+    "prettier.printWidth": 120,
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
     "[typescript]": {
