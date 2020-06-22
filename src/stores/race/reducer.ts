@@ -15,6 +15,13 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
       return { ...state, data: { ...state.data, name: action.payload } };
     }
 
+    case RaceActionTypes.SET_START_REAL: {
+      return { ...state, data: { ...state.data, startReal: action.payload } };
+    }
+    case RaceActionTypes.SET_START_SIM: {
+      return { ...state, data: { ...state.data, startSim: action.payload } };
+    }
+
     case RaceActionTypes.SET_CAR: {
       return { ...state, data: { ...state.data, car: action.payload } };
     }

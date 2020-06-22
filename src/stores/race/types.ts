@@ -8,6 +8,8 @@ export interface ITimedRace extends IRace {
   car: ICar;
   track: ITrack;
   stints: Stint[];
+  startReal: Date;
+  startSim: Date;
 }
 
 export const defaultTimedRace: ITimedRace = {
@@ -16,6 +18,8 @@ export const defaultTimedRace: ITimedRace = {
   car: defaultCar,
   track: defaultTrack,
   stints: [],
+  startReal: new Date(),
+  startSim: new Date(),
 };
 
 export interface IRace {
@@ -53,6 +57,8 @@ export enum RaceActionTypes {
   SET_NAME = "@@race/SET_NAME",
   SET_CAR = "@@race/SET_CAR",
   SET_TRACK = "@@race/SET_TRACK",
+  SET_START_REAL = "@@race/SET_START_REAL",
+  SET_START_SIM = "@@race/SET_START_SIM",
   COMPUTE_RACE = "@@race/COMPUTE_RACE",
   SET_STINTS = "@@race/SET_STINTS",
   SET_PARAM = "@@race/SET_PARAM",
@@ -66,6 +72,9 @@ export enum RaceActionTypes {
   SAGA_QUICK_PROPOSAL = "@@race/SAGA_QUICK_PROPOSAL",
   SAGA_CHANGE_CAR = "@@race/SAGA_CHANGE_CAR",
   SAGA_CHANGE_TRACK = "@@race/SAGA_CHANGE_TRACK",
+  SAGA_CHANGE_DURATION = "@@race/SAGA_CHANGE_DURATION",
+  SAGA_CHANGE_RACE_REAL_TIME = "@@race/SAGA_CHANGE_RACE_REAL_TIME",
+  SAGA_CHANGE_RACE_SIM_TIME = "@@race/SAGA_CHANGE_RACE_SIM_TIME",
   SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS",
   SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP",
   SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME",

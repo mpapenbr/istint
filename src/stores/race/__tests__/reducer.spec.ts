@@ -2,27 +2,32 @@ import { defaultCar, ICar } from "../../car/types";
 import { defaultStint } from "../../stint/reducer";
 import { Stint } from "../../stint/types";
 import { defaultTrack, ITrack } from "../../track/types";
-import {
-  resetRace,
-  setCar,
-  setDuration,
-  setName,
-  setStints,
-  setTrack,
-} from "../actions";
+import { resetRace, setCar, setDuration, setName, setStartReal, setStartSim, setStints, setTrack } from "../actions";
 import { raceInitialState, raceReducer } from "../reducer";
 import * as sampleRace from "./__mockData__/sampleRace.json";
 
 describe("race reducer", () => {
   it("should return initial state", () => {
-    expect(raceReducer(raceInitialState, { type: "nix" })).toEqual(
-      raceInitialState
-    );
+    expect(raceReducer(raceInitialState, { type: "nix" })).toEqual(raceInitialState);
   });
 
   it("should set the duration ", () => {
     expect(raceReducer(raceInitialState, setDuration(42))).toMatchObject({
       data: { duration: 42 },
+    });
+  });
+
+  it("should set the real start time ", () => {
+    const value = new Date("2020-06-22T21:00:00Z");
+    expect(raceReducer(raceInitialState, setStartReal(value))).toMatchObject({
+      data: { startReal: value },
+    });
+  });
+
+  it("should set the sim start time ", () => {
+    const value = new Date("2020-06-22T21:00:00Z");
+    expect(raceReducer(raceInitialState, setStartSim(value))).toMatchObject({
+      data: { startSim: value },
     });
   });
 
@@ -61,9 +66,7 @@ describe("race reducer", () => {
       { ...defaultStint, no: 1 },
       { ...defaultStint, no: 2 },
     ];
-    expect(
-      raceReducer(raceInitialState, setStints(sampleStints))
-    ).toMatchObject({
+    expect(raceReducer(raceInitialState, setStints(sampleStints))).toMatchObject({
       data: { stints: sampleStints },
     });
   });
