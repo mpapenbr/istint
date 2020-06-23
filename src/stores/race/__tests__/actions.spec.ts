@@ -27,11 +27,11 @@ describe("what does this?", () => {
   });
 
   it("should create a saga change real race time action", () => {
-    const expectedAction = action(RaceActionTypes.SAGA_CHANGE_RACE_REAL_TIME, new Date("2020-06-22T21:00:00Z"));
+    const expectedAction = action(RaceActionTypes.SAGA_CHANGE_START_REAL, new Date("2020-06-22T21:00:00Z"));
     expect(sagaChangeRaceRealStartTime(new Date("2020-06-22T21:00:00Z"))).toEqual(expectedAction);
   });
   it("should create a saga change sim race time action", () => {
-    const expectedAction = action(RaceActionTypes.SAGA_CHANGE_RACE_SIM_TIME, new Date("2020-06-22T21:15:00Z"));
+    const expectedAction = action(RaceActionTypes.SAGA_CHANGE_START_SIM, new Date("2020-06-22T21:15:00Z"));
     expect(sagaChangeRaceSimStartTime(new Date("2020-06-22T21:15:00Z"))).toEqual(expectedAction);
   });
 
