@@ -9,7 +9,11 @@ import { Stint } from "../stint/types";
 import { TrackState } from "../track/types";
 import { recomputeRaceStints } from "./compute";
 import { computeFreshRace } from "./proposals";
-import { handleChangeDuration } from "./sagas/settings";
+import {
+  handleChangeDuration,
+  handleChangeRaceRealStartTime as handleChangeStartReal,
+  handleChangeRaceSimStartTime as handleChangeStartSim,
+} from "./sagas/settings";
 import {
   IChangeSingleStintParam,
   IModifyStintParam,
@@ -370,5 +374,7 @@ export default function* raceSaga() {
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_TRACK, handleChangeTrack),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_DURATION, handleChangeDuration),
+    yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_REAL, handleChangeStartReal),
+    yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_SIM, handleChangeStartSim),
   ]);
 }

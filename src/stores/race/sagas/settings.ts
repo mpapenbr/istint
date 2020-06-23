@@ -2,7 +2,8 @@ import { put, select } from "redux-saga/effects";
 import { ApplicationState } from "../..";
 import { IBaseAction } from "../../../commons";
 import { DriverState } from "../../driver/types";
-import { setStartReal } from "../actions";
+import { setStartReal, setStartSim, setStints } from "../actions";
+import { recomputeRaceStints } from "../compute";
 import { computeFreshRace } from "../proposals";
 import { ITimedRace, RaceActionTypes } from "../types";
 
@@ -34,6 +35,24 @@ Generator {
     const raceData: ITimedRace = (yield select((state: ApplicationState) => state.race.data)) as ITimedRace;
 
     yield put(setStartReal(startTime));
+    const stints = recomputeRaceStints({ ...raceData, startReal: startTime });
+    yield put(setStints(stints));
+  } catch (e) {
+    console.log(e);
+  }
+}
+export function* handleChangeRaceSimStartTime(
+  action: IBaseAction
+): //: Generator<StrictEffect,void, Stint[]>
+Generator {
+  try {
+    const startTime: Date = action.payload;
+
+    const raceData: ITimedRace = (yield select((state: ApplicationState) => state.race.data)) as ITimedRace;
+
+    yield put(setStartSim(startTime));
+    const stints = recomputeRaceStints({ ...raceData, startSim: startTime });
+    yield put(setStints(stints));
   } catch (e) {
     console.log(e);
   }

@@ -31,9 +31,8 @@ export const sagaChangeDuration = (durationMinutes: number) =>
   action(RaceActionTypes.SAGA_CHANGE_DURATION, durationMinutes);
 
 export const sagaChangeRaceRealStartTime = (startDate: Date) =>
-  action(RaceActionTypes.SAGA_CHANGE_RACE_REAL_TIME, startDate);
-export const sagaChangeRaceSimStartTime = (startDate: Date) =>
-  action(RaceActionTypes.SAGA_CHANGE_RACE_SIM_TIME, startDate);
+  action(RaceActionTypes.SAGA_CHANGE_START_REAL, startDate);
+export const sagaChangeRaceSimStartTime = (startDate: Date) => action(RaceActionTypes.SAGA_CHANGE_START_SIM, startDate);
 
 export const setDuration = (duration: number): IBaseAction => action(RaceActionTypes.SET_DURATION, duration);
 export const setName = (name: string): IBaseAction => action(RaceActionTypes.SET_NAME, name);
