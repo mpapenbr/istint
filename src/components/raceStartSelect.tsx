@@ -8,6 +8,7 @@ interface IDispatchProps {
 }
 interface IStateProps {
   time: Date;
+  label: string;
 }
 type MyProps = IDispatchProps & IStateProps;
 const RaceStartSelect: React.FC<MyProps> = (props: MyProps) => {
@@ -22,14 +23,18 @@ const RaceStartSelect: React.FC<MyProps> = (props: MyProps) => {
     props.setDate(new Date(value.toISOString()));
   };
   const format = "DD.MM.YYYY HH:mm";
+
   return (
-    <DatePicker
-      value={moment(props.time, moment.ISO_8601)}
-      format={format}
-      showTime={true}
-      onOk={onOk}
-      onChange={onChange}
-    />
+    <span className="ant-input-wrapper ant-input-group">
+      <span className="ant-input-group-addon">{props.label}</span>
+      <DatePicker
+        value={moment(props.time, moment.ISO_8601)}
+        format={format}
+        showTime={true}
+        onOk={onOk}
+        onChange={onChange}
+      />
+    </span>
   );
 };
 
