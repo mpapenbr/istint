@@ -6,6 +6,7 @@ import { ApplicationState } from "../stores/index";
 import {
   resetRace,
   sagaChangeCar,
+  sagaChangeDuration,
   sagaChangeRaceRealStartTime as sagaChangeRaceStartReal,
   sagaChangeRaceSimStartTime as sagaChangeRaceStartSim,
   sagaChangeSingleStint,
@@ -14,6 +15,7 @@ import {
   sagaChangeSingleStintAttributeNumLaps,
   sagaChangeSingleStintAttributeTires,
   sagaChangeTrack,
+  setName,
 } from "../stores/race/actions";
 import { IModifyStintParam } from "../stores/race/types";
 import { updateAutoRepair, updateStrategy } from "../stores/settings/actions";
@@ -60,6 +62,8 @@ const RaceContainer: React.FC = () => {
     setStrategy: useCallback((id: number) => dispatch(updateStrategy(id)), [dispatch]),
     setRaceStartReal: useCallback((date: Date) => dispatch(sagaChangeRaceStartReal(date)), [dispatch]),
     setRaceStartSim: useCallback((date: Date) => dispatch(sagaChangeRaceStartSim(date)), [dispatch]),
+    setDuration: useCallback((duration: number) => dispatch(sagaChangeDuration(duration)), [dispatch]),
+    setName: useCallback((value: string) => dispatch(setName(value)), [dispatch]),
     reset: useCallback(() => dispatch(resetRace()), [dispatch]),
   };
   return (

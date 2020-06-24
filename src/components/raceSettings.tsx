@@ -5,6 +5,8 @@ import { ITimedRace } from "../stores/race/types";
 import { ISettings } from "../stores/settings/types";
 import { TrackState } from "../stores/track/types";
 import CarSelect from "./carSelect";
+import DurationInput from "./durationInput";
+import RaceName from "./raceName";
 import RaceStartSelect from "./raceStartSelect";
 import RaceStrategySelect from "./strategySelect";
 import TrackSelect from "./trackSelect";
@@ -22,6 +24,8 @@ interface IDispatchProps {
   setTrack: (trackId: number) => void;
   setRaceStartReal: (date: Date) => void;
   setRaceStartSim: (date: Date) => void;
+  setDuration: (duration: number) => void;
+  setName: (value: string) => void;
   reset: () => void;
 }
 
@@ -38,19 +42,25 @@ const RaceSettings: React.FC<MyProps> = ({
   setTrack,
   setRaceStartReal,
   setRaceStartSim,
+  setDuration,
+  setName,
   reset,
 }: MyProps) => {
   return (
     <>
       <Descriptions column={4} title="Race settings">
-        <Descriptions.Item label="Name">{raceData.name}</Descriptions.Item>
-        <Descriptions.Item label="Duration">{raceData.duration}</Descriptions.Item>
-        <Descriptions.Item label="Race start (real)">
-          <RaceStartSelect time={raceData.startReal} setDate={setRaceStartReal} />
+        <Descriptions.Item label="">
+          <RaceName name={raceData.name} setName={setName} />
+        </Descriptions.Item>
+        <Descriptions.Item label="">
+          <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
+        </Descriptions.Item>
+        <Descriptions.Item>
+          <RaceStartSelect label="Race start (real)" time={raceData.startReal} setDate={setRaceStartReal} />
         </Descriptions.Item>
 
-        <Descriptions.Item label="Race start (sim)">
-          <RaceStartSelect time={raceData.startSim} setDate={setRaceStartSim} />
+        <Descriptions.Item>
+          <RaceStartSelect label="Race start (sim)" time={raceData.startSim} setDate={setRaceStartSim} />
         </Descriptions.Item>
 
         <Descriptions.Item label="Stint-Auto-Repair">
