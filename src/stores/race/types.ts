@@ -52,6 +52,15 @@ export interface IChangeSingleStintParam {
   value: number | boolean;
 }
 
+/**
+ * parameter class when a stint is moved.
+ * Note: the values refer to the index position, not the stint no
+ */
+export interface IMoveStint {
+  oldIndex: number;
+  newIndex: number;
+}
+
 export enum RaceActionTypes {
   SET_DURATION = "@@race/SET_DURATION",
   SET_NAME = "@@race/SET_NAME",
@@ -64,6 +73,7 @@ export enum RaceActionTypes {
   SET_PARAM = "@@race/SET_PARAM",
   RESET = "@@race/RESET",
   REPLACE = "@@race/REPLACE",
+  MOVE_STINT = "@@race/MOVE_STINT",
 
   SAGA_TEST = "@@race/SAGA_TEST",
   SAGA_TEST_DOUBLE = "@@race/SAGA_TEST_DOUBLE",
@@ -79,6 +89,7 @@ export enum RaceActionTypes {
   SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP",
   SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME",
   SAGA_CHANGE_STINT_ATTRIBUTE_TIRES = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_TIRES",
+  SAGA_MOVE_STINT = "@@race/SAGA_MOVE_STINT",
 }
 
 export interface IRaceState {

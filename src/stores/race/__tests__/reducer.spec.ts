@@ -2,8 +2,19 @@ import { defaultCar, ICar } from "../../car/types";
 import { defaultStint } from "../../stint/reducer";
 import { Stint } from "../../stint/types";
 import { defaultTrack, ITrack } from "../../track/types";
-import { resetRace, setCar, setDuration, setName, setStartReal, setStartSim, setStints, setTrack } from "../actions";
+import {
+  moveStint,
+  resetRace,
+  setCar,
+  setDuration,
+  setName,
+  setStartReal,
+  setStartSim,
+  setStints,
+  setTrack,
+} from "../actions";
 import { raceInitialState, raceReducer } from "../reducer";
+import { defaultTimedRace } from "../types";
 import * as sampleRace from "./__mockData__/sampleRace.json";
 
 describe("race reducer", () => {
@@ -80,5 +91,23 @@ describe("race reducer", () => {
         resetRace()
       )
     ).toEqual(raceInitialState);
+  });
+
+  it("should move a stint and renumber ", () => {
+    const sampleStints: Stint[] = [
+      { ...defaultStint, no: 1, numLaps: 10 },
+      { ...defaultStint, no: 2, numLaps: 20 },
+      { ...defaultStint, no: 3, numLaps: 30 },
+    ];
+    const initState = { ...raceInitialState, data: { ...defaultTimedRace, stints: sampleStints } };
+    expect(raceReducer(initState, moveStint({ oldIndex: 0, newIndex: 2 }))).toMatchObject({
+      data: {
+        stints: [
+          { no: 1, numLaps: 20 },
+          { no: 2, numLaps: 30 },
+          { no: 3, numLaps: 10 },
+        ],
+      },
+    });
   });
 });

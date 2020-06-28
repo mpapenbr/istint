@@ -1,25 +1,13 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
-import {
-  Button,
-  Descriptions,
-  Table,
-  Form,
-  Input,
-  InputNumber,
-  Tooltip,
-  Checkbox,
-} from "antd";
-import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import { IRace, ITimedRace, IModifyStintParam } from "../stores/race/types";
-import { ColumnProps } from "antd/es/table";
-import { Stint, IStintProblem, IPitTime } from "../stores/stint/types";
-import { secAsString } from "../utils/output";
-import { sprintf } from "sprintf-js";
-import _ from "lodash";
-import { IDriver } from "../stores/driver/types";
+import { CheckCircleOutlined, MenuOutlined, WarningOutlined } from "@ant-design/icons";
+import { Checkbox, Form, Input, InputNumber, Table, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { T } from "antd/lib/upload/utils";
+import _ from "lodash";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
+import { sprintf } from "sprintf-js";
+import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types";
+import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
+import { secAsString } from "../utils/output";
 
 export interface IDispatchToProps {
   updateStint: (param: IModifyStintParam) => void;
@@ -27,6 +15,7 @@ export interface IDispatchToProps {
   updateFuelPerLap: (stintNo: number, value: number) => void;
   updateLaptime: (stintNo: number, value: number) => void;
   updateTireRequest: (stintNo: number, value: boolean) => void;
+  moveStint: (param: IMoveStint) => void;
 }
 interface IStateToProps {
   raceData: ITimedRace;
@@ -34,6 +23,7 @@ interface IStateToProps {
 
 type MyProps = IDispatchToProps & IStateToProps;
 
+// TODO: kann weg, Stint hat inzwischen no attr
 interface IDisplayStint extends Stint {
   no: number;
 }
@@ -45,6 +35,14 @@ interface EditableRowProps {
 interface IIndexable {
   [key: string]: any;
 }
+
+const SortableItem = SortableElement((props: any) => <tr {...props} />);
+const DragableBodyRow = ({ ...restProps }) => {
+  //console.log(restProps["data-row-key"]);
+  // console.log({ restProps });
+  return <SortableItem index={restProps["data-row-key"]} {...restProps} />;
+};
+const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: "pointer", color: "#999" }} />);
 
 const EditableContext = React.createContext<any>(null);
 
@@ -96,10 +94,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     setEditing(!editing);
     // console.log("blödes problem lösen")
     //console.log("the join:", dataIndex instanceof Array ? _.join(dataIndex, '.') : dataIndex)
-    const x = _.pick(
-      record,
-      dataIndex instanceof Array ? _.join(dataIndex, ".") : dataIndex
-    );
+    const x = _.pick(record, dataIndex instanceof Array ? _.join(dataIndex, ".") : dataIndex);
     // console.log(dataIndex, {x})
     form.setFieldsValue(x);
   };
@@ -132,9 +127,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   let childNode = children;
   if (editable) {
-    const inp = (
-      <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />
-    );
+    const inp = <InputNumber ref={inputRef} onPressEnter={save} onBlur={save} />;
     const inpt = inputElementProvider
       ? inputElementProvider({
           ref: inputRef,
@@ -148,11 +141,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         {inpt}
       </Form.Item>
     ) : (
-      <div
-        className="editable-cell-value-wrap"
-        style={{ paddingRight: 24 }}
-        onClick={toggleEdit}
-      >
+      <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
         {children}
       </div>
     );
@@ -162,20 +151,40 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const RaceStints: React.FC<MyProps> = (props: MyProps) => {
   // race.stints[].
-  const components = {
+  const MySortableContainer = SortableContainer((props: any) => <tbody {...props} />);
+  interface IOnSortData {
+    oldIndex: number;
+    newIndex: number;
+  }
+  const onSortEnd = ({ oldIndex, newIndex }: IOnSortData) => {
+    props.moveStint({ oldIndex: oldIndex, newIndex: newIndex });
+  };
+  const DraggableContainer = (props: any) => (
+    <MySortableContainer useDragHandle={true} helperClass="row-dragging" onSortEnd={onSortEnd} {...props} />
+  );
+  const componentsDragable = {
+    body: {
+      row: DragableBodyRow,
+      cell: EditableCell,
+      wrapper: DraggableContainer,
+    },
+  };
+  const componentsEditable = {
     body: {
       row: EditableRow,
       cell: EditableCell,
     },
   };
 
+  const components = componentsEditable;
+
   const renderStintProblems = (probs: IStintProblem[]) => {
     if (probs.length === 0) {
-      return <CheckCircleOutlined />;
+      return <CheckCircleOutlined style={{ color: "green" }} />;
     } else {
       return (
         <Tooltip title={probs[0].msg}>
-          <WarningOutlined />
+          <WarningOutlined style={{ color: "red" }} />
         </Tooltip>
       );
     }
@@ -225,14 +234,16 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     return <Checkbox checked={data.wantNewTires} onChange={handleChange} />;
   };
   const columns = [
-    { title: "#", dataIndex: "no" },
-    { title: "Driver", dataIndex: ["driver", "name"] },
+    { title: "Sort", dataIndex: "no", className: "drag-visible", width: 30, render: () => <DragHandle /> },
+    { title: "#", dataIndex: "no", className: "drag-visible" },
+    { title: "Driver", dataIndex: ["driver", "name"], className: "drag-visible" },
     {
       title: "Laps",
       dataIndex: "numLaps",
       editable: true,
       columHandleSave: props.updateNumLaps,
       inputElementProvider: (props: any) => <InputNumber {...props} min={0} />,
+      className: "drag-visible",
     },
     {
       title: "Avg",
@@ -240,9 +251,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       render: (t: number) => secAsString(t),
       editable: true,
       columHandleSave: props.updateLaptime,
-      inputElementProvider: (props: any) => (
-        <InputNumber {...props} step={0.1} min={0} />
-      ),
+      inputElementProvider: (props: any) => <InputNumber {...props} step={0.1} min={0} />,
     },
     {
       title: "l/Lap",
@@ -250,9 +259,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       render: (f: number) => sprintf("%0.2f", f),
       editable: true,
       columHandleSave: props.updateFuelPerLap,
-      inputElementProvider: (props: any) => (
-        <InputNumber {...props} step={0.1} min={0} />
-      ),
+      inputElementProvider: (props: any) => <InputNumber {...props} step={0.1} min={0} />,
     },
     {
       title: "Start",
@@ -277,9 +284,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     {
       title: "Tires",
       dataIndex: "wantNewTires",
-      render: (b: boolean, record: IDisplayStint) => (
-        <TireChangeBox {...record} />
-      ),
+      render: (b: boolean, record: IDisplayStint) => <TireChangeBox {...record} />,
     },
     {
       title: "Pit",
@@ -317,7 +322,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       }),
     };
   });
-  const myRowKey = (item: IDisplayStint) => item.no;
+  const myRowKey = (item: IDisplayStint) => item.no - 1; // easier for table move ops
   const enhancedStints: IDisplayStint[] = props.raceData.stints.map((v, i) => ({
     ...v,
     no: i + 1,

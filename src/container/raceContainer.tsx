@@ -15,10 +15,11 @@ import {
   sagaChangeSingleStintAttributeNumLaps,
   sagaChangeSingleStintAttributeTires,
   sagaChangeTrack,
+  sagaMoveStint,
   setName,
 } from "../stores/race/actions";
-import { IModifyStintParam } from "../stores/race/types";
-import { updateAutoRepair, updateStrategy } from "../stores/settings/actions";
+import { IModifyStintParam, IMoveStint } from "../stores/race/types";
+import { updateAutoRepair, updateStintEditMode, updateStrategy } from "../stores/settings/actions";
 
 const RaceContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,8 @@ const RaceContainer: React.FC = () => {
     setRaceStartSim: useCallback((date: Date) => dispatch(sagaChangeRaceStartSim(date)), [dispatch]),
     setDuration: useCallback((duration: number) => dispatch(sagaChangeDuration(duration)), [dispatch]),
     setName: useCallback((value: string) => dispatch(setName(value)), [dispatch]),
+    moveStint: useCallback((param: IMoveStint) => dispatch(sagaMoveStint(param)), [dispatch]),
+    setStintEditMode: useCallback((value: number) => dispatch(updateStintEditMode(value)), [dispatch]),
     reset: useCallback(() => dispatch(resetRace()), [dispatch]),
   };
   return (

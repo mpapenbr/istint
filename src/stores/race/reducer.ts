@@ -1,5 +1,6 @@
+import arrayMove from "array-move";
 import { Reducer } from "redux";
-import { defaultTimedRace, IRaceState, RaceActionTypes } from "./types";
+import { defaultTimedRace, IMoveStint, IRaceState, RaceActionTypes } from "./types";
 
 const initialState: IRaceState = {
   data: defaultTimedRace,
@@ -31,6 +32,16 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
 
     case RaceActionTypes.SET_STINTS: {
       return { ...state, data: { ...state.data, stints: action.payload } };
+    }
+
+    case RaceActionTypes.MOVE_STINT: {
+      const param = action.payload as IMoveStint;
+      const newStints = arrayMove(state.data.stints, param.oldIndex, param.newIndex);
+      newStints.forEach((v, i) => (v.no = i + 1));
+      return {
+        ...state,
+        data: { ...state.data, stints: newStints },
+      };
     }
 
     case RaceActionTypes.RESET: {
