@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { sprintf } from "sprintf-js";
 import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types";
+import { ISettings, StintEditMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
 
@@ -19,6 +20,7 @@ export interface IDispatchToProps {
 }
 interface IStateToProps {
   raceData: ITimedRace;
+  settings: ISettings;
 }
 
 type MyProps = IDispatchToProps & IStateToProps;
@@ -176,7 +178,16 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
   };
 
-  const components = componentsEditable;
+  var components;
+  switch (props.settings.stintEditMode) {
+    case StintEditMode.MoveRows:
+      components = componentsDragable;
+      break;
+    case StintEditMode.EditRow:
+    default:
+      components = componentsEditable;
+  }
+  //const components = componentsEditable;
 
   const renderStintProblems = (probs: IStintProblem[]) => {
     if (probs.length === 0) {
@@ -233,10 +244,18 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     };
     return <Checkbox checked={data.wantNewTires} onChange={handleChange} />;
   };
-  const columns = [
-    { title: "Sort", dataIndex: "no", className: "drag-visible", width: 30, render: () => <DragHandle /> },
-    { title: "#", dataIndex: "no", className: "drag-visible" },
-    { title: "Driver", dataIndex: ["driver", "name"], className: "drag-visible" },
+
+  var columns = [
+    {
+      title: "Sort",
+      dataIndex: "no",
+      className: "drag-visible",
+      editable: false,
+      width: 30,
+      render: () => <DragHandle />,
+    },
+    { title: "#", dataIndex: "no", className: "drag-visible", editable: false },
+    { title: "Driver", dataIndex: ["driver", "name"], className: "drag-visible", editable: false },
     {
       title: "Laps",
       dataIndex: "numLaps",
@@ -264,41 +283,54 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     {
       title: "Start",
       dataIndex: ["simTime", "start"],
+      editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },
     {
       title: "Duration",
       dataIndex: "duration",
+      editable: false,
       render: (t: number) => secAsString(t),
     },
     {
       title: "End",
       dataIndex: ["simTime", "end"],
+      editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },
     {
       title: "Fuel",
       dataIndex: "fuel",
+      editable: false,
       render: (f: number) => sprintf("%0.2f", f),
     },
     {
       title: "Tires",
       dataIndex: "wantNewTires",
+      editable: false,
       render: (b: boolean, record: IDisplayStint) => <TireChangeBox {...record} />,
     },
     {
       title: "Pit",
       dataIndex: ["pitTime"],
+      editable: false,
       render: (d: IPitTime) => renderPitTime(d),
     },
     {
       title: "Info",
       dataIndex: ["problems"],
+      editable: false,
       render: (p: IStintProblem[]) => renderStintProblems(p),
     },
   ];
+
+  if (props.settings.stintEditMode === StintEditMode.EditRow) {
+    // in EditRow-Mode we don't need the sort handle column
+    columns = _.slice(columns, 1);
+  }
   const cellColumns = columns.map((col) => {
-    if (!col.editable) {
+    const wantEdit = props.settings.stintEditMode === StintEditMode.EditRow && col.editable;
+    if (!wantEdit) {
       return col;
     }
     return {
