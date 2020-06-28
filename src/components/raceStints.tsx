@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { sprintf } from "sprintf-js";
 import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types";
-import { ISettings, StintEditMode } from "../stores/settings/types";
+import { ISettings, StintEditMode, TimeDisplayMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
 import PitToolTip from "./stint/pitToolTip";
@@ -208,6 +208,14 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     };
     return <Checkbox checked={data.wantNewTires} onChange={handleChange} />;
   };
+  const timeRangeSelector = () => {
+    switch (props.settings.timeDisplayMode) {
+      case TimeDisplayMode.Sim:
+        return "simTime";
+      default:
+        return "realTime";
+    }
+  };
 
   var columns = [
     {
@@ -251,7 +259,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "Start",
-      dataIndex: ["simTime", "start"],
+      dataIndex: [timeRangeSelector(), "start"],
       editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },
@@ -263,7 +271,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "End",
-      dataIndex: ["simTime", "end"],
+      dataIndex: [timeRangeSelector(), "end"],
       editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },

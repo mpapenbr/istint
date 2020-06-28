@@ -15,6 +15,8 @@ const reducer: Reducer<ISettingsState> = (state = initialState, action) => {
       return { ...state, data: { ...state.data, strategy: action.payload } };
     case SettingsActionTypes.UPDATE_STINT_EDIT_MODE:
       return { ...state, data: { ...state.data, stintEditMode: action.payload } };
+    case SettingsActionTypes.UPDATE_TIME_DISPLAY_MODE:
+      return { ...state, data: { ...state.data, timeDisplayMode: action.payload } };
     case SettingsActionTypes.REPLACE: {
       return Object.assign({}, action.payload);
     }

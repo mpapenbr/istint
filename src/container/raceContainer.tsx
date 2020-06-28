@@ -19,7 +19,12 @@ import {
   setName,
 } from "../stores/race/actions";
 import { IModifyStintParam, IMoveStint } from "../stores/race/types";
-import { updateAutoRepair, updateStintEditMode, updateStrategy } from "../stores/settings/actions";
+import {
+  updateAutoRepair,
+  updateStintEditMode,
+  updateStrategy,
+  updateTimeDisplayMode,
+} from "../stores/settings/actions";
 
 const RaceContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -69,6 +74,7 @@ const RaceContainer: React.FC = () => {
     setName: useCallback((value: string) => dispatch(setName(value)), [dispatch]),
     moveStint: useCallback((param: IMoveStint) => dispatch(sagaMoveStint(param)), [dispatch]),
     setStintEditMode: useCallback((value: number) => dispatch(updateStintEditMode(value)), [dispatch]),
+    setTimeDisplayMode: useCallback((value: number) => dispatch(updateTimeDisplayMode(value)), [dispatch]),
     reset: useCallback(() => dispatch(resetRace()), [dispatch]),
   };
   return (
