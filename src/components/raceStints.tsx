@@ -229,6 +229,11 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       className: "drag-visible",
     },
     {
+      title: "Total",
+      dataIndex: ["rollingData", "elapsedLaps"],
+      editable: false,
+    },
+    {
       title: "Avg",
       dataIndex: ["driver", "baseLaptime"],
       render: (t: number) => secAsString(t),
