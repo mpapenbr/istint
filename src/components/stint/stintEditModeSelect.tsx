@@ -1,7 +1,7 @@
 import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio/interface";
 import React from "react";
-import { StintEditMode } from "../stores/settings/types";
+import { StintEditMode } from "../../stores/settings/types";
 
 interface IDispatchProps {
   selectStintEditMode: (id: number) => any;

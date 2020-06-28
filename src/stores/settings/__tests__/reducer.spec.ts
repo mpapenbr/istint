@@ -1,7 +1,13 @@
 import { RaceStrategyMode } from "../../stint/types";
-import { replaceSettingsState, updateAutoRepair, updateStintEditMode, updateStrategy } from "../actions";
+import {
+  replaceSettingsState,
+  updateAutoRepair,
+  updateStintEditMode,
+  updateStrategy,
+  updateTimeDisplayMode,
+} from "../actions";
 import { settingsInitialState, settingsReducer } from "../reducer";
-import { defaultSettings, StintEditMode } from "../types";
+import { defaultSettings, StintEditMode, TimeDisplayMode } from "../types";
 // import * as sampleRace from "./__mockData__/sampleRace.json";
 
 describe("settings reducer", () => {
@@ -38,6 +44,15 @@ describe("settings reducer", () => {
       data: { ...defaultSettings, stintEditMode: StintEditMode.MoveRows },
     };
     expect(settingsReducer(settingsInitialState, updateStintEditMode(StintEditMode.MoveRows))).toMatchObject(
+      sampleState
+    );
+  });
+  it("should set time display mode", () => {
+    const sampleState = {
+      ...settingsInitialState,
+      data: { ...defaultSettings, timeDisplayMode: TimeDisplayMode.Sim },
+    };
+    expect(settingsReducer(settingsInitialState, updateTimeDisplayMode(TimeDisplayMode.Sim))).toMatchObject(
       sampleState
     );
   });
