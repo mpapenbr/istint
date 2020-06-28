@@ -9,6 +9,7 @@ import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types"
 import { ISettings, StintEditMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
 import { secAsString } from "../utils/output";
+import PitToolTip from "./stint/pitToolTip";
 
 export interface IDispatchToProps {
   updateStint: (param: IModifyStintParam) => void;
@@ -102,10 +103,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
   };
   const save = async (e: any) => {
     const values = await form.validateFields();
-    console.log({ e }, { values });
+    // console.log({ e }, { values });
     toggleEdit();
     const x = _.merge(record, values);
-    console.log({ x });
+    // console.log({ x });
     handleSave(x);
   };
 
@@ -115,10 +116,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
       const values = await form.validateFields();
       const x = _.merge(record, values);
       if (handleSaveSingle !== undefined) {
-        console.log("handleSaveSingle called");
+        // console.log("handleSaveSingle called");
         handleSaveSingle(record.no, e);
       } else {
-        console.log("Standard handleSave called");
+        // console.log("Standard handleSave called");
         handleSave(x);
       }
     } catch (e) {
@@ -201,43 +202,6 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     }
   };
 
-  const renderPitTime = (data: IPitTime) => {
-    const DetailTable: React.FC<IPitTime> = (localProps: IPitTime) => (
-      <>
-        <span>Pit stop details</span>
-        <table>
-          <tbody>
-            <tr>
-              <td align="left">Pit delta</td>
-              <td>{sprintf("%.1f", localProps.pitDelta)}</td>
-            </tr>
-            <tr>
-              <td>Refill</td>
-              <td>{sprintf("%.1f", localProps.refill)}</td>
-            </tr>
-            <tr>
-              <td>Driver</td>
-              <td>{sprintf("%.1f", localProps.driverChange)}</td>
-            </tr>
-            <tr>
-              <td>Tires</td>
-              <td>{sprintf("%.1f", localProps.changeTires)}</td>
-            </tr>
-            <tr>
-              <td>Total</td>
-              <td>{sprintf("%.1f", localProps.total)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </>
-    );
-    return (
-      <Tooltip title={DetailTable(data)}>
-        <span>{secAsString(data.total)}</span>
-      </Tooltip>
-    );
-  };
-
   const TireChangeBox: React.FC<IDisplayStint> = (data: IDisplayStint) => {
     const handleChange = (e: CheckboxChangeEvent) => {
       props.updateTireRequest(data.no, e.target.checked);
@@ -314,7 +278,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       title: "Pit",
       dataIndex: ["pitTime"],
       editable: false,
-      render: (d: IPitTime) => renderPitTime(d),
+      render: (d: IPitTime) => <PitToolTip {...d} />,
     },
     {
       title: "Info",
