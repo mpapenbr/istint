@@ -23,12 +23,15 @@ const RaceStartSelect: React.FC<MyProps> = (props: MyProps) => {
     props.setDate(new Date(value.toISOString()));
   };
   const format = "DD.MM.YYYY HH:mm";
-
+  const adjustTime = (time: Date): Date => {
+    time.setSeconds(0, 0);
+    return time;
+  };
   return (
     <span className="ant-input-wrapper ant-input-group">
       <span className="ant-input-group-addon">{props.label}</span>
       <DatePicker
-        value={moment(props.time, moment.ISO_8601)}
+        value={moment(adjustTime(props.time), moment.ISO_8601)}
         format={format}
         showTime={true}
         onOk={onOk}

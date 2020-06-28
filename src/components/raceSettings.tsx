@@ -8,6 +8,7 @@ import CarSelect from "./carSelect";
 import DurationInput from "./durationInput";
 import RaceName from "./raceName";
 import RaceStartSelect from "./raceStartSelect";
+import StintEditModeSelect from "./stintEditModeSelect";
 import RaceStrategySelect from "./strategySelect";
 import TrackSelect from "./trackSelect";
 
@@ -26,6 +27,7 @@ interface IDispatchProps {
   setRaceStartSim: (date: Date) => void;
   setDuration: (duration: number) => void;
   setName: (value: string) => void;
+  setStintEditMode: (value: number) => void;
   reset: () => void;
 }
 
@@ -44,6 +46,7 @@ const RaceSettings: React.FC<MyProps> = ({
   setRaceStartSim,
   setDuration,
   setName,
+  setStintEditMode,
   reset,
 }: MyProps) => {
   return (
@@ -77,6 +80,9 @@ const RaceSettings: React.FC<MyProps> = ({
         </Descriptions.Item>
         <Descriptions.Item label="">
           <Button onClick={reset}>Reset</Button>
+        </Descriptions.Item>
+        <Descriptions.Item label="">
+          <StintEditModeSelect current={settings.stintEditMode} selectStintEditMode={setStintEditMode} />
         </Descriptions.Item>
       </Descriptions>
     </>
