@@ -23,6 +23,8 @@ import { updateAutoRepair, updateStintEditMode, updateStrategy } from "../stores
 
 const RaceContainer: React.FC = () => {
   const dispatch = useDispatch();
+  // Note: use stateSettings via selector
+  // const stateSettings = useSelector(({ settings }: ApplicationState) => ({ ...settings.data }));
   const stateToProps = useSelector(({ race, cars, tracks, settings }: ApplicationState) => ({
     raceData: race.data,
     carData: cars,
