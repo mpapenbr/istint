@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import RaceSummary from "../components/race/raceSummary";
 import RaceSettings from "../components/raceSettings";
 import RaceStints from "../components/raceStints";
 import { ApplicationState } from "../stores/index";
@@ -80,9 +81,11 @@ const RaceContainer: React.FC = () => {
   return (
     <div>
       <RaceSettings {...stateToProps} {...dispatchToProps} />
+      <RaceSummary {...stateToProps} />
       <RaceStints {...stateToProps} {...dispatchToProps} />
     </div>
   );
+  //<RaceSummary {...stateToProps} />
 };
 
 export default RaceContainer;
