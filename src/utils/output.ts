@@ -7,6 +7,15 @@ import { sprintf } from "sprintf-js";
 export const secAsString = (t: number): string => {
   return t > 3600 ? secAsHHMMSS(t) : secAsMMSS(t);
 };
+export const lapTimeString = (t: number): string => {
+  let work = t;
+  const minutes = Math.floor(t / 60);
+  work -= minutes * 60;
+  const seconds = Math.trunc(work);
+  work -= seconds;
+  const tenths = Math.trunc(work * 10);
+  return sprintf("%d:%02d.%1d", minutes, seconds, tenths);
+};
 /**
  * converts sec value in human readable string presentation MM:SS
  * @param t value in sec

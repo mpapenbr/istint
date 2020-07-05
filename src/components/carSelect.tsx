@@ -27,7 +27,7 @@ const CarSelect: React.FC<MyProps> = (props: MyProps) => {
   return (
     <>
       <Dropdown overlay={menu(props.cars)}>
-        <Button style={{ width: "inherit" }}>
+        <Button>
           {props.current.name}
           <DownOutlined />
         </Button>

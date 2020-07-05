@@ -13,4 +13,10 @@ export const defaults: ITrack[] = [
     name: "Spa Endurance",
     pitDelta: 60,
   },
+  {
+    ...defaultTrack,
+    id: 3,
+    name: "Spa",
+    pitDelta: 23,
+  },
 ];

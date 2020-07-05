@@ -50,7 +50,7 @@ const RaceSettingsRework: React.FC<MyProps> = ({
   reset,
 }: MyProps) => {
   return (
-    <Row gutter={16}>
+    <Row gutter={0}>
       <Col span={6}>
         <Card title="Common" size="small">
           <Row gutter={8}>
@@ -96,18 +96,18 @@ const RaceSettingsRework: React.FC<MyProps> = ({
       <Col span={6}>
         <Card title="Track & Car" size="small">
           <Row gutter={8}>
-            <Col span={6} style={{ textAlign: "right" }}>
+            <Col flex="75px" style={{ textAlign: "right" }}>
               Track
             </Col>
-            <Col className="full-width" span={16}>
+            <Col flex="inherit">
               <TrackSelect current={raceData.track} tracks={trackData.allTracks} selectTrack={setTrack} />
             </Col>
           </Row>
           <Row gutter={8}>
-            <Col span={6} style={{ textAlign: "right" }}>
+            <Col flex="75px" style={{ textAlign: "right" }}>
               Car
             </Col>
-            <Col className="full-width" span={16}>
+            <Col flex="inherit">
               <CarSelect current={raceData.car} cars={carData.allCars} selectCar={setCar} />
             </Col>
           </Row>

@@ -27,7 +27,7 @@ const TrackSelect: React.FC<MyProps> = (props: MyProps) => {
   return (
     <>
       <Dropdown overlay={menu(props.tracks)}>
-        <Button style={{ width: "inherit" }}>
+        <Button>
           {props.current.name}
           <DownOutlined />
         </Button>
