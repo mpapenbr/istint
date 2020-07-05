@@ -15,10 +15,14 @@ const DurationInput: React.FC<MyProps> = (props: MyProps) => {
   };
 
   return (
-    <span className="ant-input-wrapper ant-input-group">
-      <span className="ant-input-group-addon">Duration</span>
-      <InputNumber min={0} max={1440} step={1} value={props.durationMin} onChange={onChange} />
-    </span>
+    <InputNumber
+      style={{ width: "inherit" }}
+      min={0}
+      max={1440}
+      step={1}
+      value={props.durationMin}
+      onChange={onChange}
+    />
   );
 };
 

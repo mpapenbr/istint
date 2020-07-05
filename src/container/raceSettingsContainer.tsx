@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import RaceSummary from "../components/race/raceSummary";
-import RaceStints from "../components/raceStints";
+import RaceSettingsRework from "../components/raceSettingsNew";
 import { ApplicationState } from "../stores/index";
 import {
   resetRace,
@@ -26,7 +25,7 @@ import {
   updateTimeDisplayMode,
 } from "../stores/settings/actions";
 
-const RaceContainer: React.FC = () => {
+const RaceSettingsContainer: React.FC = () => {
   const dispatch = useDispatch();
   // Note: use stateSettings via selector
   // const stateSettings = useSelector(({ settings }: ApplicationState) => ({ ...settings.data }));
@@ -79,13 +78,10 @@ const RaceContainer: React.FC = () => {
   };
   return (
     <div>
-      {/* <RaceSettings {...stateToProps} {...dispatchToProps} /> */}
-      <RaceSummary {...stateToProps} />
-      <RaceStints {...stateToProps} {...dispatchToProps} />
+      <RaceSettingsRework {...stateToProps} {...dispatchToProps} />
     </div>
   );
-  //
   //<RaceSummary {...stateToProps} />
 };
 
-export default RaceContainer;
+export default RaceSettingsContainer;

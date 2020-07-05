@@ -17,7 +17,7 @@ export interface ISettings {
 }
 
 export const defaultSettings = {
-  autoRepair: true,
+  autoRepair: false,
   strategy: RaceStrategyMode.ALWAYS_NEW_TIRES,
   stintEditMode: StintEditMode.EditRow,
   timeDisplayMode: TimeDisplayMode.Real,

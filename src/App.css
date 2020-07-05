@@ -66,3 +66,7 @@
 .row-dragging .drag-visible {
   visibility: visible;
 }
+
+.full-width {
+  width: 100%;
+}
