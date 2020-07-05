@@ -62,11 +62,11 @@ const RaceSettings: React.FC<MyProps> = ({
           <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
         </Descriptions.Item>
         <Descriptions.Item>
-          <RaceStartSelect label="Race start (real)" time={raceData.startReal} setDate={setRaceStartReal} />
+          <RaceStartSelect time={raceData.startReal} setDate={setRaceStartReal} />
         </Descriptions.Item>
 
         <Descriptions.Item>
-          <RaceStartSelect label="Race start (sim)" time={raceData.startSim} setDate={setRaceStartSim} />
+          <RaceStartSelect time={raceData.startSim} setDate={setRaceStartSim} />
         </Descriptions.Item>
 
         <Descriptions.Item label="Stint-Auto-Repair">

@@ -1,21 +1,20 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DriverFuel from "../components/driverFuel";
+import QuickProposal from "../components/proposal/quickProposal";
 import { updateDefaultDriver } from "../stores/driver/actions";
 import { ApplicationState } from "../stores/index";
 import { computeQuickProposal } from "../stores/race/actions";
+import { updateStrategy } from "../stores/settings/actions";
 
-const DriverContainer: React.FC = () => {
+const QuickProposalContainer: React.FC = () => {
   const dispatch = useDispatch();
-  const stateToProps = useSelector(({ driver }: ApplicationState) => {
-    // console.log({...driver.data});
-    return {
-      // raceTimeMsec: race.data.duration *60 *1000|| 0
+  const stateToProps = useSelector(({ ui, settings, driver }: ApplicationState) => ({
+    // raceTimeMsec: race.data.duration *60 *1000|| 0
+    settings: settings.data,
+    fuelPerLap: driver.currentDriver.fuelPerLap,
+    baseLaptime: driver.currentDriver.baseLaptime,
+  }));
 
-      fuelPerLap: driver.currentDriver.fuelPerLap,
-      baseLaptime: driver.currentDriver.baseLaptime,
-    };
-  });
   const currentDriver = useSelector(({ driver }: ApplicationState) => ({ driver: { ...driver.currentDriver } }));
   const race = useSelector(({ race }: ApplicationState) => ({ race: { ...race.data } }));
   const settings = useSelector(({ settings }: ApplicationState) => ({ ...settings.data }));
@@ -29,7 +28,7 @@ const DriverContainer: React.FC = () => {
       (d: number) => dispatch(updateDefaultDriver({ ...currentDriver.driver, baseLaptime: d })),
       [dispatch, currentDriver.driver]
     ),
-
+    setStrategy: useCallback((id: number) => dispatch(updateStrategy(id)), [dispatch]),
     computeProposal: useCallback(() => {
       const param = {
         name: "QuickProposal2",
@@ -41,11 +40,7 @@ const DriverContainer: React.FC = () => {
     }, [dispatch, currentDriver, race, settings]),
   };
 
-  return (
-    <div>
-      <DriverFuel {...stateToProps} {...dispatchToProps} />
-    </div>
-  );
+  return <QuickProposal {...stateToProps} {...dispatchToProps} />;
 };
 
-export default DriverContainer;
+export default QuickProposalContainer;

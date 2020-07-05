@@ -14,9 +14,18 @@ const RaceSummary: React.FC<MyProps> = (props: MyProps) => {
   };
   return (
     <>
-      <Row gutter={16}>
+      <Row>
+        <Col span={4}>
+          <Statistic title="Track" value={props.raceData.track.name} />
+        </Col>
+        <Col span={4}>
+          <Statistic title="Car" value={props.raceData.car.name} />
+        </Col>
         <Col span={2}>
-          <Statistic title="Stints" value={props.raceData.stints.length + 1} />
+          <Statistic title="Race length" formatter={timeFormatter} value={props.raceData.duration * 60} />
+        </Col>
+        <Col span={2}>
+          <Statistic title="Stints" value={props.raceData.stints.length} />
         </Col>
         <Col span={2}>
           <Statistic title="Total laps" value={_.last(props.raceData.stints)?.rollingData.elapsedLaps} />

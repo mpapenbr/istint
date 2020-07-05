@@ -13,7 +13,7 @@ const RaceName: React.FC<MyProps> = (props: MyProps) => {
     props.setName(e.target.value);
   };
 
-  return <Input addonBefore="Race" value={props.name} onChange={onChange} />;
+  return <Input value={props.name} onChange={onChange} />;
 };
 
 export default RaceName;
