@@ -94,23 +94,13 @@ const RaceSettingsRework: React.FC<MyProps> = ({
       </Col>
 
       <Col span={6}>
-        <Card title="Track & Car" size="small">
-          <Row gutter={8}>
-            <Col flex="75px" style={{ textAlign: "right" }}>
-              Track
-            </Col>
-            <Col flex="inherit">
-              <TrackSelect current={raceData.track} tracks={trackData.allTracks} selectTrack={setTrack} />
-            </Col>
-          </Row>
-          <Row gutter={8}>
-            <Col flex="75px" style={{ textAlign: "right" }}>
-              Car
-            </Col>
-            <Col flex="inherit">
-              <CarSelect current={raceData.car} cars={carData.allCars} selectCar={setCar} />
-            </Col>
-          </Row>
+        <Card title="Track" size="small">
+          <TrackSelect current={raceData.track} tracks={trackData.allTracks} selectTrack={setTrack} />
+        </Card>
+      </Col>
+      <Col span={6}>
+        <Card title="Car" size="small">
+          <CarSelect current={raceData.car} cars={carData.allCars} selectCar={setCar} />
         </Card>
       </Col>
     </Row>

@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
-import { ClickParam } from "antd/lib/menu";
+import { MenuInfo } from "rc-menu/lib/interface";
 import React from "react";
 import { ITrack } from "../stores/track/types";
 
@@ -13,8 +13,8 @@ interface IStateProps {
 }
 type MyProps = IDispatchProps & IStateProps;
 const TrackSelect: React.FC<MyProps> = (props: MyProps) => {
-  const handleMenuClick = (param: ClickParam) => {
-    props.selectTrack(parseInt(param.key));
+  const handleMenuClick = (param: MenuInfo) => {
+    props.selectTrack(parseInt(param.key as string));
   };
 
   const menu = (tracks: ITrack[]) => (
