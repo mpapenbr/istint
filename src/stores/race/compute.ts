@@ -6,7 +6,7 @@ import { ITimedRace } from "./types";
 
 function pitWorkTime(race: ITimedRace, currentStint: Stint, nextStint: Stint | undefined): IPitTime {
   if (nextStint === undefined) {
-    console.log("returing ", { defaultPitTime });
+    // console.log("returing ", { defaultPitTime });
     return { ...defaultPitTime };
   }
   const work = { ...defaultPitTime };
@@ -40,7 +40,7 @@ function pitWorkTime(race: ITimedRace, currentStint: Stint, nextStint: Stint | u
  */
 export function recomputeRaceStints(race: ITimedRace): Stint[] {
   const { stints } = race;
-  console.log("recomputeRaceStints", { race }, "stints:", { stints });
+  // console.log("recomputeRaceStints", { race }, "stints:", { stints });
   const newStints = Array.from(stints);
   newStints.forEach((s, i) => {
     s.duration = s.numLaps * s.driver.baseLaptime;
