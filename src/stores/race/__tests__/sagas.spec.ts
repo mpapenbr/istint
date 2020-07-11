@@ -1,5 +1,6 @@
 import { expectSaga } from "redux-saga-test-plan";
 import { driverInitialState } from "../../driver/reducer";
+import { settingsInitialState } from "../../settings/reducer";
 import { sagaChangeDuration } from "../actions";
 import { raceInitialState } from "../reducer";
 import { handleChangeDuration } from "../sagas/settings";
@@ -19,7 +20,7 @@ describe("race saga testplan ", () => {
   it("should check ", () => {
     return (
       expectSaga(handleChangeDuration, sagaChangeDuration(42))
-        .withState({ race: raceInitialState, driver: driverInitialState })
+        .withState({ race: raceInitialState, driver: driverInitialState, settings: settingsInitialState })
         .put({ type: RaceActionTypes.SET_DURATION, payload: 42 })
         // TODO:  check if payload is just some array (content not important)
         // .put({ type: RaceActionTypes.SET_STINTS, payload: [] })

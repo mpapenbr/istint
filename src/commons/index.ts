@@ -1,4 +1,4 @@
 export interface IBaseAction {
-    type: String,
-    payload?: any
+  type: String;
+  payload?: any;
 }

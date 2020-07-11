@@ -1,7 +1,9 @@
+import { Col, Row } from "antd";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RaceSummary from "../components/race/raceSummary";
 import RaceStints from "../components/raceStints";
+import StintTableControls from "../components/stint/stintTableControls";
 import { ApplicationState } from "../stores/index";
 import {
   resetRace,
@@ -80,7 +82,16 @@ const RaceContainer: React.FC = () => {
   return (
     <div>
       {/* <RaceSettings {...stateToProps} {...dispatchToProps} /> */}
-      <RaceSummary {...stateToProps} />
+      <div>
+        <Row>
+          <Col span={18}>
+            <RaceSummary {...stateToProps} />
+          </Col>
+          <Col span={6}>
+            <StintTableControls {...stateToProps} {...dispatchToProps} />
+          </Col>
+        </Row>
+      </div>
       <RaceStints {...stateToProps} {...dispatchToProps} />
     </div>
   );

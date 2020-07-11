@@ -8,7 +8,7 @@ import { sprintf } from "sprintf-js";
 import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types";
 import { ISettings, StintEditMode, TimeDisplayMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
-import { secAsString } from "../utils/output";
+import { lapTimeString, secAsString } from "../utils/output";
 import PitToolTip from "./stint/pitToolTip";
 
 export interface IDispatchToProps {
@@ -244,7 +244,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     {
       title: "Avg",
       dataIndex: ["driver", "baseLaptime"],
-      render: (t: number) => secAsString(t),
+      render: (t: number) => lapTimeString(t),
       editable: true,
       columHandleSave: props.updateLaptime,
       inputElementProvider: (props: any) => <InputNumber {...props} step={0.1} min={0} />,

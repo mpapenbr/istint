@@ -48,7 +48,7 @@ export const defaults: ICar[] = [
   {
     ...defaultCar,
     id: 7,
-    name: "McLaren MP4-12C",
+    name: "McL MP4-12C",
     tank: 130,
     refillRate: 80 / 25.8, // ~ 3.10
   },

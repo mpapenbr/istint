@@ -70,3 +70,11 @@
 .full-width {
   width: 100%;
 }
+
+.istint-select-dropdown .ant-dropdown-button {
+  margin: 0 8px 8px 0;
+}
+
+.istint-select-dropdown .ant-btn-group-rtl.ant-dropdown-button {
+  margin: 0 0 8px 8px;
+}

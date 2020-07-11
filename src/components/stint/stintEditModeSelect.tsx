@@ -10,13 +10,13 @@ interface IStateProps {
   current: StintEditMode;
 }
 type MyProps = IDispatchProps & IStateProps;
-const StintEditModeSelect: React.FC<MyProps> = (props: MyProps) => {
+const StintEditModeSelect: React.FC<MyProps> = ({ current, selectStintEditMode, ...rest }: MyProps) => {
   const onChange = (e: RadioChangeEvent) => {
-    props.selectStintEditMode(e.target.value);
+    selectStintEditMode(e.target.value);
   };
   return (
     <>
-      <Radio.Group defaultValue={props.current} buttonStyle="solid" onChange={onChange}>
+      <Radio.Group {...rest} defaultValue={current} buttonStyle="solid" onChange={onChange}>
         <Radio.Button value={StintEditMode.EditRow}>Edit row</Radio.Button>
         <Radio.Button value={StintEditMode.MoveRows}>Move row</Radio.Button>
       </Radio.Group>

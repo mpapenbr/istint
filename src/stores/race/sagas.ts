@@ -4,7 +4,7 @@ import { ApplicationState } from "..";
 import { IBaseAction } from "../../commons";
 import { CarState, TireChangeMode } from "../car/types";
 import { DriverActionTypes, DriverState } from "../driver/types";
-import { ISettings } from "../settings/types";
+import { ISettings, ISettingsState } from "../settings/types";
 import { Stint } from "../stint/types";
 import { TrackState } from "../track/types";
 import { recomputeRaceStints } from "./compute";
@@ -49,11 +49,17 @@ Generator {
     const raceData: ITimedRace = raceDataTmp as ITimedRace;
     const carState = (yield select((state: ApplicationState) => state.cars)) as CarState;
     const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+
     const newCar = carState.allCars.find((v) => v.id === carId);
     if (newCar !== undefined) {
       yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
-
-      const stints = computeFreshRace({ ...raceData, car: newCar }, driverState.currentDriver);
+      let workStints = computeFreshRace(
+        { ...raceData, car: newCar },
+        driverState.currentDriver,
+        settings.data.strategy
+      );
+      const stints = recomputeRaceStints({ ...raceData, stints: workStints });
       yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {
@@ -70,11 +76,17 @@ Generator {
     const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
     const trackState = (yield select((state: ApplicationState) => state.tracks)) as TrackState;
     const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
     const newTrack = trackState.allTracks.find((v) => v.id === trackId);
     if (newTrack !== undefined) {
       yield put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
 
-      const stints = computeFreshRace({ ...raceData, track: newTrack }, driverState.currentDriver);
+      let workStints = computeFreshRace(
+        { ...raceData, track: newTrack },
+        driverState.currentDriver,
+        settings.data.strategy
+      );
+      const stints = recomputeRaceStints({ ...raceData, stints: workStints });
       yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {

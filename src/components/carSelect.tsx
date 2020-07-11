@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
-import { ClickParam } from "antd/lib/menu";
+import { MenuInfo } from "rc-menu/lib/interface";
 import React from "react";
 import { ICar } from "../stores/car/types";
 
@@ -13,8 +13,12 @@ interface IStateProps {
 }
 type MyProps = IDispatchProps & IStateProps;
 const CarSelect: React.FC<MyProps> = (props: MyProps) => {
-  const handleMenuClick = (param: ClickParam) => {
-    props.selectCar(parseInt(param.key));
+  // const handleMenuClickx = (param: ClickParam) => {
+  //   props.selectCar(parseInt(param.key));
+  // };
+  const handleMenuClick = (param: MenuInfo) => {
+    console.log({ param });
+    props.selectCar(parseInt(param.key as string));
   };
 
   const menu = (cars: ICar[]) => (
@@ -27,7 +31,7 @@ const CarSelect: React.FC<MyProps> = (props: MyProps) => {
   return (
     <>
       <Dropdown overlay={menu(props.cars)}>
-        <Button style={{ width: "inherit" }}>
+        <Button>
           {props.current.name}
           <DownOutlined />
         </Button>
