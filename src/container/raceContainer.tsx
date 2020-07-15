@@ -1,5 +1,7 @@
 import { Col, Row } from "antd";
 import React, { useCallback } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
 import RaceSummary from "../components/race/raceSummary";
 import RaceStints from "../components/raceStints";
@@ -92,7 +94,9 @@ const RaceContainer: React.FC = () => {
           </Col>
         </Row>
       </div>
-      <RaceStints {...stateToProps} {...dispatchToProps} />
+      <DndProvider backend={HTML5Backend}>
+        <RaceStints {...stateToProps} {...dispatchToProps} />
+      </DndProvider>
     </div>
   );
   //

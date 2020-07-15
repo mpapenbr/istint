@@ -61,6 +61,17 @@ export interface IMoveStint {
   newIndex: number;
 }
 
+export interface IChangeStintDriver {
+  /**
+   * stint no
+   */
+  no: number;
+  /**
+   * driverName for lookup in driver state
+   */
+  name: string;
+}
+
 export enum RaceActionTypes {
   SET_DURATION = "@@race/SET_DURATION",
   SET_NAME = "@@race/SET_NAME",
@@ -89,6 +100,7 @@ export enum RaceActionTypes {
   SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP",
   SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME",
   SAGA_CHANGE_STINT_ATTRIBUTE_TIRES = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_TIRES",
+  SAGA_CHANGE_STINT_DRIVER = "@@race/SAGA_CHANGE_STINT_DRIVER",
   SAGA_MOVE_STINT = "@@race/SAGA_MOVE_STINT",
 }
 
