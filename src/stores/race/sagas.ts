@@ -14,7 +14,7 @@ import {
   handleChangeRaceRealStartTime as handleChangeStartReal,
   handleChangeRaceSimStartTime as handleChangeStartSim,
 } from "./sagas/settings";
-import { handleMoveStint } from "./sagas/stintorder";
+import { handleChangeStintDriver, handleMoveStint } from "./sagas/stintorder";
 import {
   IChangeSingleStintParam,
   IModifyStintParam,
@@ -375,6 +375,7 @@ export default function* raceSaga() {
     fork(watchSagaTestRequest),
 
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
+    yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_DRIVER, handleChangeStintDriver),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, handleChangeSingleStintAttributeNumLaps),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, handleChangeSingleStintAttributeLaptime),
     yield takeLatest(

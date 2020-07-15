@@ -5,6 +5,7 @@ import { Stint } from "../stint/types";
 import { ITrack } from "../track/types";
 import {
   IChangeSingleStintParam,
+  IChangeStintDriver,
   IModifyStintParam,
   IMoveStint,
   ISimpleRaceProposalParam,
@@ -25,6 +26,8 @@ export const sagaChangeSingleStintAttributeLaptime = (param: IChangeSingleStintP
   action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, param);
 export const sagaChangeSingleStintAttributeTires = (param: IChangeSingleStintParam) =>
   action(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_TIRES, param);
+export const sagaChangeSingleStintDriver = (param: IChangeStintDriver) =>
+  action(RaceActionTypes.SAGA_CHANGE_STINT_DRIVER, param);
 export const sagaChangeCar = (carId: number) => action(RaceActionTypes.SAGA_CHANGE_CAR, carId);
 export const sagaChangeTrack = (trackId: number) => action(RaceActionTypes.SAGA_CHANGE_TRACK, trackId);
 

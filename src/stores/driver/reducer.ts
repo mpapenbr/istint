@@ -1,9 +1,10 @@
 import { Reducer } from "redux";
+import { sampleDrivers } from "./defaults";
 import { defaultDriver, DriverActionTypes, DriverState } from "./types";
 
 const initialState: DriverState = {
   currentDriver: defaultDriver,
-  allDrivers: [],
+  allDrivers: sampleDrivers,
 };
 
 const reducer: Reducer<DriverState> = (state = initialState, action) => {

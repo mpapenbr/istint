@@ -9,6 +9,7 @@ import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types"
 import { ISettings, StintEditMode, TimeDisplayMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
 import { lapTimeString, secAsString } from "../utils/output";
+import DroppableStint from "./stint/droppableStint";
 import PitToolTip from "./stint/pitToolTip";
 
 export interface IDispatchToProps {
@@ -227,7 +228,14 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       render: () => <DragHandle />,
     },
     { title: "#", dataIndex: "no", className: "drag-visible", editable: false },
-    { title: "Driver", dataIndex: ["driver", "name"], className: "drag-visible", editable: false },
+    {
+      title: "Driver",
+      dataIndex: ["driver", "name"],
+      className: "drag-visible",
+      editable: false,
+
+      render: (d: string, record: IDisplayStint) => <DroppableStint no={record.no}>{d}</DroppableStint>,
+    },
     {
       title: "Laps",
       dataIndex: "numLaps",

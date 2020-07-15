@@ -1,9 +1,12 @@
 import { Tabs } from "antd";
 import React from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import OtherSettingsContainer from "../../container/otherSettingsContainer";
 import QuickProposalContainer from "../../container/quickProposalContainer";
 import RaceSettingsContainer from "../../container/raceSettingsContainer";
 import { UiMainEnum } from "../../stores/ui/types";
+import CompactStints from "../stint/compactStints";
 
 interface IStateProps {}
 interface IDispatchProps {}
@@ -23,6 +26,11 @@ const TabHelper: React.FC<MyProps> = (props: MyProps) => {
       </TabPane>
       <TabPane tab="Other" key={UiMainEnum.OtherSettings}>
         <OtherSettingsContainer />
+      </TabPane>
+      <TabPane tab="Planning" key={UiMainEnum.Planing}>
+        <DndProvider backend={HTML5Backend}>
+          <CompactStints />
+        </DndProvider>
       </TabPane>
     </Tabs>
   );
