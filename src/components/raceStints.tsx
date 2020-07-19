@@ -339,11 +339,16 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       }),
     };
   });
+
+  // https://www.npmjs.com/package/classnames ausprobieren zur dyn. Generierung von driverClass-CSS (mit backgroundColor)
   const myRowKey = (item: IDisplayStint) => item.no - 1; // easier for table move ops
   const enhancedStints: IDisplayStint[] = props.raceData.stints.map((v, i) => ({
     ...v,
     no: i + 1,
   }));
+  const rowConfig = (item: IDisplayStint, idx: number) => {
+    return { style: { background: "green" } };
+  };
   return (
     <>
       <Table
