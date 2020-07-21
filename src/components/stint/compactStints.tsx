@@ -53,20 +53,22 @@ const CompactStints: React.FC<MyProps> = (props: MyProps) => {
       <Row>
         <Col flex={2}>
           {driverData.map((d) => (
-            <Row>
+            <Row style={{ backgroundColor: d.backgroundColor }}>
               <Col className="driver-source">
-                <AssignableDriver name={d.name} {...dispatchToProps} />
+                <AssignableDriver driverId={d.id} name={d.name} {...dispatchToProps} />
               </Col>
             </Row>
           ))}
         </Col>
 
         <Col flex={3}>
-          {raceData.stints.map((i) => (
-            <Row>
+          {raceData.stints.map((s) => (
+            <Row style={{ backgroundColor: s.driver.backgroundColor }}>
               <Col className="stint-plan">
-                <DroppableStint no={i.no}>
-                  <p>Driver {i.no} </p>
+                <DroppableStint no={s.no}>
+                  <p>
+                    Driver {s.driver.name} -{s.driver.backgroundColor}-
+                  </p>
                 </DroppableStint>
                 {/* {i.no} left: {leftSpace(i)} entry: {entrySpace(i)} */}
               </Col>

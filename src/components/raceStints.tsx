@@ -1,6 +1,7 @@
 import { CheckCircleOutlined, MenuOutlined, WarningOutlined } from "@ant-design/icons";
 import { Checkbox, Form, Input, InputNumber, Table, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import classNames from "classnames";
 import _ from "lodash";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
@@ -9,9 +10,9 @@ import { IModifyStintParam, IMoveStint, ITimedRace } from "../stores/race/types"
 import { ISettings, StintEditMode, TimeDisplayMode } from "../stores/settings/types";
 import { IPitTime, IStintProblem, Stint } from "../stores/stint/types";
 import { lapTimeString, secAsString } from "../utils/output";
+import "./raceStints.css";
 import DroppableStint from "./stint/droppableStint";
 import PitToolTip from "./stint/pitToolTip";
-
 export interface IDispatchToProps {
   updateStint: (param: IModifyStintParam) => void;
   updateNumLaps: (stintNo: number, value: number) => void;
@@ -52,6 +53,7 @@ const EditableContext = React.createContext<any>(null);
 
 const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
   const [form] = Form.useForm();
+  console.log(props);
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
@@ -346,16 +348,17 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     ...v,
     no: i + 1,
   }));
-  const rowConfig = (item: IDisplayStint, idx: number) => {
-    return { style: { background: "green" } };
-  };
+
+  enhancedStints.forEach((s) => {
+    classNames(sprintf("stint_%d", s.no), { backgroundColor: "lightblue" });
+  });
   return (
     <>
       <Table
         components={components}
         columns={cellColumns}
         dataSource={enhancedStints}
-        rowClassName={() => "editable-row"}
+        rowClassName={(s: IDisplayStint) => sprintf("editable-row stint-row driver-%d", s.driver.id)}
         rowKey={myRowKey}
       />
     </>

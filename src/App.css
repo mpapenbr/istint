@@ -37,6 +37,20 @@
   }
 }
 
+/* solange ich noch keine bessere Lösung für die Fahrerfarben habe */
+.driver-1 {
+  background-color: rgb(176, 188, 0);
+}
+.driver-2 {
+  background-color: rgb(251, 158, 0);
+}
+.driver-3 {
+  background-color: rgb(174, 161, 255);
+}
+.driver-4 {
+  background-color: rgb(115, 216, 255);
+}
+
 /* für inputs */
 .editable-cell {
   position: relative;

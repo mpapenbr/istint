@@ -67,9 +67,9 @@ export interface IChangeStintDriver {
    */
   no: number;
   /**
-   * driverName for lookup in driver state
+   * driverId for lookup in driver state
    */
-  name: string;
+  id: number;
 }
 
 export enum RaceActionTypes {
