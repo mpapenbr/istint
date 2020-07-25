@@ -1,7 +1,6 @@
 import { Button, Card, Form, Input, InputNumber } from "antd";
 import { Store } from "antd/lib/form/interface";
 import React from "react";
-import { CompactPicker } from "react-color";
 import { IDriver } from "../../stores/driver/types";
 // import "./compact-stints.css";
 
@@ -26,9 +25,10 @@ const DriverDetail: React.FC<MyProps> = (props: MyProps) => {
 
   const onFinish = (values: Store) => {
     //const toUpdate = { ...props.data, ...values };
-    const { backgroundColorForm } = values;
-    console.log(backgroundColorForm.hex);
-    const toUpdate = { ...props.data, ...values, backgroundColorForm: {}, backgroundColor: backgroundColorForm.hex };
+    // const { backgroundColorForm } = values;
+    // console.log(backgroundColorForm.hex);
+    // const toUpdate = { ...props.data, ...values, backgroundColorForm: {}, backgroundColor: backgroundColorForm.hex };
+    const toUpdate = { ...props.data, ...values };
     console.log({ ...toUpdate });
     props.updateDriver(toUpdate);
   };
@@ -58,10 +58,19 @@ const DriverDetail: React.FC<MyProps> = (props: MyProps) => {
             // onChange={props.setFuelPerLap}
           />
         </Form.Item>
+        <Form.Item name="doubleStintAdd" label="Double stint+" rules={[{ required: true }]}>
+          <InputNumber
+            min={0}
+            max={5}
+            step={0.1}
 
-        <Form.Item name="backgroundColorForm" label="Color">
-          <CompactPicker color={props.data.backgroundColor} />
+            // onChange={props.setFuelPerLap}
+          />
         </Form.Item>
+
+        {/* <Form.Item name="backgroundColorForm" label="Color">
+          <CompactPicker color={props.data.backgroundColor} />
+        </Form.Item> */}
 
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">

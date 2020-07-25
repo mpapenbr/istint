@@ -8,11 +8,13 @@ interface IStateProps {
   settings: ISettings;
   fuelPerLap: number;
   baseLaptime: number;
+  doubleStintAdd: number;
 }
 interface IDispatchProps {
   setStrategy: (data: number) => void;
   setFuelPerLap: (d: any) => any;
   setBaseLaptime: (d: any) => any;
+  setDoubleStintAdd: (d: any) => any;
   computeProposal: () => any;
 }
 
@@ -33,12 +35,12 @@ const QuickProposal: React.FC<MyProps> = (props: MyProps) => {
           </Row>
         </Card>
       </Col>
-      <Col span={4}>
+      <Col span={6}>
         <Card title="Parameters" size="small">
           <Row gutter={0}>
             <Col span={24}>
               <Row gutter={8}>
-                <Col flex="75px" style={{ textAlign: "right" }}>
+                <Col flex="100px" style={{ textAlign: "right" }}>
                   Fuel/Lap
                 </Col>
                 <Col className="xfull-width" flex="inherit">
@@ -53,7 +55,7 @@ const QuickProposal: React.FC<MyProps> = (props: MyProps) => {
                 </Col>
               </Row>
               <Row gutter={8}>
-                <Col flex="75px" style={{ textAlign: "right" }}>
+                <Col flex="100px" style={{ textAlign: "right" }}>
                   Laptime
                 </Col>
                 <Col className="xfull-width" span={4}>
@@ -64,6 +66,20 @@ const QuickProposal: React.FC<MyProps> = (props: MyProps) => {
                     step={0.1}
                     value={props.baseLaptime}
                     onChange={props.setBaseLaptime}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={8}>
+                <Col flex="100px" style={{ textAlign: "right" }}>
+                  DoubleStint+
+                </Col>
+                <Col className="xfull-width" span={4}>
+                  <InputNumber
+                    min={0}
+                    max={5}
+                    step={0.1}
+                    value={props.doubleStintAdd}
+                    onChange={props.setDoubleStintAdd}
                   />
                 </Col>
               </Row>

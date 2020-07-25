@@ -63,6 +63,7 @@ const DevHelper: React.FC<MyProps> = (props: MyProps) => {
             driver: {
               id: 0,
               baseLaptime: 230,
+              doubleStintAdd: 0.5,
               fuelPerLap: 6.7,
               name: "SampleDriver",
             },

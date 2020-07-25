@@ -13,6 +13,7 @@ const QuickProposalContainer: React.FC = () => {
     settings: settings.data,
     fuelPerLap: driver.currentDriver.fuelPerLap,
     baseLaptime: driver.currentDriver.baseLaptime,
+    doubleStintAdd: driver.currentDriver.doubleStintAdd,
   }));
 
   const currentDriver = useSelector(({ driver }: ApplicationState) => ({ driver: { ...driver.currentDriver } }));
@@ -26,6 +27,10 @@ const QuickProposalContainer: React.FC = () => {
     ),
     setBaseLaptime: useCallback(
       (d: number) => dispatch(updateDefaultDriver({ ...currentDriver.driver, baseLaptime: d })),
+      [dispatch, currentDriver.driver]
+    ),
+    setDoubleStintAdd: useCallback(
+      (d: number) => dispatch(updateDefaultDriver({ ...currentDriver.driver, doubleStintAdd: d })),
       [dispatch, currentDriver.driver]
     ),
     setStrategy: useCallback((id: number) => dispatch(updateStrategy(id)), [dispatch]),

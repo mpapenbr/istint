@@ -22,23 +22,19 @@ const DriverMasterDetailContainer: React.FC = () => {
     addNewDriver: useCallback(() => dispatch(addNewDriver()), [dispatch]),
   };
 
-  const detailPart = () => {
-    if (editDriver === -1) {
-      return <span>No driver selected</span>;
-    }
-    const idx = driverData.findIndex((d) => d.id === editDriver);
-    if (idx === -1) {
-      return <span>driver with id {editDriver} not found</span>;
-    }
-    // console.log({ ...driverData[idx] });
-    return <DriverDetail data={driverData[idx]} {...dispatchToProps} />;
-  };
+  const editDriverData = driverData.find((d) => d.id === editDriver);
   return (
     <Row>
       <Col span={4}>
         <DriverMaster {...stateToProps} {...dispatchToProps} />
       </Col>
-      <Col span={8}>{detailPart()}</Col>
+      <Col span={8}>
+        {editDriverData === undefined ? (
+          <span>No driver selected</span>
+        ) : (
+          <DriverDetail data={editDriverData} {...dispatchToProps} />
+        )}
+      </Col>
     </Row>
   );
 };
