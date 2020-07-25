@@ -4,6 +4,7 @@ import { ItemTypes } from "../../commons";
 import { IChangeStintDriver } from "../../stores/race/types";
 
 interface IStateProps {
+  driverId: number;
   name: string;
 }
 
@@ -12,13 +13,13 @@ interface IDispatchProps {
 }
 
 type MyProps = IStateProps & IDispatchProps;
-const AssignableDriver: React.FC<MyProps> = ({ name, setDriver }) => {
+const AssignableDriver: React.FC<MyProps> = ({ driverId, name, setDriver }) => {
   const [{ isDragging }, drag] = useDrag({
     item: { name, type: ItemTypes.DRIVER },
     end: (item: { name: string } | undefined, monitor: DragSourceMonitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        setDriver({ no: dropResult.no, name: name });
+        setDriver({ no: dropResult.no, id: driverId });
         // alert(`You dropped ${item.name} into ${dropResult.no}!`);
       }
     },

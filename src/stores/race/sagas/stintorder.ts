@@ -34,12 +34,10 @@ Generator {
     const raceData: ITimedRace = (yield select((state: ApplicationState) => state.race.data)) as ITimedRace;
     const driverData: IDriver[] = (yield select((state: ApplicationState) => state.driver.allDrivers)) as IDriver[];
     const newStints = raceData.stints.slice();
-    const toChange = newStints.find((s) => s.no === param.no);
-    const toChangeDriver = driverData.find((d) => d.name === param.name);
+    var toChange = newStints.find((s) => s.no === param.no);
+    const toChangeDriver = driverData.find((d) => d.id === param.id);
     if (toChange !== undefined && toChangeDriver !== undefined) {
-      toChange.driver.name = toChangeDriver.name;
-      toChange.driver.baseLaptime = toChangeDriver.baseLaptime;
-      toChange.driver.fuelPerLap = toChangeDriver.fuelPerLap;
+      toChange.driver = Object.assign({}, toChangeDriver);
       const stints = recomputeRaceStints({ ...raceData, stints: newStints });
       yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
