@@ -16,7 +16,7 @@ const DurationInput: React.FC<MyProps> = (props: MyProps) => {
 
   return (
     <InputNumber
-      style={{ width: "inherit" }}
+      // style={{ width: "inherit" }}
       min={0}
       max={1440}
       step={1}

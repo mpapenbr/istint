@@ -21,7 +21,11 @@ Generator {
     const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
     const settings: ISettings = (yield select(getSettings)) as ISettings;
     yield put({ type: RaceActionTypes.SET_DURATION, payload: durationMin });
-    let workStints = computeFreshRace(raceData, driverState.currentDriver, settings.strategy);
+    let workStints = computeFreshRace(
+      { ...raceData, duration: durationMin },
+      driverState.currentDriver,
+      settings.strategy
+    );
     const stints = recomputeRaceStints({ ...raceData, stints: workStints });
     yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
   } catch (e) {
