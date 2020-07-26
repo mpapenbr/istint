@@ -56,7 +56,7 @@ Generator {
       yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
       let workStints = computeFreshRace(
         { ...raceData, car: newCar },
-        driverState.currentDriver,
+        [driverState.currentDriver],
         settings.data.strategy
       );
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
@@ -83,7 +83,7 @@ Generator {
 
       let workStints = computeFreshRace(
         { ...raceData, track: newTrack },
-        driverState.currentDriver,
+        [driverState.currentDriver],
         settings.data.strategy
       );
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
@@ -119,7 +119,7 @@ Generator {
     // console.log(driver);
     console.log(raceData);
 
-    const stints = computeFreshRace({ ...raceData, duration: myParam.duration }, myParam.driver, myParam.strategy);
+    const stints = computeFreshRace({ ...raceData, duration: myParam.duration }, [myParam.driver], myParam.strategy);
     const workRace = { ...raceData, stints: stints };
     yield put({
       type: RaceActionTypes.SET_STINTS,
