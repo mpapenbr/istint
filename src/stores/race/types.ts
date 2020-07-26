@@ -41,7 +41,7 @@ export interface IModifyStintParam {
 export interface ISimpleRaceProposalParam {
   name: string;
   duration: number;
-  driver: IDriver;
+  driver: IDriver[];
   strategy: RaceStrategyMode;
 }
 /**

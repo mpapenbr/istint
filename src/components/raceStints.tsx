@@ -355,6 +355,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
   return (
     <>
       <Table
+        pagination={false}
         components={components}
         columns={cellColumns}
         dataSource={enhancedStints}

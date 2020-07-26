@@ -3,7 +3,7 @@ import { all, fork, put, select, takeEvery, takeLatest } from "redux-saga/effect
 import { ApplicationState } from "..";
 import { IBaseAction } from "../../commons";
 import { CarState, TireChangeMode } from "../car/types";
-import { DriverActionTypes, DriverState } from "../driver/types";
+import { DriverState } from "../driver/types";
 import { ISettings, ISettingsState } from "../settings/types";
 import { Stint } from "../stint/types";
 import { TrackState } from "../track/types";
@@ -54,11 +54,7 @@ Generator {
     const newCar = carState.allCars.find((v) => v.id === carId);
     if (newCar !== undefined) {
       yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
-      let workStints = computeFreshRace(
-        { ...raceData, car: newCar },
-        [driverState.currentDriver],
-        settings.data.strategy
-      );
+      let workStints = computeFreshRace({ ...raceData, car: newCar }, driverState.allDrivers, settings.data.strategy);
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
       yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
@@ -83,7 +79,7 @@ Generator {
 
       let workStints = computeFreshRace(
         { ...raceData, track: newTrack },
-        [driverState.currentDriver],
+        driverState.allDrivers,
         settings.data.strategy
       );
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
@@ -105,10 +101,10 @@ Generator {
       type: RaceActionTypes.SET_DURATION,
       payload: myParam.duration,
     });
-    yield put({
-      type: DriverActionTypes.UPDATE_DEFAULT_DRIVER,
-      payload: myParam.driver,
-    });
+    // yield put({
+    //   type: DriverActionTypes.UPDATE_DEFAULT_DRIVER,
+    //   payload: myParam.driver,
+    // });
 
     // oh my! Typescript malus :(
     // didn't yet find a way to get this assigned by using one statement
@@ -117,9 +113,9 @@ Generator {
     const raceData: ITimedRace = raceDataTmp as ITimedRace;
 
     // console.log(driver);
-    console.log(raceData);
+    // console.log(raceData);
 
-    const stints = computeFreshRace({ ...raceData, duration: myParam.duration }, [myParam.driver], myParam.strategy);
+    const stints = computeFreshRace({ ...raceData, duration: myParam.duration }, myParam.driver, myParam.strategy);
     const workRace = { ...raceData, stints: stints };
     yield put({
       type: RaceActionTypes.SET_STINTS,

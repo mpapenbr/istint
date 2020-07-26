@@ -1,21 +1,25 @@
 import { Button } from "antd";
 import React from "react";
+import { IDriver } from "../stores/driver/types";
 import { ISimpleRaceProposalParam } from "../stores/race/types";
 import { RaceStrategyMode } from "../stores/stint/types";
 import ExportButton from "./exportButton";
 import ImportButton from "./importButton";
 
 export interface IDispatchToProps {
-  setDuration: (d: number) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
-  sagaTestDouble: (d: number) => any; // das passt noch nicht. Ich wüsste noch gern, was hier wirklich statt any stehen sollte.
-  quickProposal: (param: ISimpleRaceProposalParam) => any;
+  setDuration: (d: number) => void;
+  sagaTestDouble: (d: number) => void;
+  quickProposal: (param: ISimpleRaceProposalParam) => void;
 }
 interface IStateToProps {
   raceTimeMsec: number;
+  drivers: IDriver[];
 }
 type MyProps = IDispatchToProps & IStateToProps;
 const DevHelper: React.FC<MyProps> = (props: MyProps) => {
   console.log("duration" + props.raceTimeMsec);
+
+  const leMansDrivers = props.drivers.map((d) => ({ ...d, baseLaptime: 230, fuelPerLap: 6.7 }));
   return (
     <div>
       <h3>HelperBar</h3>
@@ -60,13 +64,7 @@ const DevHelper: React.FC<MyProps> = (props: MyProps) => {
           props.quickProposal({
             name: "QuickProposal",
             duration: 6 * 60,
-            driver: {
-              id: 0,
-              baseLaptime: 230,
-              doubleStintAdd: 0.5,
-              fuelPerLap: 6.7,
-              name: "SampleDriver",
-            },
+            driver: leMansDrivers,
             strategy: RaceStrategyMode.DOUBLE_STINT_TIRES,
           });
         }}

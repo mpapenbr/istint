@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Reducer } from "redux";
+import { sprintf } from "sprintf-js";
 import { sampleDrivers } from "./defaults";
 import { defaultDriver, DriverActionTypes, DriverState } from "./types";
 
@@ -25,7 +26,21 @@ const reducer: Reducer<DriverState> = (state = initialState, action) => {
       return { ...state, allDrivers: newDrivers };
     }
 
-    case DriverActionTypes.UPDATE_DRIVER:
+    case DriverActionTypes.DUPLICATE_DRIVER: {
+      const newDrivers = state.allDrivers.slice();
+      const toDuplicateId = action.payload;
+
+      const idx = newDrivers.findIndex((d) => d.id === toDuplicateId);
+      if (idx !== -1) {
+        const newDriverData = { ...newDrivers[idx], name: sprintf("Driver%d", newDrivers.length + 1) };
+        newDrivers.push(newDriverData);
+        newDrivers.forEach((d, idx) => {
+          d.id = idx + 1;
+        });
+      }
+      return { ...state, allDrivers: newDrivers };
+    }
+    case DriverActionTypes.UPDATE_DRIVER: {
       const newDrivers = state.allDrivers.slice();
       const updatedDriver = action.payload;
 
@@ -34,6 +49,7 @@ const reducer: Reducer<DriverState> = (state = initialState, action) => {
         newDrivers[idx] = updatedDriver;
       }
       return { ...state, allDrivers: newDrivers };
+    }
 
     case DriverActionTypes.REMOVE_DRIVER: {
       const toRemoveId = action.payload;
@@ -42,6 +58,9 @@ const reducer: Reducer<DriverState> = (state = initialState, action) => {
       if (itemIdx !== -1) {
         newDrivers.splice(itemIdx, 1);
       }
+      newDrivers.forEach((d, idx) => {
+        d.id = idx + 1;
+      });
       return { ...state, allDrivers: newDrivers };
     }
     case DriverActionTypes.REPLACE: {

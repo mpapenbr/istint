@@ -21,6 +21,7 @@ export enum DriverActionTypes {
   ADD_NEW_DRIVER = "@@driver/ADD_NEW_DRIVER",
   UPDATE_DRIVER = "@@driver/UPDATE_DRIVER",
   REMOVE_DRIVER = "@@driver/REMOVE_DRIVER",
+  DUPLICATE_DRIVER = "@@driver/DUPLICATE_DRIVER",
   REPLACE = "@@driver/REPLACE",
 }
 

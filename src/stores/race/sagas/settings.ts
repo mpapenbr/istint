@@ -23,7 +23,7 @@ Generator {
     yield put({ type: RaceActionTypes.SET_DURATION, payload: durationMin });
     let workStints = computeFreshRace(
       { ...raceData, duration: durationMin },
-      [driverState.currentDriver],
+      driverState.allDrivers,
       settings.strategy
     );
     const stints = recomputeRaceStints({ ...raceData, stints: workStints });

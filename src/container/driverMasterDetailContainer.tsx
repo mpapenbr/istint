@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DriverDetail from "../components/driver/driverDetail";
 import DriverMaster from "../components/driver/driverMaster";
-import { addNewDriver, removeDriver, updateDriver } from "../stores/driver/actions";
+import { addNewDriver, duplicateDriver, removeDriver, updateDriver } from "../stores/driver/actions";
 import { IDriver } from "../stores/driver/types";
 import { ApplicationState } from "../stores/index";
 
@@ -20,6 +20,7 @@ const DriverMasterDetailContainer: React.FC = () => {
     updateDriver: useCallback((d: IDriver) => dispatch(updateDriver(d)), [dispatch]),
     removeDriver: useCallback((id: number) => dispatch(removeDriver(id)), [dispatch]),
     addNewDriver: useCallback(() => dispatch(addNewDriver()), [dispatch]),
+    duplicateDriver: useCallback((id: number) => dispatch(duplicateDriver(id)), [dispatch]),
   };
 
   const editDriverData = driverData.find((d) => d.id === editDriver);
