@@ -64,8 +64,17 @@ export interface Stint {
 }
 
 export enum RaceStrategyMode {
-  ALWAYS_NEW_TIRES,
+  /**
+   * Change driver and tires on each stint
+   */
+  SINGLE_STINT,
+  /**
+   * drivers do double stint, but gets new tires
+   */
   DOUBLE_STINT,
+  /**
+   * drivers do double stint without changing tires
+   */
   DOUBLE_STINT_TIRES,
 }
 
