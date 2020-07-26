@@ -50,6 +50,12 @@
 .driver-4 {
   background-color: rgb(115, 216, 255);
 }
+.driver-5 {
+  background-color: rgb(242, 126, 157);
+}
+.driver-6 {
+  background-color: rgb(247, 247, 124);
+}
 
 /* für inputs */
 .editable-cell {

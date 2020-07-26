@@ -1,5 +1,5 @@
 import { TableOutlined } from "@ant-design/icons";
-import { Button, Card, Col, InputNumber, Row } from "antd";
+import { Button, Card, Col, Row } from "antd";
 import React from "react";
 import { ISettings } from "../../stores/settings/types";
 import RaceStrategySelect from "../strategySelect";
@@ -35,7 +35,7 @@ const QuickProposal: React.FC<MyProps> = (props: MyProps) => {
           </Row>
         </Card>
       </Col>
-      <Col span={6}>
+      {/* <Col span={6}>
         <Card title="Parameters" size="small">
           <Row gutter={0}>
             <Col span={24}>
@@ -86,7 +86,7 @@ const QuickProposal: React.FC<MyProps> = (props: MyProps) => {
             </Col>
           </Row>
         </Card>
-      </Col>
+      </Col> */}
       <Col span={4}>
         <Card title="Action" size="small">
           <Button icon={<TableOutlined />} onClick={props.computeProposal}>
