@@ -66,7 +66,7 @@ export function computeFreshRace(
   let currentStint = stint;
   remainingTime -= stint.duration;
   while (remainingTime > 0) {
-    var nextDriver = workDrivers[currentDriverIdx];
+    var nextDriver = workDrivers[currentDriverIdx % workDrivers.length];
     switch (mode) {
       case RaceStrategyMode.SINGLE_STINT:
         nextDriver = workDrivers[++currentDriverIdx % workDrivers.length];

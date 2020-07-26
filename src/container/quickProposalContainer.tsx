@@ -17,6 +17,7 @@ const QuickProposalContainer: React.FC = () => {
   }));
 
   const currentDriver = useSelector(({ driver }: ApplicationState) => ({ driver: { ...driver.currentDriver } }));
+  const allDrivers = useSelector(({ driver }: ApplicationState) => driver.allDrivers);
   const race = useSelector(({ race }: ApplicationState) => ({ race: { ...race.data } }));
   const settings = useSelector(({ settings }: ApplicationState) => ({ ...settings.data }));
 
@@ -38,11 +39,11 @@ const QuickProposalContainer: React.FC = () => {
       const param = {
         name: "QuickProposal2",
         duration: race.race.duration,
-        driver: currentDriver.driver,
+        driver: allDrivers,
         strategy: settings.strategy,
       };
       dispatch(computeQuickProposal(param));
-    }, [dispatch, currentDriver, race, settings]),
+    }, [dispatch, allDrivers, race, settings]),
   };
 
   return <QuickProposal {...stateToProps} {...dispatchToProps} />;
