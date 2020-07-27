@@ -76,6 +76,10 @@ export enum RaceStrategyMode {
    * drivers do double stint without changing tires
    */
   DOUBLE_STINT_TIRES,
+  /**
+   * drivers do triple stint, but gets new tires
+   */
+  TRIPLE_STINT,
 }
 
 //@deprecated  (nur noch für devhelper)

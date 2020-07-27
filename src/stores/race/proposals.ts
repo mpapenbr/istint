@@ -91,6 +91,13 @@ export function computeFreshRace(
           nextDriver = { ...short, baseLaptime: short.baseLaptime + short.doubleStintAdd };
         }
         break;
+
+      case RaceStrategyMode.TRIPLE_STINT:
+        if (hasDrivenLastNStints(2, currentStint.driver.id)) {
+          nextDriver = workDrivers[++currentDriverIdx % workDrivers.length];
+        }
+        currentStint.wantNewTires = true;
+        break;
     }
     const driverChangeTime = nextDriver.name === stint.driver.name ? 0 : 30;
     const preComputationRemainingTime = remainingTime; // we may need this later
