@@ -7,6 +7,7 @@ export enum UiMainEnum {
   Planing,
   Storage,
   OtherSettings,
+  FuleInfos,
 }
 export interface IUi {
   main: UiMainEnum;

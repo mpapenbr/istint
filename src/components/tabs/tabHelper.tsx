@@ -7,6 +7,7 @@ import OtherSettingsContainer from "../../container/otherSettingsContainer";
 import QuickProposalContainer from "../../container/quickProposalContainer";
 import RaceSettingsContainer from "../../container/raceSettingsContainer";
 import { UiMainEnum } from "../../stores/ui/types";
+import FuelInfo from "../info/fuelInfo";
 import CompactStints from "../stint/compactStints";
 
 interface IStateProps {}
@@ -34,6 +35,9 @@ const TabHelper: React.FC<MyProps> = (props: MyProps) => {
         <DndProvider backend={HTML5Backend}>
           <CompactStints />
         </DndProvider>
+      </TabPane>
+      <TabPane tab="Fuel calc" key={UiMainEnum.FuleInfos}>
+        <FuelInfo />
       </TabPane>
     </Tabs>
   );
