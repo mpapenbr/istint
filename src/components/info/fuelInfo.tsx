@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { sprintf } from "sprintf-js";
 import { ApplicationState } from "../../stores";
+import { TireChangeMode } from "../../stores/car/types";
 import { lapTimeString, secAsMMSS } from "../../utils/output";
 
 interface IData {
@@ -12,13 +13,25 @@ interface IData {
   fuel: number;
 }
 const FuelInfo: React.FC<{}> = () => {
+  const car = useSelector(({ race }: ApplicationState) => race.data.car);
   const carTank = useSelector(({ race }: ApplicationState) => race.data.car.tank);
+
   const driver = useSelector(({ driver }: ApplicationState) => _.first(driver.allDrivers));
   const [tank, setTank] = useState(carTank);
   const [fuelPerLap, setFuelPerLap] = useState(3);
   const [laptime, setLaptime] = useState(90);
   const laps = Math.floor(tank / fuelPerLap);
-  const data = _.range(laps - 1, laps + 2).map((l) => ({ key: l, laps: l, fuel: tank / l, time: l * laptime }));
+  const doubleStintDelta = (calcLaps: number) => {
+    return car.tireChangeMode === TireChangeMode.AFTER_REFILL ? car.tireChangeTime / calcLaps : 0;
+  };
+  const data = _.range(laps - 1, laps + 2).map((l) => ({
+    key: l,
+    laps: l,
+    fuel: tank / l,
+    time: l * laptime,
+    tireChangeSave: doubleStintDelta(l),
+    avgTCSpareTime: laptime + doubleStintDelta(l),
+  }));
   var mins = { tank: 0, fuelPerLap: 0.1, laptime: 0.1 };
   var maxs = { tank: 130, fuelPerLap: 15, laptime: 720 };
   var defaultValues = { tank: carTank, fuelPerLap: 3, laptime: 90 };
@@ -78,6 +91,12 @@ const FuelInfo: React.FC<{}> = () => {
             <Col>
               <Statistic title="Laptime" value={lapTimeString(laptime)} />
             </Col>
+            <Col>
+              <Statistic title="TCD" value={doubleStintDelta(laps)} precision={2} />
+            </Col>
+            <Col>
+              <Statistic title="TCL" value={lapTimeString(laptime + doubleStintDelta(laps))} />
+            </Col>
           </Row>
         </Card>
       </Col>
@@ -88,6 +107,8 @@ const FuelInfo: React.FC<{}> = () => {
             { title: "Laps", key: "laps", dataIndex: "laps" },
             { title: "Fuel/Lap", key: "fuel", dataIndex: "fuel", render: (v) => sprintf("%.2f", v) },
             { title: "Time", key: "time", dataIndex: "time", render: (v) => secAsMMSS(v) },
+            { title: "TCD", key: "tireChangeSave", dataIndex: "tireChangeSave", render: (v) => sprintf("%.2f", v) },
+            { title: "TCL", key: "avgTCSpareTime", dataIndex: "avgTCSpareTime", render: (v) => lapTimeString(v) },
           ]}
           dataSource={data}
         />
