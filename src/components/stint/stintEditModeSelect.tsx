@@ -16,7 +16,7 @@ const StintEditModeSelect: React.FC<MyProps> = ({ current, selectStintEditMode, 
   };
   return (
     <>
-      <Radio.Group {...rest} defaultValue={current} buttonStyle="solid" onChange={onChange}>
+      <Radio.Group {...rest} defaultValue={current} buttonStyle="outline" onChange={onChange}>
         <Radio.Button value={StintEditMode.EditRow}>Edit row</Radio.Button>
         <Radio.Button value={StintEditMode.MoveRows}>Move row</Radio.Button>
       </Radio.Group>

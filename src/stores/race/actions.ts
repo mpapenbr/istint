@@ -38,6 +38,7 @@ export const sagaChangeRaceRealStartTime = (startDate: Date) =>
   action(RaceActionTypes.SAGA_CHANGE_START_REAL, startDate);
 export const sagaChangeRaceSimStartTime = (startDate: Date) => action(RaceActionTypes.SAGA_CHANGE_START_SIM, startDate);
 export const sagaMoveStint = (param: IMoveStint) => action(RaceActionTypes.SAGA_MOVE_STINT, param);
+export const sagaRemoveStint = (stintNo: number) => action(RaceActionTypes.SAGA_REMOVE_STINT, stintNo);
 
 export const setDuration = (duration: number): IBaseAction => action(RaceActionTypes.SET_DURATION, duration);
 export const setName = (name: string): IBaseAction => action(RaceActionTypes.SET_NAME, name);
@@ -48,6 +49,8 @@ export const setStartSim = (time: Date): IBaseAction => action(RaceActionTypes.S
 export const moveStint = (param: IMoveStint) => action(RaceActionTypes.MOVE_STINT, param);
 
 export const setStints = (stints: Stint[]) => action(RaceActionTypes.SET_STINTS, stints);
+export const addStint = () => action(RaceActionTypes.ADD_STINT, {});
+export const removeStint = (stintNo: number) => action(RaceActionTypes.REMOVE_STINT, stintNo);
 export const resetRace = () => action(RaceActionTypes.RESET, {});
 
 export const replaceRace = (newData: ITimedRace) => action(RaceActionTypes.REPLACE, newData);

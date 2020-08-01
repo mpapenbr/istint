@@ -16,7 +16,7 @@ const TimeDisplayModeSelect: React.FC<MyProps> = (props: MyProps) => {
   };
   return (
     <>
-      <Radio.Group defaultValue={props.current} buttonStyle="solid" onChange={onChange}>
+      <Radio.Group defaultValue={props.current} buttonStyle="outline" onChange={onChange}>
         <Radio.Button value={TimeDisplayMode.Real}>Real</Radio.Button>
         <Radio.Button value={TimeDisplayMode.Sim}>Simulation</Radio.Button>
       </Radio.Group>
