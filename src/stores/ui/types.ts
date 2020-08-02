@@ -5,6 +5,7 @@ export enum UiMainEnum {
   Settings,
   QuickProposal,
   Planing,
+  Compact,
   Storage,
   OtherSettings,
   FuleInfos,

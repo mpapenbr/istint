@@ -5,8 +5,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
 import "./App.css";
-import DevContainer from "./container/devContainer";
-import RaceContainer from "./container/raceContainer";
+import AppHeader from "./components/AppHeader";
 import TabContainer from "./container/tabContainer";
 import { ApplicationState } from "./stores";
 
@@ -20,10 +19,11 @@ const App: React.FC<AppProps> = ({ store, history }) => {
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <div className="App">
-          <DevContainer />
+          {/* <DevContainer /> */}
+          <AppHeader />
           <TabContainer />
 
-          <RaceContainer />
+          {/* <RaceContainer /> */}
         </div>
       </ConnectedRouter>
     </Provider>

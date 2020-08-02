@@ -8,6 +8,7 @@ import RaceStints from "../components/raceStints";
 import StintTableControls from "../components/stint/stintTableControls";
 import { ApplicationState } from "../stores/index";
 import {
+  addStint,
   resetRace,
   sagaChangeCar,
   sagaChangeDuration,
@@ -20,6 +21,7 @@ import {
   sagaChangeSingleStintAttributeTires,
   sagaChangeTrack,
   sagaMoveStint,
+  sagaRemoveStint,
   setName,
 } from "../stores/race/actions";
 import { IModifyStintParam, IMoveStint } from "../stores/race/types";
@@ -79,6 +81,8 @@ const RaceContainer: React.FC = () => {
     moveStint: useCallback((param: IMoveStint) => dispatch(sagaMoveStint(param)), [dispatch]),
     setStintEditMode: useCallback((value: number) => dispatch(updateStintEditMode(value)), [dispatch]),
     setTimeDisplayMode: useCallback((value: number) => dispatch(updateTimeDisplayMode(value)), [dispatch]),
+    addStint: useCallback(() => dispatch(addStint()), [dispatch]),
+    removeStint: useCallback((stintNo: number) => dispatch(sagaRemoveStint(stintNo)), [dispatch]),
     reset: useCallback(() => dispatch(resetRace()), [dispatch]),
   };
   return (

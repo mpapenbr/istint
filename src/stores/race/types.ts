@@ -85,6 +85,8 @@ export enum RaceActionTypes {
   RESET = "@@race/RESET",
   REPLACE = "@@race/REPLACE",
   MOVE_STINT = "@@race/MOVE_STINT",
+  ADD_STINT = "@@race/ADD_STINT",
+  REMOVE_STINT = "@@race/REMOVE_STINT",
 
   SAGA_TEST = "@@race/SAGA_TEST",
   SAGA_TEST_DOUBLE = "@@race/SAGA_TEST_DOUBLE",
@@ -102,6 +104,8 @@ export enum RaceActionTypes {
   SAGA_CHANGE_STINT_ATTRIBUTE_TIRES = "@@race/SAGA_CHANGE_STINT_ATTRIBUTE_TIRES",
   SAGA_CHANGE_STINT_DRIVER = "@@race/SAGA_CHANGE_STINT_DRIVER",
   SAGA_MOVE_STINT = "@@race/SAGA_MOVE_STINT",
+  SAGA_ADD_STINT = "@@race/SAGA_ADD_STINT",
+  SAGA_REMOVE_STINT = "@@race/SAGA_REMOVE_STINT",
 }
 
 export interface IRaceState {

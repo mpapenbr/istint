@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Form, Row } from "antd";
 import React from "react";
 import { ISettings } from "../../stores/settings/types";
 import TopLabel from "../topLabel";
@@ -16,6 +16,21 @@ interface IDispatchProps {
 type MyProps = IStateProps & IDispatchProps;
 
 const StintTableControls: React.FC<MyProps> = (props: MyProps) => {
+  return (
+    <Form layout="inline">
+      <Form.Item label="Edit mode">
+        <StintEditModeSelect current={props.settings.stintEditMode} selectStintEditMode={props.setStintEditMode} />
+      </Form.Item>
+      <Form.Item label="Time">
+        <TimeDisplayModeSelect
+          current={props.settings.timeDisplayMode}
+          selectTimeDisplayMode={props.setTimeDisplayMode}
+        />
+      </Form.Item>
+    </Form>
+  );
+};
+const StintTableControlsOld: React.FC<MyProps> = (props: MyProps) => {
   return (
     <Row gutter={4}>
       <Col>

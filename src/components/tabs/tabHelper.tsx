@@ -1,14 +1,12 @@
 import { Tabs } from "antd";
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import DriverMasterDetailContainer from "../../container/driverMasterDetailContainer";
 import OtherSettingsContainer from "../../container/otherSettingsContainer";
 import QuickProposalContainer from "../../container/quickProposalContainer";
+import RaceContainer from "../../container/raceContainer";
 import RaceSettingsContainer from "../../container/raceSettingsContainer";
 import { UiMainEnum } from "../../stores/ui/types";
 import FuelInfo from "../info/fuelInfo";
-import CompactStints from "../stint/compactStints";
 
 interface IStateProps {}
 interface IDispatchProps {}
@@ -28,16 +26,19 @@ const TabHelper: React.FC<MyProps> = (props: MyProps) => {
       <TabPane tab="Quick proposal" key={UiMainEnum.QuickProposal}>
         <QuickProposalContainer />
       </TabPane>
-      <TabPane tab="Other" key={UiMainEnum.OtherSettings}>
-        <OtherSettingsContainer />
-      </TabPane>
       <TabPane tab="Planning" key={UiMainEnum.Planing}>
+        <RaceContainer />
+      </TabPane>
+      {/* <TabPane tab="Compact" key={UiMainEnum.Compact}>
         <DndProvider backend={HTML5Backend}>
           <CompactStints />
         </DndProvider>
-      </TabPane>
+      </TabPane> */}
       <TabPane tab="Fuel calc" key={UiMainEnum.FuleInfos}>
         <FuelInfo />
+      </TabPane>
+      <TabPane tab="Other" key={UiMainEnum.OtherSettings}>
+        <OtherSettingsContainer />
       </TabPane>
     </Tabs>
   );

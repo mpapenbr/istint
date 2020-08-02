@@ -1,5 +1,5 @@
-import { CheckCircleOutlined, MenuOutlined, WarningOutlined } from "@ant-design/icons";
-import { Checkbox, Form, Input, InputNumber, Table, Tooltip } from "antd";
+import { CheckCircleOutlined, DeleteOutlined, MenuOutlined, WarningOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, InputNumber, Table, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import classNames from "classnames";
 import _ from "lodash";
@@ -20,6 +20,8 @@ export interface IDispatchToProps {
   updateLaptime: (stintNo: number, value: number) => void;
   updateTireRequest: (stintNo: number, value: boolean) => void;
   moveStint: (param: IMoveStint) => void;
+  addStint: () => void;
+  removeStint: (stintNo: number) => void;
 }
 interface IStateToProps {
   raceData: ITimedRace;
@@ -219,6 +221,9 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         return "realTime";
     }
   };
+  const removeStint = (e: React.MouseEvent<HTMLButtonElement>) => {
+    props.removeStint(parseInt(e.currentTarget.value));
+  };
 
   var columns = [
     {
@@ -309,6 +314,19 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       editable: false,
       render: (p: IStintProblem[]) => renderStintProblems(p),
     },
+    {
+      title: "Action",
+      dataIndex: ["no"],
+      editable: false,
+      render: (no: number, record: Stint) => (
+        <Button
+          icon={<DeleteOutlined />}
+          className={sprintf("driver-%d", record.driver.id)}
+          value={no}
+          onClick={removeStint}
+        />
+      ),
+    },
   ];
 
   if (props.settings.stintEditMode === StintEditMode.EditRow) {
@@ -341,7 +359,9 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       }),
     };
   });
-
+  const addNewStint = () => {
+    return <Button onClick={props.addStint}>Add stint</Button>;
+  };
   // https://www.npmjs.com/package/classnames ausprobieren zur dyn. Generierung von driverClass-CSS (mit backgroundColor)
   const myRowKey = (item: IDisplayStint) => item.no - 1; // easier for table move ops
   const enhancedStints: IDisplayStint[] = props.raceData.stints.map((v, i) => ({
@@ -361,6 +381,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
         dataSource={enhancedStints}
         rowClassName={(s: IDisplayStint) => sprintf("editable-row stint-row driver-%d", s.driver.id)}
         rowKey={myRowKey}
+        footer={addNewStint}
       />
     </>
   );
