@@ -3,9 +3,11 @@ import { ConnectedRouter } from "connected-react-router";
 import { History } from "history";
 import React from "react";
 import { Provider } from "react-redux";
+import { Route, Switch } from "react-router";
 import { Store } from "redux";
 import "./App.css";
 import AppHeader from "./components/AppHeader";
+import SocialLogin from "./components/login/SocialLogin";
 import TabContainer from "./container/tabContainer";
 import { ApplicationState } from "./stores";
 
@@ -21,7 +23,11 @@ const App: React.FC<AppProps> = ({ store, history }) => {
         <div className="App">
           {/* <DevContainer /> */}
           <AppHeader />
-          <TabContainer />
+          {/* <TabContainer /> */}
+          <Switch>
+            <Route path="/" exact={true} component={TabContainer} />
+            <Route path="/login" component={SocialLogin} />
+          </Switch>
 
           {/* <RaceContainer /> */}
         </div>
