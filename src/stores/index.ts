@@ -15,6 +15,8 @@ import { trackReducer } from "./track/reducer";
 import { TrackState } from "./track/types";
 import { uiReducer } from "./ui/reducer";
 import { IUiState } from "./ui/types";
+import { userReducer } from "./user/reducer";
+import { IUserState } from "./user/types";
 
 export interface ApplicationState {
   race: IRaceState;
@@ -23,6 +25,7 @@ export interface ApplicationState {
   tracks: TrackState;
   settings: ISettingsState;
   ui: IUiState;
+  user: IUserState;
   router: RouterState;
 }
 
@@ -36,6 +39,7 @@ export const createRootReducer = (history: History) =>
     tracks: trackReducer,
     settings: settingsReducer,
     ui: uiReducer,
+    user: userReducer,
     router: connectRouter(history),
   });
 

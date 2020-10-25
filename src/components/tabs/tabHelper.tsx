@@ -5,6 +5,7 @@ import OtherSettingsContainer from "../../container/otherSettingsContainer";
 import QuickProposalContainer from "../../container/quickProposalContainer";
 import RaceContainer from "../../container/raceContainer";
 import RaceSettingsContainer from "../../container/raceSettingsContainer";
+import ServerSettingsContainer from "../../container/serverSettingsContainer";
 import { UiMainEnum } from "../../stores/ui/types";
 import FuelInfo from "../info/fuelInfo";
 
@@ -39,6 +40,9 @@ const TabHelper: React.FC<MyProps> = (props: MyProps) => {
       </TabPane>
       <TabPane tab="Other" key={UiMainEnum.OtherSettings}>
         <OtherSettingsContainer />
+      </TabPane>
+      <TabPane tab="Server" key={UiMainEnum.Server}>
+        <ServerSettingsContainer />
       </TabPane>
     </Tabs>
   );

@@ -90,7 +90,7 @@ describe("race reducer", () => {
         },
         resetRace()
       )
-    ).toEqual(raceInitialState);
+    ).toMatchObject({ data: { ...raceInitialState.data, id: expect.not.stringMatching(raceInitialState.data.id) } });
   });
 
   it("should move a stint and renumber ", () => {

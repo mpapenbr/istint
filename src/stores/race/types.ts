@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { defaultCar, ICar } from "../car/types";
 import { IDriver } from "../driver/types";
 import { RaceStrategyMode, Stint } from "../stint/types";
@@ -14,6 +15,7 @@ export interface ITimedRace extends IRace {
 
 export const defaultTimedRace: ITimedRace = {
   name: "unnamed race",
+  id: uuidv4(),
   duration: 0,
   car: defaultCar,
   track: defaultTrack,
@@ -23,6 +25,7 @@ export const defaultTimedRace: ITimedRace = {
 };
 
 export interface IRace {
+  id: string;
   name: string;
 }
 

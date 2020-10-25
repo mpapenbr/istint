@@ -71,6 +71,7 @@ export const defaults: ICar[] = [
     id: 10,
     name: "P217 LMP2",
     tank: 75,
+    tireChangeTime: 22, // strange, would have thought of 27s
     refillRate: 60 / 24.4, // ~ 2.45 (big variance detected 23.1-25.6s)
   },
 ];
