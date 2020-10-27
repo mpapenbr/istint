@@ -16,6 +16,7 @@ import { TrackState } from "./track/types";
 import { uiReducer } from "./ui/reducer";
 import { IUiState } from "./ui/types";
 import { userReducer } from "./user/reducer";
+import userSaga from "./user/sagas";
 import { IUserState } from "./user/types";
 
 export interface ApplicationState {
@@ -44,5 +45,6 @@ export const createRootReducer = (history: History) =>
   });
 
 export function* rootSaga() {
-  yield all([fork(raceSaga)]);
+  yield all([fork(raceSaga), fork(userSaga)]);
+  // yield all([fork(userSaga)]);
 }

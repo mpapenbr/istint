@@ -19,6 +19,8 @@ export const defaultUser: IUser = {
 export enum UserActionTypes {
   LOGIN = "@@user/LOGIN",
   AUTH_DATA = "@@user/AUTH_DATA",
+  SAGA_FETCH_USER_EVENTS = "@@user/SAGA_FETCH_USER_EVENTS",
+  FETCH_USER_EVENTS_STARTED = "@@user/FETCH_USER_EVENTS_STARTED",
   USER_EVENTS = "@@user/USER_EVENTS",
   LOGOUT = "@@user/LOGOUT",
 }

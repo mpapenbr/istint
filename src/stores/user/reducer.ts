@@ -16,7 +16,14 @@ const reducer: Reducer<IUserState> = (state = initialState, action) => {
       return ret;
     }
 
+    case UserActionTypes.FETCH_USER_EVENTS_STARTED: {
+      console.log("Fetching has started...");
+      return state;
+    }
     case UserActionTypes.USER_EVENTS: {
+      console.log("got user events");
+      const data = action.payload;
+      console.log({ data });
       const ret = { data: { ...state.data, events: action.payload } };
       return ret;
     }

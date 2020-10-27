@@ -1,6 +1,5 @@
 import { DatePicker } from "antd";
-import moment from "antd/node_modules/moment";
-// import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 
 interface IDispatchProps {

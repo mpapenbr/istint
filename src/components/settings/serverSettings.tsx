@@ -1,10 +1,8 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
 import React from "react";
-import { useDispatch } from "react-redux";
 import EventsService, { MyEvent } from "../../api/events";
 import { ITimedRace } from "../../stores/race/types";
-import { fetchUserEventList } from "../../stores/user/action";
 import { IUser } from "../../stores/user/types";
 
 interface IStateProps {
@@ -14,17 +12,12 @@ interface IStateProps {
 interface IDispatchProps {
   reset: () => any;
   login: () => any;
-  eventList: (user: IUser) => any;
+  eventList: () => any;
 }
 
 type MyProps = IStateProps & IDispatchProps;
 
 const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
-  const dispatch = useDispatch();
-  const refreshEvents = () => {
-    dispatch(fetchUserEventList(props.user));
-  };
-
   const doSaveEvent = () => {
     const ev: MyEvent = {
       id: props.raceData.id,
@@ -42,7 +35,7 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
         <>
           <Col span={4}>
             <Card title="User info" size="small">
-              <Button icon={<ReloadOutlined />} onClick={refreshEvents}>
+              <Button icon={<ReloadOutlined />} onClick={props.eventList}>
                 Refresh events
               </Button>
               <Button icon={<SaveOutlined />} onClick={doSaveEvent}>
@@ -55,7 +48,7 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
             <Card title="Events" size="small">
               <ul>
                 {props.user.events.map((e) => (
-                  <li>e.id</li>
+                  <li key={e.id}>{e.id}</li>
                 ))}
               </ul>
             </Card>
