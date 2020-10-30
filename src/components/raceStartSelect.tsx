@@ -25,6 +25,7 @@ const RaceStartSelect: React.FC<MyProps> = (props: MyProps) => {
     time.setSeconds(0, 0);
     return time;
   };
+
   return (
     <DatePicker
       value={moment(adjustTime(props.time), moment.ISO_8601)}

@@ -2,7 +2,8 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ServerSettings from "../components/settings/serverSettings";
 import { ApplicationState } from "../stores/index";
-import { resetRace } from "../stores/race/actions";
+import { replaceRace, resetRace } from "../stores/race/actions";
+import { ITimedRace } from "../stores/race/types";
 import { fetchUserEvents, userLogin } from "../stores/user/action";
 
 const ServerSettingsContainer: React.FC = () => {
@@ -16,6 +17,7 @@ const ServerSettingsContainer: React.FC = () => {
     reset: useCallback(() => dispatch(resetRace()), [dispatch]),
     login: useCallback(() => dispatch(userLogin()), [dispatch]),
     eventList: useCallback(() => dispatch(fetchUserEvents()), [dispatch]),
+    loadData: useCallback((data: ITimedRace) => dispatch(replaceRace(data)), [dispatch]),
     // setDuration: useCallback((d: number) => dispatch(setDuration(d)), [dispatch]),
     // sagaTestDouble: useCallback((d: number) => dispatch(sagaTestDouble(d)), [dispatch]),
     // quickProposal: useCallback((param: ISimpleRaceProposalParam) => dispatch(computeQuickProposal(param)), [dispatch]),

@@ -1,7 +1,9 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
-import React from "react";
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import EventsService, { MyEvent } from "../../api/events";
+import { replaceRace } from "../../stores/race/actions";
 import { ITimedRace } from "../../stores/race/types";
 import { IUser } from "../../stores/user/types";
 import EventList from "../events/events";
@@ -19,6 +21,11 @@ interface IDispatchProps {
 type MyProps = IStateProps & IDispatchProps;
 
 const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
+  const dispatch = useDispatch();
+  const loadData = useCallback((data: ITimedRace) => dispatch(replaceRace(data)), [dispatch]);
+  const deleteEvent = (id: string) => {
+    EventsService.deleteEvent(props.user.token, id);
+  };
   const doSaveEvent = () => {
     const ev: MyEvent = {
       id: props.raceData.id,
@@ -47,7 +54,7 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
 
           <Col span={8}>
             <Card title="Events" size="small">
-              <EventList events={props.user.events} />
+              <EventList events={props.user.events} loadEvent={loadData} deleteEvent={deleteEvent} />
             </Card>
           </Col>
         </>
