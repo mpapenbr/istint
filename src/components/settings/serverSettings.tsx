@@ -4,6 +4,7 @@ import React from "react";
 import EventsService, { MyEvent } from "../../api/events";
 import { ITimedRace } from "../../stores/race/types";
 import { IUser } from "../../stores/user/types";
+import EventList from "../events/events";
 
 interface IStateProps {
   user: IUser;
@@ -44,13 +45,9 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
             </Card>
           </Col>
 
-          <Col span={4}>
+          <Col span={8}>
             <Card title="Events" size="small">
-              <ul>
-                {props.user.events.map((e) => (
-                  <li key={e.id}>{e.id}</li>
-                ))}
-              </ul>
+              <EventList events={props.user.events} />
             </Card>
           </Col>
         </>
