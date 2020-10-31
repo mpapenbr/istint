@@ -11,9 +11,9 @@ export interface MyEvent {
 export default class EventsService {
   public static eventList(token: string): Promise<MyEvent[]> {
     return new Promise((resolve, reject) => {
-      fetch(API_BASE_URL + "/events", { headers: { Authorization: "Bearer " + token } }).then((res: Response) => {
+      fetch(API_BASE_URL + "/events/own", { headers: { Authorization: "Bearer " + token } }).then((res: Response) => {
         if (res.ok) {
-          res.json().then((j) => resolve(j._embedded.events));
+          res.json().then((j) => resolve(j._embedded !== undefined ? j._embedded.events : []));
         }
       });
     });

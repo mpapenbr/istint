@@ -1,4 +1,4 @@
-import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
+import { LogoutOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -37,6 +37,11 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
     EventsService.storeEvent(props.user.token, ev);
   };
 
+  const doLogout = () => {
+    console.log("execute logout");
+    props.user.keycloak?.logout();
+  };
+
   const persData = () => {
     if (props.user.id.length > 0) {
       return (
@@ -73,6 +78,9 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
         <Card title="Action" size="small">
           <Button icon={<ReloadOutlined />} onClick={props.reset}>
             Reset
+          </Button>
+          <Button icon={<LogoutOutlined />} onClick={doLogout}>
+            Logout
           </Button>
         </Card>
       </Col>
