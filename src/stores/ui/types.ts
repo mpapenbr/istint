@@ -9,6 +9,7 @@ export enum UiMainEnum {
   Storage,
   OtherSettings,
   FuleInfos,
+  Server,
 }
 export interface IUi {
   main: UiMainEnum;

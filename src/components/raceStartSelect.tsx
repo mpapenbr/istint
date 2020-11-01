@@ -1,6 +1,5 @@
 import { DatePicker } from "antd";
-import moment from "antd/node_modules/moment";
-// import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 
 interface IDispatchProps {
@@ -26,6 +25,7 @@ const RaceStartSelect: React.FC<MyProps> = (props: MyProps) => {
     time.setSeconds(0, 0);
     return time;
   };
+
   return (
     <DatePicker
       value={moment(adjustTime(props.time), moment.ISO_8601)}

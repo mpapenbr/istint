@@ -26,7 +26,7 @@ const TrackSelect: React.FC<MyProps> = (props: MyProps) => {
   );
   return (
     <>
-      <Dropdown overlay={menu(props.tracks)}>
+      <Dropdown overlay={menu(props.tracks.sort((a, b) => a.name.localeCompare(b.name)))}>
         <Button>
           {props.current.name}
           <DownOutlined />

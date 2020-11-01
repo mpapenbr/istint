@@ -30,7 +30,7 @@ const CarSelect: React.FC<MyProps> = (props: MyProps) => {
   );
   return (
     <>
-      <Dropdown overlay={menu(props.cars)}>
+      <Dropdown overlay={menu(props.cars.sort((a, b) => a.name.localeCompare(b.name)))}>
         <Button>
           {props.current.name}
           <DownOutlined />

@@ -52,4 +52,26 @@ export const defaults: ICar[] = [
     tank: 130,
     refillRate: 80 / 25.8, // ~ 3.10
   },
+  {
+    ...defaultCar,
+    id: 8,
+    name: "BMW M8 GTE",
+    tank: 92,
+    refillRate: 80 / 29.47, // ~ 2.71
+  },
+  {
+    ...defaultCar,
+    id: 9,
+    name: "Corvette C8.R GTE",
+    tank: 97,
+    refillRate: 80 / 28, // ~ 2.86
+  },
+  {
+    ...defaultCar,
+    id: 10,
+    name: "P217 LMP2",
+    tank: 75,
+    tireChangeTime: 22, // strange, would have thought of 27s
+    refillRate: 60 / 24.4, // ~ 2.45 (big variance detected 23.1-25.6s)
+  },
 ];

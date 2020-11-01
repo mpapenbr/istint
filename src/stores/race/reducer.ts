@@ -1,5 +1,6 @@
 import arrayMove from "array-move";
 import { Reducer } from "redux";
+import { v4 as uuidv4 } from "uuid";
 import { defaultStint } from "../stint/reducer";
 import { defaultTimedRace, IMoveStint, IRaceState, RaceActionTypes } from "./types";
 
@@ -60,7 +61,7 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
     }
 
     case RaceActionTypes.RESET: {
-      return initialState;
+      return { ...initialState, data: { ...defaultTimedRace, id: uuidv4() } };
     }
     case RaceActionTypes.REPLACE: {
       return { ...state, data: { ...action.payload } };
