@@ -3,14 +3,14 @@ import { Button, Table } from "antd";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MyEvent } from "../../api/events";
-import { jsonDateEnhancer } from "../../utils/compressJson";
 
 interface IStateProps {
   events: MyEvent[];
 }
 interface IDispatchProps {
-  loadEvent: (raceData: any) => any;
+  loadEvent: (eventId: string) => any;
   deleteEvent: (id: string) => any;
+  updateEvent: (event: MyEvent) => any;
 }
 
 type MyProps = IStateProps & IDispatchProps;
@@ -18,14 +18,7 @@ type MyProps = IStateProps & IDispatchProps;
 const EventList: React.FC<MyProps> = (props: MyProps) => {
   const onClickForEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.log(e.currentTarget.value);
-    const toLoad = props.events.find((v) => v.id === e.currentTarget.value);
-    if (toLoad !== undefined) {
-      // console.log(toLoad.rawData);
-      const dings = jsonDateEnhancer(JSON.stringify(toLoad.rawData));
-      dings.id = e.currentTarget.value;
-      props.loadEvent(dings);
-    }
-    // props.driverSelected(e.currentTarget.value);
+    props.loadEvent(e.currentTarget.value);
   };
   const onClickForRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
     props.deleteEvent(e.currentTarget.value);
@@ -33,10 +26,11 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
   const onClickForDuplicate = (e: React.MouseEvent<HTMLButtonElement>) => {
     const toLoad = props.events.find((v) => v.id === e.currentTarget.value);
     if (toLoad !== undefined) {
-      const dings = jsonDateEnhancer(JSON.stringify(toLoad.rawData));
-      dings.id = uuidv4();
-      dings.name = "Copy of " + dings.name;
-      props.loadEvent(dings);
+      // const dings = jsonDateEnhancer(JSON.stringify(toLoad.rawData));
+      const dings = { ...toLoad };
+      dings.rawData.race.id = uuidv4();
+      dings.rawData.race.name = "Copy of " + dings.rawData.race.name;
+      props.updateEvent(dings);
     }
   };
 
