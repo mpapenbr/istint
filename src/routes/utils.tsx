@@ -11,7 +11,7 @@ export function PrivateRoute({ component: Component, ...rest }: PrivateRoutePara
   // const { keycloak } = useKeycloak<KeycloakInstance>()
   const { keycloak } = useKeycloak();
   console.log("authenticated: " + keycloak?.authenticated);
-  console.log(rest);
+  console.log({ keycloak });
   return (
     <Route
       {...rest}

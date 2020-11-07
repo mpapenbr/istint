@@ -24,13 +24,7 @@ const LoginPage = () => {
   console.log(currentLocationState);
   if (keycloak?.authenticated) return <Redirect to={currentLocationState.from} />;
 
-  return (
-    <div>
-      <button type="button" onClick={login}>
-        Login
-      </button>
-    </div>
-  );
+  return <></>;
 };
 
 export default LoginPage;

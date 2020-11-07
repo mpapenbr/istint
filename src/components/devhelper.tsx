@@ -62,7 +62,6 @@ const DevHelper: React.FC<MyProps> = (props: MyProps) => {
       <Button
         onClick={() => {
           props.quickProposal({
-            name: "QuickProposal",
             duration: 6 * 60,
             driver: leMansDrivers,
             strategy: RaceStrategyMode.DOUBLE_STINT_TIRES,

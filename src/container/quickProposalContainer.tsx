@@ -37,7 +37,6 @@ const QuickProposalContainer: React.FC = () => {
     setStrategy: useCallback((id: number) => dispatch(updateStrategy(id)), [dispatch]),
     computeProposal: useCallback(() => {
       const param = {
-        name: "QuickProposal2",
         duration: race.race.duration,
         driver: allDrivers,
         strategy: settings.strategy,

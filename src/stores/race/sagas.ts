@@ -96,7 +96,7 @@ export function* handleQuickComputeProposal(
 Generator {
   try {
     const myParam: ISimpleRaceProposalParam = action.payload;
-    yield put({ type: RaceActionTypes.SET_NAME, payload: myParam.name });
+
     yield put({
       type: RaceActionTypes.SET_DURATION,
       payload: myParam.duration,

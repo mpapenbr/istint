@@ -1,6 +1,6 @@
-import { LogoutOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons";
+import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { useKeycloak } from "@react-keycloak/web";
-import { Button, Card, Col, Row } from "antd";
+import { Button, Card, Col, Row, Tooltip } from "antd";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
@@ -54,28 +54,37 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
     EventsService.storeEvent(keycloak?.token!, ev);
   };
 
-  const doLogout = () => {
-    console.log("execute logout");
-    keycloak?.logout();
-  };
+  const Reload = () => (
+    <Tooltip title="Reload stored events from server">
+      <Button icon={<ReloadOutlined />} onClick={props.eventList}>
+        Refresh events
+      </Button>
+    </Tooltip>
+  );
+
+  const Save = () => (
+    <Tooltip title="Save the current event">
+      <Button icon={<SaveOutlined />} onClick={doSaveEvent}>
+        Save
+      </Button>
+    </Tooltip>
+  );
 
   const persData = () => {
     if (keycloak?.authenticated) {
       return (
         <>
-          <Col span={4}>
-            <Card title="User info" size="small">
-              <Button icon={<ReloadOutlined />} onClick={props.eventList}>
-                Refresh events
-              </Button>
-              <Button icon={<SaveOutlined />} onClick={doSaveEvent}>
-                Save event
-              </Button>
-            </Card>
-          </Col>
-
-          <Col span={8}>
-            <Card title="Events" size="small">
+          <Col span={16}>
+            <Card
+              title="Events"
+              size="small"
+              extra={
+                <>
+                  <Save />
+                  <Reload />
+                </>
+              }
+            >
               <EventList
                 events={props.user.events}
                 loadEvent={props.loadEvent}
@@ -94,21 +103,7 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
       );
     }
   };
-  return (
-    <Row gutter={8}>
-      <Col span={4}>
-        <Card title="Action" size="small">
-          <Button icon={<ReloadOutlined />} onClick={props.reset}>
-            Reset
-          </Button>
-          <Button icon={<LogoutOutlined />} onClick={doLogout}>
-            Logout
-          </Button>
-        </Card>
-      </Col>
-      {persData()}
-    </Row>
-  );
+  return <Row gutter={8}>{persData()}</Row>;
 };
 
 export default ServerSettings;

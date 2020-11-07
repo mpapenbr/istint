@@ -1,5 +1,6 @@
-import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Table } from "antd";
+import { CopyOutlined, DeleteOutlined, EditOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { Button, notification, Table, Tooltip } from "antd";
+import copy from "copy-to-clipboard";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MyEvent } from "../../api/events";
@@ -34,11 +35,38 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
     }
   };
 
+  const doOpenNotification = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const url = window.location.origin + "/ext?id=" + e.currentTarget.value;
+    copy(url);
+    notification.open({
+      message: "Share event",
+      description: (
+        <div>
+          Anyone who has the link can access. Copied to clipboard.
+          <br />
+          {url}
+        </div>
+      ),
+      onClick: () => {
+        console.log("done");
+      },
+    });
+  };
+
   const extraButtons = (d: MyEvent) => (
     <div>
-      <Button icon={<EditOutlined />} value={d.id} onClick={onClickForEdit} />
-      <Button icon={<CopyOutlined />} value={d.id} onClick={onClickForDuplicate} />
-      <Button icon={<DeleteOutlined />} value={d.id} onClick={onClickForRemove} />
+      <Tooltip title="Load the event">
+        <Button icon={<EditOutlined />} value={d.id} onClick={onClickForEdit} />
+      </Tooltip>
+      <Tooltip title="Create a copy">
+        <Button icon={<CopyOutlined />} value={d.id} onClick={onClickForDuplicate} />
+      </Tooltip>
+      <Tooltip title="Delete the event">
+        <Button icon={<DeleteOutlined />} value={d.id} onClick={onClickForRemove} />
+      </Tooltip>
+      <Tooltip title="Share the event">
+        <Button icon={<ShareAltOutlined />} value={d.id} onClick={doOpenNotification} />
+      </Tooltip>
     </div>
   );
 
@@ -62,6 +90,7 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
       title: "Modified",
       key: "lastModified",
       dataIndex: "lastModified",
+      render: (no: number, record: MyEvent) => new Date(record.lastModified!).toLocaleString(),
     },
     {
       title: "Action",
