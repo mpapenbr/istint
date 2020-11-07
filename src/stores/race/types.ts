@@ -42,7 +42,6 @@ export interface IModifyStintParam {
  * use this if a "simple" computation is needed
  */
 export interface ISimpleRaceProposalParam {
-  name: string;
   duration: number;
   driver: IDriver[];
   strategy: RaceStrategyMode;

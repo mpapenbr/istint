@@ -33,6 +33,7 @@ type MyProps = IDispatchToProps & IStateToProps;
 // TODO: kann weg, Stint hat inzwischen no attr
 interface IDisplayStint extends Stint {
   no: number;
+  align?: string;
 }
 
 interface EditableRowProps {
@@ -228,6 +229,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
   var columns = [
     {
       title: "Sort",
+
       dataIndex: "no",
       className: "drag-visible",
       editable: false,
@@ -237,6 +239,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     { title: "#", dataIndex: "no", className: "drag-visible", editable: false },
     {
       title: "Driver",
+
       dataIndex: ["driver", "name"],
       className: "drag-visible",
       editable: false,
@@ -340,6 +343,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     }
     return {
       ...col,
+
       onCell: (record: IDisplayStint) => ({
         record,
         editable: col.editable,

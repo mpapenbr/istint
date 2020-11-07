@@ -17,33 +17,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ store, history }) => {
-  // const keycloak = Keycloak({
-  //   realm: "iracing-tools",
-  //   url: API_AUTH_URL,
-  //   clientId: "login-web",
-  // });
-
-  // keycloak
-  //   .init({
-  //     onLoad: "login-required",
-  //   })
-  //   .then((authenticated) => {
-  //     if (authenticated) {
-  //       store.dispatch(userAuthData(keycloak));
-  //     }
-  //   });
-
-  // keycloak.onTokenExpired = () => {
-  //   // console.log("token expired", keycloak.token);
-  //   keycloak
-  //     .updateToken(30)
-  //     .then((refreshed) => {
-  //       console.log("Successful refreshed token result: " + refreshed);
-  //       store.dispatch(userAuthData(keycloak));
-  //     })
-  //     .catch((e) => console.log("Error refreshing token " + e));
-  // };
-
   const eventLogger = (event: unknown, error: unknown) => {
     console.log("onKeycloakEvent", event, error);
   };
