@@ -226,6 +226,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     props.removeStint(parseInt(e.currentTarget.value));
   };
 
+  const raceDurationSecs = props.raceData.duration * 60;
   var columns = [
     {
       title: "Sort",
@@ -236,7 +237,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
       width: 30,
       render: () => <DragHandle />,
     },
-    { title: "#", dataIndex: "no", className: "drag-visible", editable: false },
+    { title: "#", align: "center" as "center", dataIndex: "no", className: "drag-visible", editable: false },
     {
       title: "Driver",
 
@@ -248,6 +249,8 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "Laps",
+      width: 30,
+      align: "right" as "right",
       dataIndex: "numLaps",
       editable: true,
       columHandleSave: props.updateNumLaps,
@@ -256,6 +259,8 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "Total",
+      width: 30,
+      align: "right" as "right",
       dataIndex: ["rollingData", "elapsedLaps"],
       editable: false,
     },
@@ -269,6 +274,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "l/Lap",
+      width: 30,
       dataIndex: ["driver", "fuelPerLap"],
       render: (f: number) => sprintf("%0.2f", f),
       editable: true,
@@ -277,42 +283,60 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     },
     {
       title: "Start",
+      align: "right" as "right",
       dataIndex: [timeRangeSelector(), "start"],
       editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },
     {
       title: "Duration",
+      align: "right" as "right",
       dataIndex: "duration",
       editable: false,
       render: (t: number) => secAsString(t),
     },
     {
       title: "End",
+      align: "right" as "right",
       dataIndex: [timeRangeSelector(), "end"],
       editable: false,
       render: (d: Date) => d.toLocaleTimeString(),
     },
     {
+      title: "Remaining", // <Tooltip title="Remaning race time when entering pits">Remain</Tooltip>,
+      align: "right" as "right",
+      dataIndex: ["rollingData", "elapsedTime"],
+      editable: false,
+      render: (d: number, record: IDisplayStint) =>
+        d < raceDurationSecs ? secAsString(raceDurationSecs - Math.ceil(d)) : "",
+    },
+
+    {
       title: "Fuel",
+      align: "right" as "right",
       dataIndex: "fuel",
       editable: false,
       render: (f: number) => sprintf("%0.2f", f),
     },
     {
       title: "Tires",
+      width: 30,
+      align: "center" as "center",
       dataIndex: "wantNewTires",
       editable: false,
       render: (b: boolean, record: IDisplayStint) => <TireChangeBox {...record} />,
     },
     {
       title: "Pit",
+      align: "right" as "right",
       dataIndex: ["pitTime"],
       editable: false,
       render: (d: IPitTime) => <PitToolTip {...d} />,
     },
     {
       title: "Info",
+      align: "center" as "center",
+      width: 30,
       dataIndex: ["problems"],
       editable: false,
       render: (p: IStintProblem[]) => renderStintProblems(p),

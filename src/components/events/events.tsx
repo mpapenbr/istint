@@ -1,5 +1,6 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { Button, notification, Table, Tooltip } from "antd";
+import { ColumnsType } from "antd/lib/table";
 import copy from "copy-to-clipboard";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -70,15 +71,16 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
     </div>
   );
 
-  const cellColumns = [
+  const cellColumns: ColumnsType<MyEvent> = [
     {
-      title: "Event",
+      title: <Tooltip title="Event description">Event</Tooltip>,
       key: "name",
       dataIndex: "name",
     },
     {
       title: "Car",
       key: "carName",
+
       dataIndex: "carName",
     },
     {
@@ -95,7 +97,7 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
     {
       title: "Action",
       dataIndex: ["no"],
-      editable: false,
+
       render: (no: number, record: MyEvent) => extraButtons(record),
     },
   ];
