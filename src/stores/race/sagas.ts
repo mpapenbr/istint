@@ -2,11 +2,11 @@ import _ from "lodash";
 import { all, fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { ApplicationState } from "..";
 import { IBaseAction } from "../../commons";
-import { CarState, TireChangeMode } from "../car/types";
+import { CarState, ICar, TireChangeMode } from "../car/types";
 import { DriverState } from "../driver/types";
 import { ISettings, ISettingsState } from "../settings/types";
 import { Stint } from "../stint/types";
-import { TrackState } from "../track/types";
+import { ITrack, TrackState } from "../track/types";
 import { recomputeRaceStints } from "./compute";
 import { computeFreshRace } from "./proposals";
 import {
@@ -63,6 +63,32 @@ Generator {
   }
 }
 
+function* handleChangedCarData(
+  action: IBaseAction
+): //: Generator<StrictEffect,void, Stint[]>
+Generator {
+  try {
+    const newCar: ICar = action.payload;
+    // oh my! Typescript malus :(
+    // didn't yet find a way to get this assigned by using one statement
+    // see: https://github.com/redux-saga/redux-saga/issues/1976
+    const raceDataTmp: unknown = yield select(getRace);
+    const raceData: ITimedRace = raceDataTmp as ITimedRace;
+
+    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+
+    if (newCar !== undefined) {
+      yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
+      let workStints = computeFreshRace({ ...raceData, car: newCar }, driverState.allDrivers, settings.data.strategy);
+      const stints = recomputeRaceStints({ ...raceData, stints: workStints });
+      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* handleChangeTrack(
   action: IBaseAction
 ): //: Generator<StrictEffect,void, Stint[]>
@@ -74,6 +100,33 @@ Generator {
     const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
     const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
     const newTrack = trackState.allTracks.find((v) => v.id === trackId);
+    if (newTrack !== undefined) {
+      yield put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
+
+      let workStints = computeFreshRace(
+        { ...raceData, track: newTrack },
+        driverState.allDrivers,
+        settings.data.strategy
+      );
+      const stints = recomputeRaceStints({ ...raceData, stints: workStints });
+      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* handleChangedTrackData(
+  action: IBaseAction
+): //: Generator<StrictEffect,void, Stint[]>
+Generator {
+  try {
+    const newTrack: ITrack = action.payload;
+    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+
+    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+
     if (newTrack !== undefined) {
       yield put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
 
@@ -382,7 +435,9 @@ export default function* raceSaga() {
     yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
     yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
+    yield takeLatest(RaceActionTypes.SAGA_CHANGED_CAR_DATA, handleChangedCarData),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_TRACK, handleChangeTrack),
+    yield takeLatest(RaceActionTypes.SAGA_CHANGED_TRACK_DATA, handleChangedTrackData),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_DURATION, handleChangeDuration),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_REAL, handleChangeStartReal),
     yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_SIM, handleChangeStartSim),

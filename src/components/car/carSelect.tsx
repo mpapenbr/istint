@@ -2,7 +2,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 import { MenuInfo } from "rc-menu/lib/interface";
 import React from "react";
-import { ICar } from "../stores/car/types";
+import { ICar } from "../../stores/car/types";
 
 interface IDispatchProps {
   selectCar: (carId: number) => any;

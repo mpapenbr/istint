@@ -29,7 +29,10 @@ export const sagaChangeSingleStintAttributeTires = (param: IChangeSingleStintPar
 export const sagaChangeSingleStintDriver = (param: IChangeStintDriver) =>
   action(RaceActionTypes.SAGA_CHANGE_STINT_DRIVER, param);
 export const sagaChangeCar = (carId: number) => action(RaceActionTypes.SAGA_CHANGE_CAR, carId);
+export const sagaChangedCarData = (data: ICar) => action(RaceActionTypes.SAGA_CHANGED_CAR_DATA, data);
+
 export const sagaChangeTrack = (trackId: number) => action(RaceActionTypes.SAGA_CHANGE_TRACK, trackId);
+export const sagaChangedTrackData = (data: ITrack) => action(RaceActionTypes.SAGA_CHANGED_TRACK_DATA, data);
 
 export const sagaChangeDuration = (durationMinutes: number) =>
   action(RaceActionTypes.SAGA_CHANGE_DURATION, durationMinutes);

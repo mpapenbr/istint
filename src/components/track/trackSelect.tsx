@@ -2,7 +2,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 import { MenuInfo } from "rc-menu/lib/interface";
 import React from "react";
-import { ITrack } from "../stores/track/types";
+import { ITrack } from "../../stores/track/types";
 
 interface IDispatchProps {
   selectTrack: (trackId: number) => any;

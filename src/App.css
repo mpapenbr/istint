@@ -98,3 +98,8 @@
 .istint-select-dropdown .ant-btn-group-rtl.ant-dropdown-button {
   margin: 0 0 8px 8px;
 }
+
+/* should produce left aligned forms */
+.istint-form .ant-form-item-control {
+  flex-direction: inherit;
+}

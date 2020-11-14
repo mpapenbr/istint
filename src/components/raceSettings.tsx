@@ -1,17 +1,17 @@
 import { Button, Descriptions, Switch } from "antd";
 import React from "react";
-import { CarState } from "../stores/car/types";
+import { CarState, ICar } from "../stores/car/types";
 import { ITimedRace } from "../stores/race/types";
 import { ISettings } from "../stores/settings/types";
-import { TrackState } from "../stores/track/types";
-import CarSelect from "./carSelect";
+import { ITrack, TrackState } from "../stores/track/types";
+import CarSelect from "./car/carSelect";
 import DurationInput from "./durationInput";
 import RaceName from "./raceName";
 import RaceStartSelect from "./raceStartSelect";
 import StintEditModeSelect from "./stint/stintEditModeSelect";
 import TimeDisplayModeSelect from "./stint/timeDisplayModeSelect";
 import RaceStrategySelect from "./strategySelect";
-import TrackSelect from "./trackSelect";
+import TrackSelect from "./track/trackSelect";
 
 interface IStateProps {
   raceData: ITimedRace;
@@ -24,6 +24,9 @@ interface IDispatchProps {
   setStrategy: (data: number) => void;
   setCar: (carId: number) => void;
   setTrack: (trackId: number) => void;
+  updateCar: (data: ICar) => void;
+  updateTrack: (data: ITrack) => void;
+
   setRaceStartReal: (date: Date) => void;
   setRaceStartSim: (date: Date) => void;
   setDuration: (duration: number) => void;

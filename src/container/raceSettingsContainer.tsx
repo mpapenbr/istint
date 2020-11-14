@@ -1,10 +1,13 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RaceSettingsRework from "../components/raceSettingsNew";
+import { ICar } from "../stores/car/types";
 import { ApplicationState } from "../stores/index";
 import {
   resetRace,
   sagaChangeCar,
+  sagaChangedCarData,
+  sagaChangedTrackData,
   sagaChangeDuration,
   sagaChangeRaceRealStartTime as sagaChangeRaceStartReal,
   sagaChangeRaceSimStartTime as sagaChangeRaceStartSim,
@@ -24,6 +27,7 @@ import {
   updateStrategy,
   updateTimeDisplayMode,
 } from "../stores/settings/actions";
+import { ITrack } from "../stores/track/types";
 
 const RaceSettingsContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -61,6 +65,18 @@ const RaceSettingsContainer: React.FC = () => {
         //dispatch(sagaChangeSingleStint(param))
         console.log(carId);
         dispatch(sagaChangeCar(carId));
+      },
+      [dispatch]
+    ),
+    updateCar: useCallback(
+      (data: ICar) => {
+        dispatch(sagaChangedCarData(data));
+      },
+      [dispatch]
+    ),
+    updateTrack: useCallback(
+      (data: ITrack) => {
+        dispatch(sagaChangedTrackData(data));
       },
       [dispatch]
     ),
