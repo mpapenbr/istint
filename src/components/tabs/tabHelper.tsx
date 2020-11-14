@@ -17,12 +17,11 @@ const { TabPane } = Tabs;
 const TabHelper: React.FC<MyProps> = (props: MyProps) => {
   return (
     <Tabs type="card">
-      <TabPane tab="Drivers" key={UiMainEnum.Drivers}>
-        <DriverMasterDetailContainer />
-      </TabPane>
-      <TabPane tab="Cars" key={UiMainEnum.Cars}></TabPane>
       <TabPane tab="Settings" key={UiMainEnum.Settings}>
         <RaceSettingsContainer />
+      </TabPane>
+      <TabPane tab="Drivers" key={UiMainEnum.Drivers}>
+        <DriverMasterDetailContainer />
       </TabPane>
       <TabPane tab="Quick proposal" key={UiMainEnum.QuickProposal}>
         <QuickProposalContainer />

@@ -2,16 +2,16 @@ import { DownOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Dropdown, Input, Menu, Row } from "antd";
 import { MenuInfo } from "rc-menu/lib/interface";
 import React from "react";
-import { CarState } from "../stores/car/types";
+import { CarState, ICar } from "../stores/car/types";
 import { ITimedRace } from "../stores/race/types";
 import { ISettings } from "../stores/settings/types";
-import { TrackState } from "../stores/track/types";
-import CarSelect from "./carSelect";
+import { ITrack, TrackState } from "../stores/track/types";
+import CarEditCard from "./car/carEditCard";
 import DurationInput from "./durationInput";
 import RaceName from "./raceName";
 import "./raceSettings.css";
 import RaceStartSelect from "./raceStartSelect";
-import TrackSelect from "./trackSelect";
+import TrackEditCard from "./track/trackEditCard";
 interface IStateProps {
   raceData: ITimedRace;
   settings: ISettings;
@@ -23,6 +23,8 @@ interface IDispatchProps {
   setStrategy: (data: number) => void;
   setCar: (carId: number) => void;
   setTrack: (trackId: number) => void;
+  updateCar: (data: ICar) => void;
+  updateTrack: (data: ITrack) => void;
   setRaceStartReal: (date: Date) => void;
   setRaceStartSim: (date: Date) => void;
   setDuration: (duration: number) => void;
@@ -43,6 +45,9 @@ const RaceSettingsRework: React.FC<MyProps> = ({
   setStrategy,
   setCar,
   setTrack,
+  updateCar,
+  updateTrack,
+
   setRaceStartReal,
   setRaceStartSim,
   setDuration,
@@ -116,14 +121,13 @@ const RaceSettingsRework: React.FC<MyProps> = ({
       </Col>
 
       <Col span={6}>
-        <Card title="Track" size="small">
+        <TrackEditCard tracks={trackData} raceData={raceData} setTrack={setTrack} updateTrack={updateTrack} />
+        {/* <Card title="Track" size="small">
           <TrackSelect current={raceData.track} tracks={trackData.allTracks} selectTrack={setTrack} />
-        </Card>
+        </Card> */}
       </Col>
       <Col span={6}>
-        <Card title="Car" size="small">
-          <CarSelect current={raceData.car} cars={carData.allCars} selectCar={setCar} />
-        </Card>
+        <CarEditCard cars={carData} raceData={raceData} setCar={setCar} updateCar={updateCar} />
       </Col>
     </Row>
     // <Descriptions column={4} title="Race settings">

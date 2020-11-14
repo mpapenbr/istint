@@ -35,7 +35,7 @@ const DriverDetail: React.FC<MyProps> = (props: MyProps) => {
   form.setFieldsValue(props.data);
   return (
     <Card title="Driver data" size="small">
-      <Form {...layout} form={form} onFinish={onFinish}>
+      <Form {...layout} className="istint-form" form={form} onFinish={onFinish}>
         <Form.Item name="name" label="Name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -58,7 +58,12 @@ const DriverDetail: React.FC<MyProps> = (props: MyProps) => {
             // onChange={props.setFuelPerLap}
           />
         </Form.Item>
-        <Form.Item name="doubleStintAdd" label="Double stint+" rules={[{ required: true }]}>
+        <Form.Item
+          name="doubleStintAdd"
+          label="Double stint+"
+          tooltip="Additional time in seconds per lap with used tires"
+          rules={[{ required: true }]}
+        >
           <InputNumber
             min={0}
             max={5}
