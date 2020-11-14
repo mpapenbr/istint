@@ -71,62 +71,67 @@ const RaceSettingsRework: React.FC<MyProps> = ({
   return (
     <Row gutter={0}>
       <Col span={6}>
-        <Card title="Common" size="small">
-          <Row gutter={8}>
-            <Col span={8} style={{ textAlign: "right" }}>
-              Name
-            </Col>
-            <Col span={16}>
-              <RaceName name={raceData.name} setName={setName} />
-            </Col>
-          </Row>
-          <Row gutter={8}>
-            <Col span={8} style={{ textAlign: "right" }}>
-              Duration
-            </Col>
-            <Col className="full-width" span={16}>
-              <Input.Group className="istint-settings-common">
-                <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
-                <Dropdown overlay={durationTemplates}>
-                  <Button>
-                    Samples
-                    <DownOutlined />
-                  </Button>
-                </Dropdown>
-              </Input.Group>
-            </Col>
-          </Row>
-        </Card>
+        <Row gutter={0}>
+          <Col span={24}>
+            <Card title="Common" size="small">
+              <Row gutter={8}>
+                <Col span={8} style={{ textAlign: "right" }}>
+                  Name
+                </Col>
+                <Col span={16}>
+                  <RaceName name={raceData.name} setName={setName} />
+                </Col>
+              </Row>
+              <Row gutter={8}>
+                <Col span={8} style={{ textAlign: "right" }}>
+                  Duration
+                </Col>
+                <Col className="full-width" span={16}>
+                  <Input.Group className="istint-settings-common">
+                    <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
+                    <Dropdown overlay={durationTemplates}>
+                      <Button>
+                        Samples
+                        <DownOutlined />
+                      </Button>
+                    </Dropdown>
+                  </Input.Group>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+        <Row gutter={0}>
+          <Col span={24}>
+            <Card title="Start" size="small">
+              <Row gutter={8}>
+                <Col span={8} style={{ textAlign: "right" }}>
+                  Real
+                </Col>
+                <Col span={16}>
+                  <RaceStartSelect time={raceData.startReal} setDate={setRaceStartReal} />
+                </Col>
+              </Row>
+              <Row gutter={8}>
+                <Col span={8} style={{ textAlign: "right" }}>
+                  Simulation
+                </Col>
+                <Col span={16}>
+                  <RaceStartSelect time={raceData.startSim} setDate={setRaceStartSim} />
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
       </Col>
 
-      <Col span={6}>
-        <Card title="Start" size="small">
-          <Row gutter={8}>
-            <Col span={8} style={{ textAlign: "right" }}>
-              Real
-            </Col>
-            <Col span={16}>
-              <RaceStartSelect time={raceData.startReal} setDate={setRaceStartReal} />
-            </Col>
-          </Row>
-          <Row gutter={8}>
-            <Col span={8} style={{ textAlign: "right" }}>
-              Simulation
-            </Col>
-            <Col span={16}>
-              <RaceStartSelect time={raceData.startSim} setDate={setRaceStartSim} />
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-
-      <Col span={6}>
+      <Col span={8}>
         <TrackEditCard tracks={trackData} raceData={raceData} setTrack={setTrack} updateTrack={updateTrack} />
         {/* <Card title="Track" size="small">
           <TrackSelect current={raceData.track} tracks={trackData.allTracks} selectTrack={setTrack} />
         </Card> */}
       </Col>
-      <Col span={6}>
+      <Col span={8}>
         <CarEditCard cars={carData} raceData={raceData} setCar={setCar} updateCar={updateCar} />
       </Col>
     </Row>
