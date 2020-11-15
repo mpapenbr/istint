@@ -50,6 +50,10 @@ export default class EventsService {
         method: "PUT",
         headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
         body: JSON.stringify(ev),
+      }).then((res: Response) => {
+        if (res.ok) {
+          res.text().then((j) => resolve(jsonDateEnhancer(j)));
+        }
       });
     });
   }

@@ -28,6 +28,32 @@ const reducer: Reducer<IUserState> = (state = initialState, action) => {
       return ret;
     }
 
+    case UserActionTypes.UPDATE_IN_EVENTS: {
+      const pos = state.data.events.findIndex((ev) => ev.id === action.payload.id);
+      if (pos !== -1) {
+        const events = state.data.events.slice();
+        events[pos] = action.payload;
+        const newData = { ...state.data, events: events };
+        return { ...state, data: newData };
+      } else {
+        const events = state.data.events.slice();
+        events.push(action.payload);
+        const newData = { ...state.data, events: events };
+        return { ...state, data: newData };
+      }
+    }
+
+    case UserActionTypes.REMOVE_FROM_EVENTS: {
+      const pos = state.data.events.findIndex((ev) => ev.id === action.payload);
+      if (pos !== -1) {
+        const events = state.data.events.slice();
+        events.splice(pos, 1);
+        const newData = { ...state.data, events: events };
+        return { ...state, data: newData };
+      }
+      return state;
+    }
+
     default:
       return state;
   }

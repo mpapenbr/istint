@@ -12,7 +12,7 @@ interface IStateProps {
 interface IDispatchProps {
   loadEvent: (eventId: string) => any;
   deleteEvent: (id: string) => any;
-  updateEvent: (event: MyEvent) => any;
+  storeAndUpdateEvent: (event: MyEvent) => any;
 }
 
 type MyProps = IStateProps & IDispatchProps;
@@ -30,9 +30,11 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
     if (toLoad !== undefined) {
       // const dings = jsonDateEnhancer(JSON.stringify(toLoad.rawData));
       const dings = { ...toLoad };
-      dings.rawData.race.id = uuidv4();
-      dings.rawData.race.name = "Copy of " + dings.rawData.race.name;
-      props.updateEvent(dings);
+      dings.id = uuidv4();
+      dings.name = "Copy of " + dings.rawData.race.name;
+      dings.rawData.race.id = dings.id;
+      dings.rawData.race.name = dings.name;
+      props.storeAndUpdateEvent(dings);
     }
   };
 
