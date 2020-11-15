@@ -1,13 +1,11 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { useKeycloak } from "@react-keycloak/web";
 import { Button, Card, Col, Row, Tooltip } from "antd";
-import React, { useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import EventsService, { InternalRawData, MyEvent } from "../../api/events";
-import { replaceDriverState } from "../../stores/driver/actions";
+import { MyEvent } from "../../api/events";
 import { IDriver } from "../../stores/driver/types";
-import { replaceRace } from "../../stores/race/actions";
 import { ITimedRace } from "../../stores/race/types";
 import { IUser } from "../../stores/user/types";
 import EventList from "../events/events";
@@ -22,7 +20,8 @@ interface IDispatchProps {
   login: () => any;
   eventList: () => any;
   loadEvent: (eventId: string) => any;
-  updateEvent: (event: MyEvent) => any;
+  storeAndUpdateEvent: (event: MyEvent) => any;
+  deleteEvent: (id: string) => any;
 }
 
 type MyProps = IStateProps & IDispatchProps;
@@ -30,16 +29,13 @@ type MyProps = IStateProps & IDispatchProps;
 const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const loadData = useCallback(
-    (data: InternalRawData) => {
-      dispatch(replaceRace(data.race));
-      dispatch(replaceDriverState({ currentDriver: data.drivers[0], allDrivers: data.drivers }));
-    },
-    [dispatch]
-  );
-  const deleteEvent = (id: string) => {
-    EventsService.deleteEvent(keycloak?.token!, id);
-  };
+  const [loadTrigger, setLoadTrigger] = useState(0);
+
+  useEffect(() => {
+    console.log("Now trigger load events");
+    props.eventList();
+  }, [loadTrigger]);
+
   const doSaveEvent = () => {
     const ev: MyEvent = {
       id: props.raceData.id ? props.raceData.id : uuidv4(),
@@ -51,7 +47,7 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
         drivers: props.drivers,
       },
     };
-    EventsService.storeEvent(keycloak?.token!, ev);
+    props.storeAndUpdateEvent(ev);
   };
 
   const Reload = () => (
@@ -88,8 +84,8 @@ const ServerSettings: React.FC<MyProps> = (props: MyProps) => {
               <EventList
                 events={props.user.events}
                 loadEvent={props.loadEvent}
-                deleteEvent={deleteEvent}
-                updateEvent={props.updateEvent}
+                deleteEvent={props.deleteEvent}
+                storeAndUpdateEvent={props.storeAndUpdateEvent}
               />
             </Card>
           </Col>
