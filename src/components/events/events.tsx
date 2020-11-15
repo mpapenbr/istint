@@ -72,28 +72,40 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
       </Tooltip>
     </div>
   );
-
+  const dateCompareValue = (d: Date | undefined | string) => {
+    if (d === undefined) return 0;
+    if (typeof d === "string") return new Date(d).getTime();
+    if (typeof d === "object") return (d as Date).getTime();
+    return 0;
+  };
   const cellColumns: ColumnsType<MyEvent> = [
     {
       title: <Tooltip title="Event description">Event</Tooltip>,
       key: "name",
       dataIndex: "name",
+      defaultSortOrder: "ascend",
+      sorter: (a: MyEvent, b: MyEvent) => a.name.localeCompare(b.name),
     },
     {
       title: "Car",
       key: "carName",
-
       dataIndex: "carName",
+      defaultSortOrder: "ascend",
+      sorter: (a: MyEvent, b: MyEvent) => a.carName.localeCompare(b.carName),
     },
     {
       title: "Track",
       key: "trackName",
       dataIndex: "trackName",
+      defaultSortOrder: "ascend",
+      sorter: (a: MyEvent, b: MyEvent) => a.trackName.localeCompare(b.trackName),
     },
     {
       title: "Modified",
       key: "lastModified",
       dataIndex: "lastModified",
+      defaultSortOrder: "descend",
+      sorter: (a: MyEvent, b: MyEvent) => dateCompareValue(a.lastModified) - dateCompareValue(b.lastModified),
       render: (no: number, record: MyEvent) => new Date(record.lastModified!).toLocaleString(),
     },
     {
