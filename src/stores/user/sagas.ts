@@ -1,11 +1,11 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
+import { v4 as uuidv4 } from "uuid";
 import EventsService, { MyEvent } from "../../api/events";
 import { IBaseAction } from "../../commons";
 import { replaceDriverState } from "../driver/actions";
 import { replaceRace } from "../race/actions";
 import { fetchUserEventsStarted, removeFromEvents, updateInEvents, userEventList } from "./action";
 import { UserActionTypes } from "./types";
-
 function* fetchUserEvents(
   action: IBaseAction
 ): //: Generator<StrictEffect,void, Stint[]>
@@ -33,7 +33,9 @@ Generator {
 
     yield call(fetchUserEventsStarted);
     const event = (yield EventsService.event(token, id)) as MyEvent;
-    // do not transfer the event id to race.id since
+    // create a new id
+    event.id = uuidv4();
+    event.rawData.race.id = event.id;
     yield put(replaceRace(event.rawData.race));
     yield put(replaceDriverState({ currentDriver: event.rawData.drivers[0], allDrivers: event.rawData.drivers }));
   } catch (e) {

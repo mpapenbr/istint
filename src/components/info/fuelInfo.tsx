@@ -1,4 +1,4 @@
-import { Card, Col, Row, Slider, Statistic, Table, Tooltip } from "antd";
+import { Card, Col, Form, Row, Slider, Space, Statistic, Table, Tooltip } from "antd";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -24,7 +24,7 @@ const FuelInfo: React.FC<{}> = () => {
   const doubleStintDelta = (calcLaps: number) => {
     return car.tireChangeMode === TireChangeMode.AFTER_REFILL ? car.tireChangeTime / calcLaps : 0;
   };
-  const data = _.range(laps - 1, laps + 2).map((l) => ({
+  const data = _.range(laps - 2, laps + 3).map((l) => ({
     key: l,
     laps: l,
     fuel: tank / l,
@@ -62,47 +62,59 @@ const FuelInfo: React.FC<{}> = () => {
   const ttTCL = (children: any) => (
     <Tooltip title="The average target laptime when not changing tires">{children}</Tooltip>
   );
+
+  const layout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 20 },
+  };
   return (
     <Row>
       <Col span={8}>
         <Card>
-          <Slider min={mins.tank} max={maxs.tank} value={tank} defaultValue={defaultValues.tank} onChange={setTank} />
-          <Slider
-            min={fuelPerLapData().min}
-            max={fuelPerLapData().max}
-            value={fuelPerLap}
-            defaultValue={3}
-            step={0.1}
-            onChange={setFuelPerLap}
-          />
-          <Slider
-            min={laptimeData().min}
-            max={laptimeData().max}
-            value={laptime}
-            defaultValue={laptimeData().standard}
-            step={0.1}
-            onChange={setLaptime}
-          />
+          <Form {...layout}>
+            <Form.Item label="Tank">
+              <Slider
+                min={mins.tank}
+                max={maxs.tank}
+                value={tank}
+                defaultValue={defaultValues.tank}
+                onChange={setTank}
+              />
+            </Form.Item>
+            <Form.Item label="Fuel/lap">
+              <Slider
+                min={fuelPerLapData().min}
+                max={fuelPerLapData().max}
+                value={fuelPerLap}
+                defaultValue={3}
+                step={0.1}
+                onChange={setFuelPerLap}
+              />
+            </Form.Item>
+            <Form.Item label="Laptime">
+              <Slider
+                min={laptimeData().min}
+                max={laptimeData().max}
+                value={laptime}
+                defaultValue={laptimeData().standard}
+                step={0.1}
+                onChange={setLaptime}
+              />
+            </Form.Item>
+          </Form>
         </Card>
       </Col>
       <Col span={8}>
         <Card>
-          <Row gutter={4}>
-            <Col>
-              <Statistic title="Tank" value={tank} />
-            </Col>
-            <Col>
-              <Statistic title="Fuel/lap" value={fuelPerLap} />
-            </Col>
-            <Col>
-              <Statistic title="Laps" value={laps} />
-            </Col>
-            <Col>
-              <Statistic title="Laptime" value={lapTimeString(laptime)} />
-            </Col>
-            <Col>{ttTCD(<Statistic title="TCD" value={doubleStintDelta(laps)} precision={2} />)}</Col>
-            <Col>{ttTCL(<Statistic title="TCL" value={lapTimeString(laptime + doubleStintDelta(laps))} />)}</Col>
-          </Row>
+          <Space size="large">
+            <Statistic title="Tank" value={tank} />
+            <Statistic title="Fuel/lap" value={fuelPerLap} />
+            <Statistic title="Laps" value={laps} />
+            <Statistic title="Laptime" value={lapTimeString(laptime)} />
+
+            {ttTCD(<Statistic title="TCD" value={doubleStintDelta(laps)} precision={2} />)}
+            {ttTCL(<Statistic title="TCL" value={lapTimeString(laptime + doubleStintDelta(laps))} />)}
+          </Space>
         </Card>
       </Col>
       <Col span={8}>
