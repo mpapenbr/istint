@@ -4,6 +4,7 @@ import { ColumnsType } from "antd/lib/table";
 import { FilterDropdownProps } from "antd/lib/table/interface";
 import copy from "copy-to-clipboard";
 import React, { useState } from "react";
+import Highlighter from "react-highlight-words";
 import { v4 as uuidv4 } from "uuid";
 import { MyEvent } from "../../api/events";
 
@@ -128,17 +129,17 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
         setTimeout(() => searchInput.select(), 100);
       }
     },
-    // render: (text:any) =>
-    //   searchedColumn === dataIndex ? (
-    //     <Highlighter
-    //       highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-    //       searchWords={[searchText]}
-    //       autoEscape
-    //       textToHighlight={text ? text.toString() : ''}
-    //     />
-    //   ) : (
-    //     text
-    //   ),
+    render: (text: any) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
   });
 
   const handleSearch = (selectedKeys: React.Key[], confirm: () => void, dataIndex: string) => {
