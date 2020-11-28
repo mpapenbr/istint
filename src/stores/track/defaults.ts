@@ -67,4 +67,10 @@ export const defaults: ITrack[] = [
     name: "Road Atlanta",
     pitDelta: 24,
   },
+  {
+    ...defaultTrack,
+    id: 12,
+    name: "Nürburgring",
+    pitDelta: 25,
+  },
 ];
