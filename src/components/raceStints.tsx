@@ -240,7 +240,7 @@ const RaceStints: React.FC<MyProps> = (props: MyProps) => {
     { title: "#", align: "center" as "center", dataIndex: "no", className: "drag-visible", editable: false },
     {
       title: "Driver",
-
+      align: "left" as "left",
       dataIndex: ["driver", "name"],
       className: "drag-visible",
       editable: false,

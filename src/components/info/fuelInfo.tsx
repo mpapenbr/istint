@@ -1,4 +1,5 @@
 import { Card, Col, Form, Row, Slider, Space, Statistic, Table, Tooltip } from "antd";
+import { ColumnsType } from "antd/lib/table";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +12,9 @@ interface IData {
   key: number;
   laps: number;
   fuel: number;
+  time: number;
+  tireChangeSave: number;
+  avgTCSpareTime: number;
 }
 const FuelInfo: React.FC<{}> = () => {
   const car = useSelector(({ race }: ApplicationState) => race.data.car);
@@ -24,7 +28,7 @@ const FuelInfo: React.FC<{}> = () => {
   const doubleStintDelta = (calcLaps: number) => {
     return car.tireChangeMode === TireChangeMode.AFTER_REFILL ? car.tireChangeTime / calcLaps : 0;
   };
-  const data = _.range(laps - 2, laps + 3).map((l) => ({
+  const data: IData[] = _.range(laps - 2, laps + 3).map((l) => ({
     key: l,
     laps: l,
     fuel: tank / l,
@@ -67,6 +71,26 @@ const FuelInfo: React.FC<{}> = () => {
     labelCol: { span: 4 },
     wrapperCol: { span: 20 },
   };
+
+  const columns: ColumnsType<IData> = [
+    { title: "Laps", key: "laps", dataIndex: "laps", align: "right" },
+    { title: "Fuel/Lap", key: "fuel", dataIndex: "fuel", render: (v) => sprintf("%.2f", v), align: "right" },
+    { title: "Time", key: "time", dataIndex: "time", render: (v) => secAsMMSS(v), align: "right" },
+    {
+      title: ttTCD("TCD"),
+      key: "tireChangeSave",
+      dataIndex: "tireChangeSave",
+      render: (v) => sprintf("%.2f", v),
+      align: "right",
+    },
+    {
+      title: ttTCL("TCL"),
+      key: "avgTCSpareTime",
+      dataIndex: "avgTCSpareTime",
+      render: (v) => lapTimeString(v),
+      align: "right",
+    },
+  ];
   return (
     <Row>
       <Col span={8}>
@@ -117,28 +141,8 @@ const FuelInfo: React.FC<{}> = () => {
           </Space>
         </Card>
       </Col>
-      <Col span={8}>
-        <Table
-          pagination={false}
-          columns={[
-            { title: "Laps", key: "laps", dataIndex: "laps" },
-            { title: "Fuel/Lap", key: "fuel", dataIndex: "fuel", render: (v) => sprintf("%.2f", v) },
-            { title: "Time", key: "time", dataIndex: "time", render: (v) => secAsMMSS(v) },
-            {
-              title: ttTCD("TCD"),
-              key: "tireChangeSave",
-              dataIndex: "tireChangeSave",
-              render: (v) => sprintf("%.2f", v),
-            },
-            {
-              title: ttTCL("TCL"),
-              key: "avgTCSpareTime",
-              dataIndex: "avgTCSpareTime",
-              render: (v) => lapTimeString(v),
-            },
-          ]}
-          dataSource={data}
-        />
+      <Col span={7}>
+        <Table className="istint-compact" pagination={false} columns={columns} dataSource={data} />
       </Col>
     </Row>
   );
