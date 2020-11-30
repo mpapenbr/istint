@@ -45,8 +45,8 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
   const [stints, setStints] = useState<Stint[]>([]);
 
   const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 20 },
+    labelCol: { span: 12 },
+    wrapperCol: { span: 12 },
   };
   var mins = { fuelPerLap: 0.1, laptime: 0.1 };
   var maxs = { tank: 130, fuelPerLap: 15, laptime: 720 };
@@ -130,10 +130,10 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
 
   return (
     <Row>
-      <Col span={8}>
+      <Col span={4}>
         <Card title="Quick plan settings">
-          <Form {...layout}>
-            <Test2 setValue={setFuelPerLap} currentValue={fuelPerLap} />
+          <Form {...layout} className="istint-form">
+            {/* <Test2 setValue={setFuelPerLap} currentValue={fuelPerLap} />
             <Test setValue={setFuelPerLap} currentValue={fuelPerLap} />
             <Form.Item label="Fuel/Lap">
               <Slider
@@ -145,52 +145,29 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
                 step={0.1}
                 onChange={setFuelPerLap}
               />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item label="Fuel/Lap">
-              <Form.Item style={{ display: "inline-block", width: "70%", marginRight: "8px" }}>
-                <Slider
-                  style={{ marginLeft: "4px" }}
-                  min={fuelPerLapData().min}
-                  max={fuelPerLapData().max}
-                  value={fuelPerLap}
-                  defaultValue={3}
-                  step={0.1}
-                  onChange={setFuelPerLap}
-                />
-              </Form.Item>
-              <Form.Item style={{ display: "inline-block", width: "calc(30% - 8px)", margin: "0px" }}>
-                <InputNumber />
-              </Form.Item>
+              <InputNumber
+                min={0}
+                max={15}
+                step={0.1}
+                value={fuelPerLap}
+                onChange={(d) => setFuelPerLap(d as number)}
+              />
             </Form.Item>
             <Form.Item label="Laptime">
-              <Slider
-                min={laptimeData().min}
-                max={laptimeData().max}
-                value={laptime}
-                defaultValue={laptimeData().standard}
-                step={0.1}
-                onChange={setLaptime}
-              />
-              <InputNumber />
+              <InputNumber min={0} max={720} step={0.1} value={laptime} onChange={(d) => setLaptime(d as number)} />
             </Form.Item>
 
             <Form.Item label="Race time">
-              <Slider
-                min={1}
-                max={raceData.duration}
-                value={raceDuration}
-                defaultValue={raceData.duration}
-                step={1}
-                onChange={setRaceDuration}
-              />
               <InputNumber
                 // style={{ width: "inherit" }}
                 min={1}
-                max={raceDuration}
+                max={1440}
                 step={1}
                 value={raceDuration}
-                // onChange={setRaceDuration}
+                onChange={(d) => setRaceDuration(d as number)}
               />
             </Form.Item>
           </Form>
