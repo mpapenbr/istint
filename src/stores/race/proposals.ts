@@ -14,7 +14,8 @@ import { ITimedRace } from "./types";
 export function computeFreshRace(
   race: ITimedRace,
   workDrivers: IDriver[],
-  mode: RaceStrategyMode = RaceStrategyMode.SINGLE_STINT
+  mode: RaceStrategyMode = RaceStrategyMode.SINGLE_STINT,
+  currentTank?: number
 ): Stint[] {
   const computeTimeFrame = (ref: Date, durationSec: number): TimeRange => ({
     start: ref,
@@ -25,7 +26,7 @@ export function computeFreshRace(
   let remainingTime = race.duration * 60;
   let stintNo = 1;
   let stint: Stint = computeTimebased({
-    car: race.car,
+    car: currentTank ? { ...race.car, tank: currentTank } : race.car,
     driver: workDrivers[currentDriverIdx],
     racetime: remainingTime,
   });

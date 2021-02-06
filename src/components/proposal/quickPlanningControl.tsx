@@ -1,13 +1,15 @@
-import { Card, Col, Form, InputNumber, Row, Slider } from "antd";
+import { Card, Col, Form, InputNumber, Row, Slider, Statistic, Table, Tooltip } from "antd";
+import { ColumnsType } from "antd/lib/table";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { sprintf } from "sprintf-js";
 import { ApplicationState } from "../../stores";
 import { TireChangeMode } from "../../stores/car/types";
 import { defaultDriver } from "../../stores/driver/types";
 import { recomputeRaceStints } from "../../stores/race/compute";
 import { computeFreshRace } from "../../stores/race/proposals";
-import { RaceStrategyMode, Stint } from "../../stores/stint/types";
+import { Stint } from "../../stores/stint/types";
 import QuickStintTable from "./quickStintTable";
 
 interface IStateProps {
@@ -30,6 +32,7 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
   const car = useSelector(({ race }: ApplicationState) => race.data.car);
   const carTank = useSelector(({ race }: ApplicationState) => race.data.car.tank);
   const raceData = useSelector(({ race }: ApplicationState) => race.data);
+  const settings = useSelector(({ settings }: ApplicationState) => settings.data);
 
   const currentDriver = useSelector(({ driver }: ApplicationState) => _.first(driver.allDrivers));
   const [driver, setDriver] = useState(currentDriver !== undefined ? currentDriver : defaultDriver);
@@ -45,8 +48,8 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
   const [stints, setStints] = useState<Stint[]>([]);
 
   const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 20 },
+    labelCol: { span: 8 },
+    wrapperCol: { span: 4 },
   };
   var mins = { fuelPerLap: 0.1, laptime: 0.1 };
   var maxs = { tank: 130, fuelPerLap: 15, laptime: 720 };
@@ -73,11 +76,11 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
     const computeDriver = { ...driver, baseLaptime: laptime, fuelPerLap: fuelPerLap };
     // console.log({ computeDriver });
     const myRaceData = { ...raceData, duration: raceDuration };
-    const rawComputedStints = computeFreshRace(myRaceData, [computeDriver], RaceStrategyMode.DOUBLE_STINT);
+    const rawComputedStints = computeFreshRace(myRaceData, [computeDriver], settings.strategy, tank);
     const computedStints = recomputeRaceStints({ ...myRaceData, stints: rawComputedStints });
     // console.log(x);
     setStints(computedStints);
-  }, [fuelPerLap, laptime, driver, raceData, raceDuration]);
+  }, [fuelPerLap, laptime, driver, raceData, raceDuration, settings, tank]);
 
   interface ITestProps {
     setValue: (v: number) => void;
@@ -128,69 +131,85 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
     );
   };
 
+  interface IData {
+    secs: number;
+    fuel: number;
+    laps: number;
+  }
+  const UndercutTable: React.FC<{}> = () => {
+    const data = _.range(1, 20).map((d) => ({
+      secs: d,
+      fuel: d * car.refillRate,
+      laps: (d * car.refillRate) / fuelPerLap,
+    }));
+    const columns: ColumnsType<IData> = [
+      { title: "Secs", key: "secs", dataIndex: "secs", align: "right" },
+      { title: "Fuel", key: "fuel", dataIndex: "fuel", render: (v) => sprintf("%.2f", v), align: "right" },
+      {
+        title: <Tooltip title="You will lose this amount of laps in the next stint">Laps</Tooltip>,
+        key: "laps",
+        dataIndex: "laps",
+        render: (v) => sprintf("%d", Math.ceil(v)),
+        align: "right",
+      },
+    ];
+    return (
+      <>
+        <Row>
+          <Statistic
+            title="Refuel rate per second"
+            value={car.refillRate}
+            precision={2}
+            decimalSeparator=","
+            suffix="l"
+          />
+        </Row>
+        <Row>
+          <Table className="istint-compact" pagination={false} dataSource={data} columns={columns} />
+        </Row>
+      </>
+    );
+  };
+
+  const onChangeRaceDuration = (value: any) => {
+    setRaceDuration(value as number);
+  };
+  const onChangeFuelPerLap = (value: any) => {
+    setFuelPerLap(value as number);
+  };
+  const onChangeLaptime = (value: any) => {
+    setLaptime(value as number);
+  };
+  const onChangeTank = (value: any) => {
+    setTank(value as number);
+  };
+
   return (
     <Row>
       <Col span={8}>
         <Card title="Quick plan settings">
           <Form {...layout}>
-            <Test2 setValue={setFuelPerLap} currentValue={fuelPerLap} />
-            <Test setValue={setFuelPerLap} currentValue={fuelPerLap} />
-            <Form.Item label="Fuel/Lap">
-              <Slider
-                style={{ marginLeft: "4px" }}
-                min={fuelPerLapData().min}
-                max={fuelPerLapData().max}
-                value={fuelPerLap}
-                defaultValue={3}
-                step={0.1}
-                onChange={setFuelPerLap}
-              />
-            </Form.Item>
+            {/* Info: This way using a FC here doesn't work with sliders. They only recieve the first event when a cursor key is hold down. Strange.
+             <Test2 setValue={setFuelPerLap} currentValue={fuelPerLap} />
+            <Test setValue={setFuelPerLap} currentValue={fuelPerLap} /> */}
 
             <Form.Item label="Fuel/Lap">
-              <Form.Item style={{ display: "inline-block", width: "70%", marginRight: "8px" }}>
-                <Slider
-                  style={{ marginLeft: "4px" }}
-                  min={fuelPerLapData().min}
-                  max={fuelPerLapData().max}
-                  value={fuelPerLap}
-                  defaultValue={3}
-                  step={0.1}
-                  onChange={setFuelPerLap}
-                />
-              </Form.Item>
-              <Form.Item style={{ display: "inline-block", width: "calc(30% - 8px)", margin: "0px" }}>
-                <InputNumber />
-              </Form.Item>
+              <InputNumber min={1} max={20} step={0.1} precision={2} value={fuelPerLap} onChange={onChangeFuelPerLap} />
             </Form.Item>
             <Form.Item label="Laptime">
-              <Slider
-                min={laptimeData().min}
-                max={laptimeData().max}
-                value={laptime}
-                defaultValue={laptimeData().standard}
-                step={0.1}
-                onChange={setLaptime}
-              />
-              <InputNumber />
+              <InputNumber step={0.1} precision={1} value={laptime} onChange={onChangeLaptime} />
             </Form.Item>
-
-            <Form.Item label="Race time">
-              <Slider
-                min={1}
-                max={raceData.duration}
-                value={raceDuration}
-                defaultValue={raceData.duration}
-                step={1}
-                onChange={setRaceDuration}
-              />
+            <Form.Item label="Current fuel in tank">
+              <InputNumber max={carTank} step={1} precision={0} value={tank} onChange={onChangeTank} />
+            </Form.Item>
+            <Form.Item label="Remaining race time">
               <InputNumber
                 // style={{ width: "inherit" }}
                 min={1}
-                max={raceDuration}
+                max={raceData.duration}
                 step={1}
                 value={raceDuration}
-                // onChange={setRaceDuration}
+                onChange={onChangeRaceDuration}
               />
             </Form.Item>
           </Form>
@@ -199,6 +218,11 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
       <Col>
         <Card title="Quick plan">
           <QuickStintTable raceDurationSecs={raceDuration * 60} stints={stints} />
+        </Card>
+      </Col>
+      <Col>
+        <Card title="Undercut options">
+          <UndercutTable />
         </Card>
       </Col>
     </Row>

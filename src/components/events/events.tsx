@@ -1,7 +1,7 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined, SearchOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { Button, Input, notification, Space, Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { FilterDropdownProps } from "antd/lib/table/interface";
+import { FilterConfirmProps, FilterDropdownProps } from "antd/lib/table/interface";
 import copy from "copy-to-clipboard";
 import React, { useState } from "react";
 import Highlighter from "react-highlight-words";
@@ -83,6 +83,7 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   var searchInput: any;
+
   const getColumnSearchProps = (
     dataIndex: any,
     searchPlacerholder: string,
@@ -142,8 +143,8 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
       ),
   });
 
-  const handleSearch = (selectedKeys: React.Key[], confirm: () => void, dataIndex: string) => {
-    confirm();
+  const handleSearch = (selectedKeys: React.Key[], confirm: (param: FilterConfirmProps) => void, dataIndex: string) => {
+    confirm({ closeDropdown: true });
 
     setSearchText(selectedKeys[0] as string);
     setSearchedColumn(dataIndex);

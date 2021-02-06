@@ -10,7 +10,7 @@ interface IStateProps {
 }
 type MyProps = IDispatchProps & IStateProps;
 const DurationInput: React.FC<MyProps> = (props: MyProps) => {
-  const onChange = (value: string | number | undefined) => {
+  const onChange = (value: any) => {
     props.setDuration(value as number);
   };
 
