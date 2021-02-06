@@ -74,4 +74,13 @@ export const defaults: ICar[] = [
     tireChangeTime: 22, // strange, would have thought of 27s
     refillRate: 60 / 24.4, // ~ 2.45 (big variance detected 23.1-25.6s)
   },
+
+  {
+    ...defaultCar,
+    id: 11,
+    name: "Lamborghini GT3",
+    tank: 120,
+    tireChangeTime: 27,
+    refillRate: 80 / 27.83, // ~2.87,
+  },
 ];

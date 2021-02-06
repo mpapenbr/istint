@@ -103,3 +103,9 @@
 .istint-form .ant-form-item-control {
   flex-direction: inherit;
 }
+
+/* should produce left aligned forms */
+.istint-compact .ant-table-thead > tr > th {
+  padding-right: 1px;
+  padding-inline-start: 2em;
+}

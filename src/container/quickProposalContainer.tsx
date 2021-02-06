@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import QuickPlanningControl from "../components/proposal/quickPlanningControl";
 import QuickProposal from "../components/proposal/quickProposal";
 import { updateDefaultDriver } from "../stores/driver/actions";
 import { ApplicationState } from "../stores/index";
@@ -45,7 +46,12 @@ const QuickProposalContainer: React.FC = () => {
     }, [dispatch, allDrivers, race, settings]),
   };
 
-  return <QuickProposal {...stateToProps} {...dispatchToProps} />;
+  return (
+    <>
+      <QuickProposal {...stateToProps} {...dispatchToProps} />
+      <QuickPlanningControl />
+    </>
+  );
 };
 
 export default QuickProposalContainer;

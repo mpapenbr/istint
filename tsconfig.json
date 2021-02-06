@@ -17,11 +17,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "noFallthroughCasesInSwitch": true,
-    
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "./src/**/*.ts"
   ]
+  // what a mess again in this TS environment regarding react-scripts and typescript and vs and god knows what else...
+  // see https://stackoverflow.com/questions/50432556/cannot-use-jsx-unless-the-jsx-flag-is-provided
 }
