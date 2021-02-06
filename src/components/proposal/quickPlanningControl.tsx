@@ -186,7 +186,7 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
 
   return (
     <Row>
-      <Col span={8}>
+      <Col span={4}>
         <Card title="Quick plan settings">
           <Form {...layout}>
             {/* Info: This way using a FC here doesn't work with sliders. They only recieve the first event when a cursor key is hold down. Strange.
