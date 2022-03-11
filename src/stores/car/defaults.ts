@@ -5,8 +5,8 @@ export const defaults: ICar[] = [
     ...defaultCar,
     id: 1,
     name: "Audi R8",
-    tank: 120,
-    refillRate: 80 / 27.83, // ~2.87,
+    tank: 104,
+    refillRate: 80 / 31.97, // ~2.5,
   },
   {
     ...defaultCar,
@@ -19,8 +19,8 @@ export const defaults: ICar[] = [
     ...defaultCar,
     id: 3,
     name: "Ferrari GT3",
-    tank: 110,
-    refillRate: 80 / 30.23, // ~ 2.64
+    tank: 101,
+    refillRate: 80 / 33.17, // ~ 2.41
   },
   {
     ...defaultCar,
@@ -49,8 +49,8 @@ export const defaults: ICar[] = [
     ...defaultCar,
     id: 7,
     name: "McL MP4-12C",
-    tank: 130,
-    refillRate: 80 / 25.8, // ~ 3.10
+    tank: 101,
+    refillRate: 80 / 33.17, // ~ 2.41
   },
   {
     ...defaultCar,
@@ -72,15 +72,41 @@ export const defaults: ICar[] = [
     name: "P217 LMP2",
     tank: 75,
     tireChangeTime: 22, // strange, would have thought of 27s
-    refillRate: 60 / 24.4, // ~ 2.45 (big variance detected 23.1-25.6s)
+    refillRate: 60 / 26.5, // ~ 2.26
   },
 
   {
     ...defaultCar,
     id: 11,
     name: "Lamborghini GT3",
-    tank: 120,
+    tank: 104,
     tireChangeTime: 27,
-    refillRate: 80 / 27.83, // ~2.87,
+    refillRate: 80 / 31.97, // ~2.5,
+  },
+
+  {
+    ...defaultCar,
+    id: 12,
+    name: "BMW M4 GT3",
+    tank: 103,
+    tireChangeTime: 27,
+    refillRate: 80 / 32.33, // ~2.47,
+  },
+  {
+    ...defaultCar,
+    id: 13,
+    name: "Mercedes AMG",
+    tank: 106,
+    tireChangeTime: 27,
+    refillRate: 80 / 31.53, // ~2.53,
+  },
+
+  {
+    ...defaultCar,
+    id: 14,
+    name: "Porsche 911 GT3R",
+    tank: 98,
+    tireChangeTime: 27,
+    refillRate: 80 / 33.9, // ~2.36,
   },
 ];
