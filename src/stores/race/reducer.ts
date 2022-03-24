@@ -1,4 +1,4 @@
-import arrayMove from "array-move";
+import { arrayMoveImmutable } from "array-move";
 import { Reducer } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import { defaultStint } from "../stint/reducer";
@@ -38,7 +38,7 @@ const reducer: Reducer<IRaceState> = (state = initialState, action) => {
 
     case RaceActionTypes.MOVE_STINT: {
       const param = action.payload as IMoveStint;
-      const newStints = arrayMove(state.data.stints, param.oldIndex, param.newIndex);
+      const newStints = arrayMoveImmutable(state.data.stints, param.oldIndex, param.newIndex);
       newStints.forEach((v, i) => (v.no = i + 1));
       return {
         ...state,
