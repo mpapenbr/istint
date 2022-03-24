@@ -1,4 +1,4 @@
-import arrayMove from "array-move";
+import { arrayMoveImmutable } from "array-move";
 import { put, select } from "redux-saga/effects";
 import { ApplicationState } from "../..";
 import { IBaseAction } from "../../../commons";
@@ -6,16 +6,14 @@ import { IDriver } from "../../driver/types";
 import { recomputeRaceStints } from "../compute";
 import { IChangeStintDriver, IMoveStint, ITimedRace, RaceActionTypes } from "../types";
 
-export function* handleMoveStint(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+export function* handleMoveStint(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const param = action.payload as IMoveStint;
 
     const raceData: ITimedRace = (yield select((state: ApplicationState) => state.race.data)) as ITimedRace;
 
-    const newStints = arrayMove(raceData.stints, param.oldIndex, param.newIndex);
+    const newStints = arrayMoveImmutable(raceData.stints, param.oldIndex, param.newIndex);
     newStints.forEach((v, i) => (v.no = i + 1)); // renumber the stint no
     const stints = recomputeRaceStints({ ...raceData, stints: newStints });
     yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
@@ -24,9 +22,7 @@ Generator {
   }
 }
 
-export function* handleRemoveStint(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+export function* handleRemoveStint(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const param = action.payload as number;
@@ -44,9 +40,7 @@ Generator {
   }
 }
 
-export function* handleChangeStintDriver(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+export function* handleChangeStintDriver(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const param = action.payload as IChangeStintDriver;
