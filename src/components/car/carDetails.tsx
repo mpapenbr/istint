@@ -42,7 +42,7 @@ const CarDetails: React.FC<MyProps> = (props: MyProps) => {
       </Form.Item>
       <Form.Item name="tank" label="Tank" rules={[{ required: true }]}>
         <InputNumber
-          prefix="Fuel"
+          // prefix="Fuel"
           min={0}
           max={150}
           step={1}
