@@ -41,7 +41,7 @@ const DriverDetail: React.FC<MyProps> = (props: MyProps) => {
         </Form.Item>
         <Form.Item name="fuelPerLap" label="Fuel per lap" rules={[{ required: true }]}>
           <InputNumber
-            prefix="Fuel"
+            // prefix="Fuel"
             min={0}
             max={20}
             step={0.1}
