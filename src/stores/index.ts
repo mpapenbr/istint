@@ -1,4 +1,3 @@
-import { connectRouter, RouterState } from "connected-react-router";
 import { History } from "history";
 import { combineReducers } from "redux";
 import { all, fork } from "redux-saga/effects";
@@ -27,7 +26,6 @@ export interface ApplicationState {
   settings: ISettingsState;
   ui: IUiState;
   user: IUserState;
-  router: RouterState;
 }
 
 // export interface IMetaActions extends PayloadMetaAction<TypeConstant,IMeta> {}
@@ -41,7 +39,6 @@ export const createRootReducer = (history: History) =>
     settings: settingsReducer,
     ui: uiReducer,
     user: userReducer,
-    router: connectRouter(history),
   });
 
 export function* rootSaga() {
