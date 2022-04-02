@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const tokenLogger = (tokens: unknown) => {
-    console.log("onKeycloakTokens", tokens);
+    // console.log("onKeycloakTokens", tokens);
   };
 
   // const handleLogin = useCallback(() => {
