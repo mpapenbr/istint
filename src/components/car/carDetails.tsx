@@ -74,7 +74,7 @@ const CarDetails: React.FC<MyProps> = (props: MyProps) => {
       >
         <InputNumber
           min={0}
-          max={30}
+          max={50}
           step={0.1}
 
           // onChange={props.setFuelPerLap}
