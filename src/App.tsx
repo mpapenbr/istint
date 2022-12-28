@@ -1,4 +1,4 @@
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 import { History } from "history";
 import React from "react";
 import { Provider } from "react-redux";

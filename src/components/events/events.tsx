@@ -125,7 +125,7 @@ const EventList: React.FC<MyProps> = (props: MyProps) => {
 
     onFilter: (value: any, record: MyEvent) => extractor(record).toLocaleLowerCase().includes(value.toLowerCase()),
 
-    onFilterDropdownVisibleChange: (visible: boolean) => {
+    onFilterDropdownOpenChange: (visible: boolean) => {
       if (visible) {
         setTimeout(() => searchInput.select(), 100);
       }

@@ -1,6 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
-import { MenuInfo } from "rc-menu/lib/interface";
+import { Button, Dropdown, MenuProps } from "antd";
 import React from "react";
 import { ITrack } from "../../stores/track/types";
 
@@ -13,20 +12,16 @@ interface IStateProps {
 }
 type MyProps = IDispatchProps & IStateProps;
 const TrackSelect: React.FC<MyProps> = (props: MyProps) => {
-  const handleMenuClick = (param: MenuInfo) => {
-    props.selectTrack(parseInt(param.key as string));
+  const items: MenuProps["items"] = props.tracks
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((value) => ({ label: value.name, key: "" + value.id }));
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    // console.log("onClick: " + key);
+    props.selectTrack(parseInt(key));
   };
-
-  const menu = (tracks: ITrack[]) => (
-    <Menu onClick={handleMenuClick}>
-      {tracks.map((t) => (
-        <Menu.Item key={t.id}>{t.name}</Menu.Item>
-      ))}
-    </Menu>
-  );
   return (
     <>
-      <Dropdown overlay={menu(props.tracks.sort((a, b) => a.name.localeCompare(b.name)))}>
+      <Dropdown menu={{ items, onClick }}>
         <Button>
           {props.current.name}
           <DownOutlined />

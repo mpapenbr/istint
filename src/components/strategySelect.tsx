@@ -1,6 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
-import { MenuInfo } from "rc-menu/lib/interface";
+import { Button, Dropdown, MenuProps } from "antd";
 import React from "react";
 import { RaceStrategyMode } from "../stores/stint/types";
 
@@ -14,20 +13,15 @@ interface IStateProps {
 type MyProps = IDispatchProps & IStateProps;
 const RaceStrategySelect: React.FC<MyProps> = (props: MyProps) => {
   // const x : MenuInfo = {}
-  const handleMenuClick = (param: MenuInfo) => {
-    props.selectStrategy(parseInt(param.key as string));
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    props.selectStrategy(parseInt(key));
   };
   const keys = Object.keys(RaceStrategyMode).filter((k) => typeof RaceStrategyMode[k as any] === "number");
-  const menu = () => (
-    <Menu onClick={handleMenuClick}>
-      {keys.map((c, i) => (
-        <Menu.Item key={i}>{c}</Menu.Item>
-      ))}
-    </Menu>
-  );
+
+  const items: MenuProps["items"] = keys.map((c, i) => ({ key: "" + i, label: c }));
   return (
     <>
-      <Dropdown overlay={menu}>
+      <Dropdown menu={{ items, onClick }}>
         <Button>
           {RaceStrategyMode[props.current]}
           <DownOutlined />

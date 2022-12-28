@@ -15,14 +15,11 @@ const ImportButton: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [importData, setImportData] = useState("");
 
-
   const handleClick = () => {
     setImportData("");
     setVisible(true);
-
   };
   const closeDialog = () => {
-
     setVisible(false);
   };
 
@@ -35,32 +32,28 @@ const ImportButton: React.FC = () => {
         dispatch(replaceTrackState(d.tracks));
         dispatch(replaceDriverState(d.driver));
         setVisible(false);
-
       })
       .catch((e: any) => {
-
         message.error("Input could not be processed.");
-      })
-
+      });
   };
 
   const handleInputChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const x = e.target.value
+    const x = e.target.value;
     setImportData(x);
-  }
+  };
 
   return (
     <>
       <Button onClick={handleClick}>Import</Button>
       <Modal
-        visible={visible}
+        open={visible}
         title="Import data to clipboard"
         onCancel={closeDialog}
         onOk={handleImportData}
         okButtonProps={{ title: "import data to clipboard" }}
       >
         <TextArea defaultValue="" value={importData} rows={10} onChange={handleInputChanged} />
-
       </Modal>
     </>
   );

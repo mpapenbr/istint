@@ -4,7 +4,7 @@ import { IBaseAction } from "../../commons";
 import { UserActionTypes } from "./types";
 
 export const userLogin = (): IBaseAction => action(UserActionTypes.LOGIN, {});
-export const userAuthData = (data: Keycloak.KeycloakInstance): IBaseAction => action(UserActionTypes.AUTH_DATA, data);
+
 export const userEventList = (events: MyEvent[]): IBaseAction => action(UserActionTypes.USER_EVENTS, events);
 export const updateInEvents = (event: MyEvent): IBaseAction => action(UserActionTypes.UPDATE_IN_EVENTS, event);
 export const removeFromEvents = (id: string): IBaseAction => action(UserActionTypes.REMOVE_FROM_EVENTS, id);
