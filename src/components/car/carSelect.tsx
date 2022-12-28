@@ -1,6 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
-import { MenuInfo } from "rc-menu/lib/interface";
+import { Button, Dropdown, MenuProps } from "antd";
 import React from "react";
 import { ICar } from "../../stores/car/types";
 
@@ -13,24 +12,16 @@ interface IStateProps {
 }
 type MyProps = IDispatchProps & IStateProps;
 const CarSelect: React.FC<MyProps> = (props: MyProps) => {
-  // const handleMenuClickx = (param: ClickParam) => {
-  //   props.selectCar(parseInt(param.key));
-  // };
-  const handleMenuClick = (param: MenuInfo) => {
-    console.log({ param });
-    props.selectCar(parseInt(param.key as string));
+  const items: MenuProps["items"] = props.cars
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((value) => ({ label: value.name, key: "" + value.id }));
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    // console.log("onClick: " + key);
+    props.selectCar(parseInt(key));
   };
-
-  const menu = (cars: ICar[]) => (
-    <Menu onClick={handleMenuClick}>
-      {cars.map((c) => (
-        <Menu.Item key={c.id}>{c.name}</Menu.Item>
-      ))}
-    </Menu>
-  );
   return (
     <>
-      <Dropdown overlay={menu(props.cars.sort((a, b) => a.name.localeCompare(b.name)))}>
+      <Dropdown menu={{ items, onClick }}>
         <Button>
           {props.current.name}
           <DownOutlined />

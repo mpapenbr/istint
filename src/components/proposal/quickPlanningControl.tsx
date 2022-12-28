@@ -138,6 +138,7 @@ const QuickPlanningControl: React.FC<MyProps> = (props: MyProps) => {
   }
   const UndercutTable: React.FC<{}> = () => {
     const data = _.range(1, 20).map((d) => ({
+      key: d,
       secs: d,
       fuel: d * car.refillRate,
       laps: (d * car.refillRate) / fuelPerLap,

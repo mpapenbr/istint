@@ -44,6 +44,7 @@ const QuickStintTable: React.FC<MyProps> = (props: MyProps) => {
       pagination={false}
       columns={columns}
       dataSource={props.stints}
+      rowKey={(d) => "Stint-" + d.no}
     />
   );
 };

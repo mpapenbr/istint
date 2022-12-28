@@ -1,3 +1,4 @@
+// TODO: Refactor with Typescript 4.9.x
 export enum UiMainEnum {
   Drivers,
   Tracks,

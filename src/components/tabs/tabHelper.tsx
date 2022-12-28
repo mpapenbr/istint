@@ -15,35 +15,20 @@ type MyProps = IStateProps & IDispatchProps;
 const { TabPane } = Tabs;
 
 const TabHelper: React.FC<MyProps> = (props: MyProps) => {
+  // TODO: Refactor keys with Typescript 4.9.x
   return (
-    <Tabs type="card">
-      <TabPane tab="Settings" key={UiMainEnum.Settings}>
-        <RaceSettingsContainer />
-      </TabPane>
-      <TabPane tab="Drivers" key={UiMainEnum.Drivers}>
-        <DriverMasterDetailContainer />
-      </TabPane>
-      <TabPane tab="Quick proposal" key={UiMainEnum.QuickProposal}>
-        <QuickProposalContainer />
-      </TabPane>
-      <TabPane tab="Planning" key={UiMainEnum.Planing}>
-        <RaceContainer />
-      </TabPane>
-      {/* <TabPane tab="Compact" key={UiMainEnum.Compact}>
-        <DndProvider backend={HTML5Backend}>
-          <CompactStints />
-        </DndProvider>
-      </TabPane> */}
-      <TabPane tab="Fuel calc" key={UiMainEnum.FuleInfos}>
-        <FuelInfo />
-      </TabPane>
-      <TabPane tab="Other" key={UiMainEnum.OtherSettings}>
-        <OtherSettingsContainer />
-      </TabPane>
-      <TabPane tab="Server" key={UiMainEnum.Server}>
-        <ServerSettingsContainer />
-      </TabPane>
-    </Tabs>
+    <Tabs
+      type="card"
+      items={[
+        { label: "Settings", key: "" + UiMainEnum.Settings, children: <RaceSettingsContainer /> },
+        { label: "Drivers", key: "" + UiMainEnum.Drivers, children: <DriverMasterDetailContainer /> },
+        { label: "Quick Proposal", key: "" + UiMainEnum.QuickProposal, children: <QuickProposalContainer /> },
+        { label: "Planning", key: "" + UiMainEnum.Planing, children: <RaceContainer /> },
+        { label: "Fuel calc", key: "" + UiMainEnum.FuleInfos, children: <FuelInfo /> },
+        { label: "Other", key: "" + UiMainEnum.OtherSettings, children: <OtherSettingsContainer /> },
+        { label: "Server", key: "" + UiMainEnum.Server, children: <ServerSettingsContainer /> },
+      ]}
+    />
   );
 };
 

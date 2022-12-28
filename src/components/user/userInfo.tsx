@@ -1,7 +1,6 @@
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { useKeycloak } from "@react-keycloak/web";
-import { Button, Dropdown, Menu } from "antd";
-import React, { useCallback } from "react";
+import { Button, Dropdown, MenuProps } from "antd";
+import React from "react";
 import { useAuth } from "../../routes/auth";
 
 interface IStateProps {}
@@ -18,16 +17,21 @@ const UserInfo: React.FC<{}> = () => {
   const { onLogin, onLogout, name } = useAuth();
 
   if (name) {
-    const menu = (
-      <Menu>
-        <Menu.Item onClick={onLogout} key="1" icon={<LogoutOutlined />}>
-          Logout
-        </Menu.Item>
-      </Menu>
-    );
+    // const menu = (
+    //   <Menu items={}>
+    //     <Menu.Item onClick={onLogout} key="1" icon={<LogoutOutlined />}>
+    //       Logout
+    //     </Menu.Item>
+    //   </Menu>
+    // );
+    const onClick: MenuProps["onClick"] = ({ key }) => {
+      console.log("logout clicked");
+      onLogout();
+    };
+    const items: MenuProps["items"] = [{ label: "Logout", key: "logout", icon: <LogoutOutlined /> }];
 
     return (
-      <Dropdown.Button icon={<UserOutlined />} overlay={menu}>
+      <Dropdown.Button icon={<UserOutlined />} menu={{ items, onClick }}>
         {name}
       </Dropdown.Button>
     );
@@ -35,30 +39,3 @@ const UserInfo: React.FC<{}> = () => {
   return <Button onClick={onLogin}>Login</Button>;
 };
 export default UserInfo;
-
-const UserInfoOld: React.FC<MyProps> = (props: MyProps) => {
-  const { keycloak } = useKeycloak();
-  const login = useCallback(() => {
-    keycloak?.login();
-  }, [keycloak]);
-
-  if (keycloak.authenticated) {
-    const doLogout = () => {
-      keycloak?.logout();
-    };
-    const menu = (
-      <Menu>
-        <Menu.Item onClick={doLogout} key="1" icon={<LogoutOutlined />}>
-          Logout
-        </Menu.Item>
-      </Menu>
-    );
-    const myInfo = keycloak.idTokenParsed as MyTokenInfo;
-    return (
-      <Dropdown.Button icon={<UserOutlined />} overlay={menu}>
-        {myInfo.name}
-      </Dropdown.Button>
-    );
-  }
-  return <Button onClick={login}>Login</Button>;
-};

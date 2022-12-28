@@ -1,6 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Dropdown, Input, Menu, Row } from "antd";
-import { MenuInfo } from "rc-menu/lib/interface";
+import { Button, Card, Col, Dropdown, Input, MenuProps, Row } from "antd";
 import React from "react";
 import { CarState, ICar } from "../stores/car/types";
 import { ITimedRace } from "../stores/race/types";
@@ -56,18 +55,25 @@ const RaceSettingsRework: React.FC<MyProps> = ({
   setTimeDisplayMode,
   reset,
 }: MyProps) => {
-  const handleSampleMenu = (param: MenuInfo) => {
-    setDuration(parseInt(param.key as string));
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    setDuration(parseInt(key));
   };
 
-  const durationTemplates = (
-    <Menu onClick={handleSampleMenu}>
-      <Menu.Item key="60">60 min</Menu.Item>
-      <Menu.Item key="360">6 h</Menu.Item>
-      <Menu.Item key="720">12 h</Menu.Item>
-      <Menu.Item key="1440">24 h</Menu.Item>
-    </Menu>
-  );
+  // const durationTemplates = (
+  //   <Menu onClick={handleSampleMenu}>
+  //     <Menu.Item key="60">60 min</Menu.Item>
+  //     <Menu.Item key="360">6 h</Menu.Item>
+  //     <Menu.Item key="720">12 h</Menu.Item>
+  //     <Menu.Item key="1440">24 h</Menu.Item>
+  //   </Menu>
+  // );
+  const items: MenuProps["items"] = [
+    { label: "60 min", key: "60" },
+    { label: "6h", key: "360" },
+    { label: "12h", key: "720" },
+    { label: "24h", key: "1440" },
+  ];
+
   return (
     <Row gutter={0}>
       <Col span={6}>
@@ -89,7 +95,7 @@ const RaceSettingsRework: React.FC<MyProps> = ({
                 <Col className="full-width" span={16}>
                   <Input.Group className="istint-settings-common">
                     <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
-                    <Dropdown overlay={durationTemplates}>
+                    <Dropdown menu={{ items, onClick }}>
                       <Button>
                         Samples
                         <DownOutlined />

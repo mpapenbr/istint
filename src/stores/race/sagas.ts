@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { all, fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { all, fork, put, select, takeEvery, takeLatest } from "typed-redux-saga";
 import { ApplicationState } from "..";
 import { IBaseAction } from "../../commons";
 import { CarState, ICar, TireChangeMode } from "../car/types";
@@ -27,7 +27,7 @@ export function* handleSagaTest(action: IBaseAction): Generator {
   try {
     // console.log("i am here with payload ", action.payload)
     const duration = action.payload;
-    yield put({ type: RaceActionTypes.SET_DURATION, payload: duration });
+    yield* put({ type: RaceActionTypes.SET_DURATION, payload: duration });
   } catch (e) {
     console.log(e);
   }
@@ -36,72 +36,66 @@ export function* handleSagaTest(action: IBaseAction): Generator {
 const getRace = (state: ApplicationState): ITimedRace => state.race.data;
 const getSettings = (state: ApplicationState): ISettings => state.settings.data;
 
-function* handleChangeCar(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+function* handleChangeCar(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const carId: number = action.payload;
     // oh my! Typescript malus :(
     // didn't yet find a way to get this assigned by using one statement
     // see: https://github.com/redux-saga/redux-saga/issues/1976
-    const raceDataTmp: unknown = yield select(getRace);
+    const raceDataTmp: unknown = yield* select(getRace);
     const raceData: ITimedRace = raceDataTmp as ITimedRace;
-    const carState = (yield select((state: ApplicationState) => state.cars)) as CarState;
-    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
-    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+    const carState = (yield* select((state: ApplicationState) => state.cars)) as CarState;
+    const driverState = (yield* select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield* select((state: ApplicationState) => state.settings)) as ISettingsState;
 
     const newCar = carState.allCars.find((v) => v.id === carId);
     if (newCar !== undefined) {
-      yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
+      yield* put({ type: RaceActionTypes.SET_CAR, payload: newCar });
       let workStints = computeFreshRace({ ...raceData, car: newCar }, driverState.allDrivers, settings.data.strategy);
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {
     console.log(e);
   }
 }
 
-function* handleChangedCarData(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+function* handleChangedCarData(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const newCar: ICar = action.payload;
     // oh my! Typescript malus :(
     // didn't yet find a way to get this assigned by using one statement
     // see: https://github.com/redux-saga/redux-saga/issues/1976
-    const raceDataTmp: unknown = yield select(getRace);
+    const raceDataTmp: unknown = yield* select(getRace);
     const raceData: ITimedRace = raceDataTmp as ITimedRace;
 
-    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
-    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+    const driverState = (yield* select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield* select((state: ApplicationState) => state.settings)) as ISettingsState;
 
     if (newCar !== undefined) {
-      yield put({ type: RaceActionTypes.SET_CAR, payload: newCar });
+      yield* put({ type: RaceActionTypes.SET_CAR, payload: newCar });
       let workStints = computeFreshRace({ ...raceData, car: newCar }, driverState.allDrivers, settings.data.strategy);
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {
     console.log(e);
   }
 }
 
-function* handleChangeTrack(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+function* handleChangeTrack(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const trackId: number = action.payload;
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
-    const trackState = (yield select((state: ApplicationState) => state.tracks)) as TrackState;
-    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
-    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
+    const trackState = (yield* select((state: ApplicationState) => state.tracks)) as TrackState;
+    const driverState = (yield* select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield* select((state: ApplicationState) => state.settings)) as ISettingsState;
     const newTrack = trackState.allTracks.find((v) => v.id === trackId);
     if (newTrack !== undefined) {
-      yield put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
+      yield* put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
 
       let workStints = computeFreshRace(
         { ...raceData, track: newTrack },
@@ -109,26 +103,24 @@ Generator {
         settings.data.strategy
       );
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {
     console.log(e);
   }
 }
 
-function* handleChangedTrackData(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+function* handleChangedTrackData(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const newTrack: ITrack = action.payload;
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
 
-    const driverState = (yield select((state: ApplicationState) => state.driver)) as DriverState;
-    const settings = (yield select((state: ApplicationState) => state.settings)) as ISettingsState;
+    const driverState = (yield* select((state: ApplicationState) => state.driver)) as DriverState;
+    const settings = (yield* select((state: ApplicationState) => state.settings)) as ISettingsState;
 
     if (newTrack !== undefined) {
-      yield put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
+      yield* put({ type: RaceActionTypes.SET_TRACK, payload: newTrack });
 
       let workStints = computeFreshRace(
         { ...raceData, track: newTrack },
@@ -136,21 +128,19 @@ Generator {
         settings.data.strategy
       );
       const stints = recomputeRaceStints({ ...raceData, stints: workStints });
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: stints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: stints });
     }
   } catch (e) {
     console.log(e);
   }
 }
 
-export function* handleQuickComputeProposal(
-  action: IBaseAction
-): //: Generator<StrictEffect,void, Stint[]>
+export function* handleQuickComputeProposal(action: IBaseAction): //: Generator<StrictEffect,void, Stint[]>
 Generator {
   try {
     const myParam: ISimpleRaceProposalParam = action.payload;
 
-    yield put({
+    yield* put({
       type: RaceActionTypes.SET_DURATION,
       payload: myParam.duration,
     });
@@ -162,7 +152,7 @@ Generator {
     // oh my! Typescript malus :(
     // didn't yet find a way to get this assigned by using one statement
     // see: https://github.com/redux-saga/redux-saga/issues/1976
-    const raceDataTmp: unknown = yield select(getRace);
+    const raceDataTmp: unknown = yield* select(getRace);
     const raceData: ITimedRace = raceDataTmp as ITimedRace;
 
     // console.log(driver);
@@ -170,7 +160,7 @@ Generator {
 
     const stints = computeFreshRace({ ...raceData, duration: myParam.duration }, myParam.driver, myParam.strategy);
     const workRace = { ...raceData, stints: stints };
-    yield put({
+    yield* put({
       type: RaceActionTypes.SET_STINTS,
       payload: recomputeRaceStints(workRace),
     });
@@ -234,7 +224,7 @@ function computeRace(race: ITimedRace, stints: Stint[]): Stint[] {
  */
 function* handleChangeSingleStint(action: IBaseAction): Generator {
   try {
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
     const param: IModifyStintParam = action.payload;
     let newStints = _.clone(raceData.stints);
     const idx = _.findIndex(newStints, { no: param.no });
@@ -250,7 +240,7 @@ function* handleChangeSingleStint(action: IBaseAction): Generator {
 
     newStints = computeRace(raceData, newStints);
 
-    yield put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
+    yield* put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
   } catch (e) {
     console.log(e);
   }
@@ -262,8 +252,8 @@ function* handleChangeSingleStint(action: IBaseAction): Generator {
  */
 function* handleChangeSingleStintAttributeNumLaps(action: IBaseAction): Generator {
   try {
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
-    const settings: ISettings = (yield select(getSettings)) as ISettings;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
+    const settings: ISettings = (yield* select(getSettings)) as ISettings;
 
     const param: IChangeSingleStintParam = action.payload;
     let newStints = _.clone(raceData.stints);
@@ -279,10 +269,10 @@ function* handleChangeSingleStintAttributeNumLaps(action: IBaseAction): Generato
     if (settings.autoRepair) {
       console.log("TODO: process ", { param });
       // TODO
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
     } else {
       const workRace = { ...raceData, stints: newStints };
-      yield put({
+      yield* put({
         type: RaceActionTypes.SET_STINTS,
         payload: recomputeRaceStints(workRace),
       });
@@ -298,8 +288,8 @@ function* handleChangeSingleStintAttributeNumLaps(action: IBaseAction): Generato
  */
 function* handleChangeSingleStintAttributeLaptime(action: IBaseAction): Generator {
   try {
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
-    const settings: ISettings = (yield select(getSettings)) as ISettings;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
+    const settings: ISettings = (yield* select(getSettings)) as ISettings;
 
     const param: IChangeSingleStintParam = action.payload;
     let newStints = _.clone(raceData.stints);
@@ -315,10 +305,10 @@ function* handleChangeSingleStintAttributeLaptime(action: IBaseAction): Generato
     if (settings.autoRepair) {
       console.log("TODO: process ", { param });
       // TODO
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
     } else {
       const workRace = { ...raceData, stints: newStints };
-      yield put({
+      yield* put({
         type: RaceActionTypes.SET_STINTS,
         payload: recomputeRaceStints(workRace),
       });
@@ -333,8 +323,8 @@ function* handleChangeSingleStintAttributeLaptime(action: IBaseAction): Generato
  */
 function* handleChangeSingleStintAttributeFuelPerLap(action: IBaseAction): Generator {
   try {
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
-    const settings: ISettings = (yield select(getSettings)) as ISettings;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
+    const settings: ISettings = (yield* select(getSettings)) as ISettings;
 
     const param: IChangeSingleStintParam = action.payload;
     let newStints = _.clone(raceData.stints);
@@ -350,10 +340,10 @@ function* handleChangeSingleStintAttributeFuelPerLap(action: IBaseAction): Gener
     if (settings.autoRepair) {
       console.log("TODO: process ", { param });
       // TODO
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
     } else {
       const workRace = { ...raceData, stints: newStints };
-      yield put({
+      yield* put({
         type: RaceActionTypes.SET_STINTS,
         payload: recomputeRaceStints(workRace),
       });
@@ -368,8 +358,8 @@ function* handleChangeSingleStintAttributeFuelPerLap(action: IBaseAction): Gener
  */
 function* handleChangeSingleStintAttributeTires(action: IBaseAction): Generator {
   try {
-    const raceData: ITimedRace = (yield select(getRace)) as ITimedRace;
-    const settings: ISettings = (yield select(getSettings)) as ISettings;
+    const raceData: ITimedRace = (yield* select(getRace)) as ITimedRace;
+    const settings: ISettings = (yield* select(getSettings)) as ISettings;
 
     const param: IChangeSingleStintParam = action.payload;
     let newStints = _.clone(raceData.stints);
@@ -385,10 +375,10 @@ function* handleChangeSingleStintAttributeTires(action: IBaseAction): Generator 
     if (settings.autoRepair) {
       console.log("TODO: process ", { param });
       // TODO
-      yield put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
+      yield* put({ type: RaceActionTypes.SET_STINTS, payload: newStints });
     } else {
       const workRace = { ...raceData, stints: newStints };
-      yield put({
+      yield* put({
         type: RaceActionTypes.SET_STINTS,
         payload: recomputeRaceStints(workRace),
       });
@@ -401,8 +391,8 @@ function* handleChangeSingleStintAttributeTires(action: IBaseAction): Generator 
 function* handleSagaTestDouble(action: IBaseAction): Generator {
   try {
     const duration = action.payload * 2;
-    yield put({ type: RaceActionTypes.SET_DURATION, payload: duration });
-    yield put({
+    yield* put({ type: RaceActionTypes.SET_DURATION, payload: duration });
+    yield* put({
       type: RaceActionTypes.SET_NAME,
       payload: "Doubled duration of " + duration,
     });
@@ -412,7 +402,7 @@ function* handleSagaTestDouble(action: IBaseAction): Generator {
 }
 
 function* watchSagaTestRequest(): Generator {
-  yield takeEvery(RaceActionTypes.SAGA_TEST, handleSagaTest);
+  yield* takeEvery(RaceActionTypes.SAGA_TEST, handleSagaTest);
 }
 
 export default function* raceSaga() {
@@ -420,28 +410,28 @@ export default function* raceSaga() {
   // does work: yield all([fork(watchSagaTestRequest)]);
   // does work: yield all([watchSagaTestRequest()]);
 
-  yield all([
+  yield* all([
     fork(watchSagaTestRequest),
 
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_DRIVER, handleChangeStintDriver),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, handleChangeSingleStintAttributeNumLaps),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, handleChangeSingleStintAttributeLaptime),
-    yield takeLatest(
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_SINGLE_STINT, handleChangeSingleStint),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_DRIVER, handleChangeStintDriver),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_NUMLAPS, handleChangeSingleStintAttributeNumLaps),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_LAPTIME, handleChangeSingleStintAttributeLaptime),
+    yield* takeLatest(
       RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_FUELPERLAP,
       handleChangeSingleStintAttributeFuelPerLap
     ),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_TIRES, handleChangeSingleStintAttributeTires),
-    yield takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
-    yield takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGED_CAR_DATA, handleChangedCarData),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_TRACK, handleChangeTrack),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGED_TRACK_DATA, handleChangedTrackData),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_DURATION, handleChangeDuration),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_REAL, handleChangeStartReal),
-    yield takeLatest(RaceActionTypes.SAGA_CHANGE_START_SIM, handleChangeStartSim),
-    yield takeLatest(RaceActionTypes.SAGA_MOVE_STINT, handleMoveStint),
-    yield takeLatest(RaceActionTypes.SAGA_REMOVE_STINT, handleRemoveStint),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_STINT_ATTRIBUTE_TIRES, handleChangeSingleStintAttributeTires),
+    yield* takeLatest(RaceActionTypes.SAGA_TEST_DOUBLE, handleSagaTestDouble),
+    yield* takeLatest(RaceActionTypes.SAGA_QUICK_PROPOSAL, handleQuickComputeProposal),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_CAR, handleChangeCar),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGED_CAR_DATA, handleChangedCarData),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_TRACK, handleChangeTrack),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGED_TRACK_DATA, handleChangedTrackData),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_DURATION, handleChangeDuration),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_START_REAL, handleChangeStartReal),
+    yield* takeLatest(RaceActionTypes.SAGA_CHANGE_START_SIM, handleChangeStartSim),
+    yield* takeLatest(RaceActionTypes.SAGA_MOVE_STINT, handleMoveStint),
+    yield* takeLatest(RaceActionTypes.SAGA_REMOVE_STINT, handleRemoveStint),
   ]);
 }

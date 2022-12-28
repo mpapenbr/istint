@@ -31,7 +31,7 @@ const ExportButton: React.FC = () => {
     <>
       <Button onClick={handleClick}>Export</Button>
       <Modal
-        visible={visible}
+        open={visible}
         title="Export data to clipboard"
         onCancel={closeDialog}
         onOk={copyAndCloseDialog}

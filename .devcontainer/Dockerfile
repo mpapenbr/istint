@@ -5,15 +5,15 @@
 
 # To fully customize the contents of this image, use the following Dockerfile instead:
 # https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/typescript-node-12/.devcontainer/Dockerfile
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-18
 
 # ugly workaround for ssl-host-key-checking
 # otherwise we can't access private repos
-RUN mkdir -p /root/.ssh \
-    && chmod 700 /root/.ssh \
-    && echo "StrictHostKeyChecking no" >> /root/.ssh/config \
-    # ensure dotfiles will be checked out with the correct *nix settings
-    && git config --global core.autocrlf input
+# RUN mkdir -p /root/.ssh \
+#     && chmod 700 /root/.ssh \
+#     && echo "StrictHostKeyChecking no" >> /root/.ssh/config \
+#     # ensure dotfiles will be checked out with the correct *nix settings
+#     && git config --global core.autocrlf input
 
 ENV TZ=Europe/Berlin 
 
