@@ -8,9 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
@@ -22,7 +22,7 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Use Node.js 18
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
       - name: Install dependencies
