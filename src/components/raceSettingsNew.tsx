@@ -1,5 +1,5 @@
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Dropdown, Input, MenuProps, Row } from "antd";
+import { Button, Card, Col, Dropdown, MenuProps, Row, Space } from "antd";
 import React from "react";
 import { CarState, ICar } from "../stores/car/types";
 import { ITimedRace } from "../stores/race/types";
@@ -93,7 +93,7 @@ const RaceSettingsRework: React.FC<MyProps> = ({
                   Duration
                 </Col>
                 <Col className="full-width" span={16}>
-                  <Input.Group className="istint-settings-common">
+                  <Space.Compact className="istint-settings-common">
                     <DurationInput durationMin={raceData.duration} setDuration={setDuration} />
                     <Dropdown menu={{ items, onClick }}>
                       <Button>
@@ -101,7 +101,7 @@ const RaceSettingsRework: React.FC<MyProps> = ({
                         <DownOutlined />
                       </Button>
                     </Dropdown>
-                  </Input.Group>
+                  </Space.Compact>
                 </Col>
               </Row>
             </Card>
