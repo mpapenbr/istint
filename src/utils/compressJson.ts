@@ -1,4 +1,7 @@
-var codec = require("json-url")("lzw");
+// var codec = require("json-url")("lzw");
+import jsonUrl from "json-url";
+
+var codec = jsonUrl("lzw");
 
 export function compressJson(data: any): Promise<string> {
   // var result = "";

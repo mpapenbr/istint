@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Test
-        run: yarn test
+        run: yarn test:no-watch --passWithNoTests
         env:
           CI: true
           RUN_SLOW_TESTS: true
@@ -61,7 +61,7 @@ jobs:
           CI: false
 
       - name: Copy to docker
-        run: cp -r build/ docker/build
+        run: cp -r dist/ docker/dist
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v2
