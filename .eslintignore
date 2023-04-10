@@ -1,0 +1,8 @@
+// .eslintignore
+
+node_modules/*
+public/*
+dist/
+park/
+reportWebVitals.ts
+env.d.ts

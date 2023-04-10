@@ -10,7 +10,7 @@
       "settings": {
         // "terminal.integrated.shell.linux": "/bin/bash",
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "prettier.printWidth": 120,
+        "prettier.printWidth": 100,
         "editor.tabSize": 2,
         "editor.formatOnSave": true,
         "[typescript]": {
