@@ -3197,10 +3197,10 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
 
-json-url@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/json-url/-/json-url-3.0.0.tgz#454fbca31342984c3f4ca8ebc6e53c89f4f7bd29"
-  integrity sha512-c5iQnrKGNJ4/qAV1APNFHBDSgB0qgekmcVTBV3RRa2UUw8liUIrUvI3+Om7qtnM8JwobnEsPuAWMYmtCfxSkcw==
+json-url@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/json-url/-/json-url-3.1.0.tgz#dcd70a19eb098d88bd00917b3253e414f434f0dc"
+  integrity sha512-fhmtxBOQYJCshMV/omtzjBLv0ruLBz4dt+28y2+959fM45Oc8s+uL1jdLu/4yGeKATylgV022gAPfxCwQ5KgFA==
   dependencies:
     "@babel/runtime-corejs2" "^7.0.0"
     bluebird "^3.0.6"
