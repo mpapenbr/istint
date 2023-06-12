@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-keycloak/web": "^3.4.0",
-    "antd": "^5.5.1",
+    "antd": "^5.6.1",
     "array-move": "^4.0.0",
     "classnames": "^2.3.2",
     "copy-to-clipboard": "^3.3.3",
