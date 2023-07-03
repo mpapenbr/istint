@@ -63,7 +63,7 @@
     "jsdom": "^22.1.0",
     "prettier": "^2.8.8",
     "redux-saga-test-plan": "^4.0.6",
-    "typescript": "~5.0.4",
+    "typescript": "~5.1.6",
     "vite": "^4.3.9",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.0",
