@@ -41,7 +41,7 @@
     "@types/classnames": "^2.3.1",
     "@types/history": "^5.0.0",
     "@types/lodash": "^4.14.195",
-    "@types/node": "^18.16.4",
+    "@types/node": "^20.5.0",
     "@types/react": "^18.2.15",
     "@types/react-color": "^3.0.6",
     "@types/react-copy-to-clipboard": "^5.0.4",
