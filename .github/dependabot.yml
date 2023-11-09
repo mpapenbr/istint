@@ -27,5 +27,5 @@ updates:
       github-actions:
         dependency-type: "production"
     commit-message:
-      prefix: "build(gha): "
+      prefix: "gha"
       include: "scope"
